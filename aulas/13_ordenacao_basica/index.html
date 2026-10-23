@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Livro didático de Estruturas de Dados: Recursividade, TAD, Listas, Pilhas, Filas, Árvores (BST, AVL, Heaps) e Ordenação.
+        <meta name="description" content="Livro didático de Estruturas de Dados: Recursividade, TAD, Listas, Pilhas, Filas, Árvores (ABB e AVL) e Ordenação (incluindo Heap Sort).
 ">
       
       
@@ -380,7 +380,7 @@
   <span class="md-ellipsis">
     
   
-    Capítulo 1 — Introdução e TAD
+    Capítulo 1 — Introdução
   
 
     
@@ -515,7 +515,7 @@
   <span class="md-ellipsis">
     
   
-    2.3 Pilha Estática III: Alocação Dinâmica
+    2.3 Pilha III: Alocação Dinâmica
   
 
     
@@ -2765,9 +2765,9 @@
 <blockquote>
 <p><strong>Definição:</strong> Ordenação é o processo de rearranjar os elementos de uma coleção em uma sequência específica, geralmente <strong>crescente</strong> ou <strong>decrescente</strong>, com base em uma chave de comparação.</p>
 </blockquote>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">// Exemplo: vetor não ordenado → ordenado (crescente)</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nl">Entrada</span><span class="p">:</span><span class="w">  </span><span class="p">[</span><span class="mi">64</span><span class="p">,</span><span class="w"> </span><span class="mi">34</span><span class="p">,</span><span class="w"> </span><span class="mi">25</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="mi">22</span><span class="p">,</span><span class="w"> </span><span class="mi">11</span><span class="p">,</span><span class="w"> </span><span class="mi">90</span><span class="p">]</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nl">Saída</span><span class="p">:</span><span class="w">    </span><span class="p">[</span><span class="mi">11</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="mi">22</span><span class="p">,</span><span class="w"> </span><span class="mi">25</span><span class="p">,</span><span class="w"> </span><span class="mi">34</span><span class="p">,</span><span class="w"> </span><span class="mi">64</span><span class="p">,</span><span class="w"> </span><span class="mi">90</span><span class="p">]</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>// Exemplo: vetor não ordenado → ordenado (crescente)
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>Entrada:  [64, 34, 25, 12, 22, 11, 90]
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>Saída:    [11, 12, 22, 25, 34, 64, 90]
 </code></pre></div>
 <h3 id="12-aplicacoes-praticas-da-ordenacao">1.2 Aplicações Práticas da Ordenação<a class="headerlink" href="#12-aplicacoes-praticas-da-ordenacao" title="Permanent link">&para;</a></h3>
 <table>
@@ -2892,8 +2892,8 @@
 </div>
 <h3 id="24-como-contar-operacoes-exemplo-pratico">2.4 Como Contar Operações? (Exemplo Prático)<a class="headerlink" href="#24-como-contar-operacoes-exemplo-pratico" title="Permanent link">&para;</a></h3>
 <p>Considere este trecho de código:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">          </span><span class="c1">// Executa n+1 vezes (incluindo teste final)</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">      </span><span class="c1">// Executa n vezes para cada i</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">          </span><span class="c1">// Corpo executa n vezes</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">  </span><span class="c1">// Corpo executa n-1 vezes para cada i</span>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">vetor</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">vetor</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span><span class="w"> </span><span class="p">{</span><span class="w">   </span><span class="c1">// Comparação: O(1)</span>
 <a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">            </span><span class="c1">// Troca: O(1)</span>
 <a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">        </span><span class="p">}</span>
@@ -2903,15 +2903,15 @@
 <p><strong>Contagem simplificada:</strong></p>
 <ul>
 <li>Laço externo: <code>n</code> iterações</li>
-<li>Laço interno: <code>n</code> iterações por externa → total <code>n × n = n²</code></li>
+<li>Laço interno: <code>n − 1</code> iterações por externa → total <code>n × (n − 1) = n² − n</code></li>
 <li>Operações internas: O(1)</li>
-<li><strong>Complexidade total: O(n²)</strong></li>
+<li><strong>Complexidade total: O(n²)</strong> (o termo <code>− n</code> e as constantes são desprezados)</li>
 </ul>
 <hr />
 <h2 id="3-bubble-sort-o-algoritmo-da-bolha">3. Bubble Sort: O Algoritmo da "Bolha"<a class="headerlink" href="#3-bubble-sort-o-algoritmo-da-bolha" title="Permanent link">&para;</a></h2>
 <h3 id="31-ideia-conceitual">3.1 Ideia Conceitual<a class="headerlink" href="#31-ideia-conceitual" title="Permanent link">&para;</a></h3>
 <blockquote>
-<p><strong>Analogia:</strong> Imagine bolhas de ar em um líquido: as menores "sobem" mais rápido. No Bubble Sort, os maiores elementos "flutuam" para o final do vetor a cada passagem.</p>
+<p><strong>Analogia:</strong> Imagine bolhas de ar subindo num copo de refrigerante até a superfície. No Bubble Sort, a cada passada o maior elemento ainda fora do lugar "sobe" como uma bolha até o final do vetor.</p>
 </blockquote>
 <p><strong>Estratégia:</strong></p>
 <ol>
@@ -3027,7 +3027,7 @@
 <h2 id="4-selection-sort-ordenacao-por-selecao">4. Selection Sort: Ordenação por Seleção<a class="headerlink" href="#4-selection-sort-ordenacao-por-selecao" title="Permanent link">&para;</a></h2>
 <h3 id="41-ideia-conceitual">4.1 Ideia Conceitual<a class="headerlink" href="#41-ideia-conceitual" title="Permanent link">&para;</a></h3>
 <blockquote>
-<p><strong>Analogia:</strong> Organizar cartas na mão: procure a menor carta, coloque-a na primeira posição; depois procure a segunda menor, coloque na segunda posição; e assim por diante.</p>
+<p><strong>Analogia:</strong> Organizar uma fila de pessoas por altura: procure a mais baixa e troque-a de lugar com quem está na frente; depois procure a mais baixa entre as restantes e coloque-a na segunda posição; e assim por diante.</p>
 </blockquote>
 <p><strong>Estratégia:</strong></p>
 <ol>
@@ -3102,7 +3102,13 @@
 <td><strong>O(n²)</strong></td>
 </tr>
 <tr>
-<td><strong>Pior caso</strong> (invertido)</td>
+<td><strong>Vetor invertido</strong></td>
+<td>n(n-1)/2 ≈ n²/2</td>
+<td>⌊n/2⌋</td>
+<td><strong>O(n²)</strong></td>
+</tr>
+<tr>
+<td><strong>Pior caso</strong> (trocas)</td>
 <td>n(n-1)/2 ≈ n²/2</td>
 <td>n-1</td>
 <td><strong>O(n²)</strong></td>
@@ -3110,11 +3116,12 @@
 <tr>
 <td><strong>Caso médio</strong> (aleatório)</td>
 <td>~n²/2</td>
-<td>~n/2</td>
+<td>≈ n − ln n</td>
 <td><strong>O(n²)</strong></td>
 </tr>
 </tbody>
 </table>
+<p><em>(No vetor invertido, cada troca coloca dois elementos no lugar de uma vez, por isso são só n/2 trocas. O máximo de n−1 trocas ocorre, por exemplo, em <code>[2, 3, ..., n, 1]</code>.)</em></p>
 <p><strong>Espaço:</strong> O(1) — ordenação <em>in-place</em>.</p>
 <div class="admonition tip">
 <p class="admonition-title">Vantagem do Selection Sort</p>
@@ -3312,7 +3319,7 @@
 <a id="__codelineno-10-73" name="__codelineno-10-73" href="#__codelineno-10-73"></a><span class="w">    </span><span class="p">}</span>
 <a id="__codelineno-10-74" name="__codelineno-10-74" href="#__codelineno-10-74"></a><span class="p">}</span>
 <a id="__codelineno-10-75" name="__codelineno-10-75" href="#__codelineno-10-75"></a>
-<a id="__codelineno-10-76" name="__codelineno-10-76" href="#__codelineno-10-76"></a><span class="c1">// ===== Medição de tempo (microssegundos) =====</span>
+<a id="__codelineno-10-76" name="__codelineno-10-76" href="#__codelineno-10-76"></a><span class="c1">// ===== Medição de tempo (milissegundos) =====</span>
 <a id="__codelineno-10-77" name="__codelineno-10-77" href="#__codelineno-10-77"></a><span class="kt">double</span><span class="w"> </span><span class="nf">medirTempo</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">func</span><span class="p">)(</span><span class="kt">int</span><span class="p">[],</span><span class="w"> </span><span class="kt">int</span><span class="p">),</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">vetor</span><span class="p">[],</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <a id="__codelineno-10-78" name="__codelineno-10-78" href="#__codelineno-10-78"></a><span class="w">    </span><span class="kt">clock_t</span><span class="w"> </span><span class="n">inicio</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">clock</span><span class="p">();</span>
 <a id="__codelineno-10-79" name="__codelineno-10-79" href="#__codelineno-10-79"></a><span class="w">    </span><span class="n">func</span><span class="p">(</span><span class="n">vetor</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">);</span>
@@ -3513,7 +3520,7 @@
 <summary>💡 Gabarito parcial</summary>
 
 <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>a) Bubble Sort:
-<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>   Passada 1: [3,5,1,8,9] → trocas: 8↔3, 8↔1
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>   Passada 1: [3,5,1,8,9] → trocas: 8↔3, 8↔5, 8↔1
 <a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>   Passada 2: [3,1,5,8,9] → trocas: 5↔1
 <a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>   Passada 3: [1,3,5,8,9] → trocas: 3↔1
 <a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>   Passada 4: [1,3,5,8,9] → sem trocas → parada antecipada
@@ -3665,15 +3672,16 @@
 </blockquote>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>Comparação teórica para n = 10.000:
 <a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>
-<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>Algoritmo   | Operações aproximadas | Tempo relativo*
-<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>------------|----------------------|---------------
-<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>Bubble      | 100.000.000          | 100x
-<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>Selection   | 50.000.000           | 50x
-<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>Insertion   | 25.000.000 (médio)   | 25x
-<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>Merge Sort  | 130.000              | 1x (base)
-<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>Quick Sort  | 140.000              | ~1x
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>Algoritmo   | Comparações aproximadas | Relativo ao Merge*
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>------------|-------------------------|-------------------
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>Bubble      | 50.000.000  (n²/2)      | ~380x
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>Selection   | 50.000.000  (n²/2)      | ~380x
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>Insertion   | 25.000.000  (n²/4, médio)| ~190x
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>Merge Sort  | 130.000     (n log₂ n)  | 1x (base)
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>Quick Sort  | 180.000     (1,39 n log₂ n, médio) | ~1,4x
 <a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a>
-<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a>* Supondo mesma constante por operação
+<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a>* Supondo o mesmo custo por comparação; na prática, constantes e
+<a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a>  acesso à memória mudam esses números.
 </code></pre></div>
 <hr />
 <h2 id="10-resumo-do-capitulo">10. Resumo do Capítulo<a class="headerlink" href="#10-resumo-do-capitulo" title="Permanent link">&para;</a></h2>
@@ -3731,7 +3739,7 @@
 </ol>
 <p>📚 <strong>Leitura complementar:</strong></p>
 <ul>
-<li>ZIVIANI, N. <em>Projeto de Algoritmos</em>. Capítulo 3: Ordenação.</li>
+<li>ZIVIANI, N. <em>Projeto de Algoritmos</em>. Capítulo 4: Ordenação.</li>
 <li>CORMEN et al. <em>Introduction to Algorithms</em>. Capítulo 2: Getting Started (análise de algoritmos).</li>
 <li>USP-IME. <em>Pythonds em Português</em>: <a href="https://panda.ime.usp.br/panda/static/pythonds_pt/05-OrdenacaoBusca/">https://panda.ime.usp.br/panda/static/pythonds_pt/05-OrdenacaoBusca/</a></li>
 </ul>

@@ -1,21 +1,21 @@
-<svg width="840" height="360" viewBox="0 0 840 360" xmlns="http://www.w3.org/2000/svg">
-<rect width="840" height="360" fill="#ffffff" stroke="#d0d0d0" stroke-width="1" rx="6"/>
+<svg width="840" height="285" viewBox="0 0 840 285" xmlns="http://www.w3.org/2000/svg">
+<rect width="840" height="285" fill="#ffffff" stroke="#d0d0d0" stroke-width="1" rx="6"/>
 
-<line x1="615.0" y1="52.0" x2="355.0" y2="127.0" stroke="#666666" stroke-width="1.5" />
-<line x1="355.0" y1="127.0" x2="225.0" y2="202.0" stroke="#666666" stroke-width="1.5" />
-<line x1="225.0" y1="202.0" x2="95.0" y2="277.0" stroke="#666666" stroke-width="1.5" />
-<line x1="355.0" y1="127.0" x2="485.0" y2="202.0" stroke="#666666" stroke-width="1.5" />
-<line x1="615.0" y1="52.0" x2="745.0" y2="127.0" stroke="#666666" stroke-width="1.5" />
-<ellipse cx="615.0" cy="52.0" rx="45.800000000000004" ry="22" fill="#ffffff" stroke="#1a1a1a" stroke-width="2" />
-<text x="615.0" y="52.0" text-anchor="middle" dominant-baseline="central" font-size="13" font-family="Helvetica,Arial,sans-serif" fill="#1a1a1a" font-weight="600">40:h3,FB0</text>
-<ellipse cx="355.0" cy="127.0" rx="45.800000000000004" ry="22" fill="#ffffff" stroke="#1a1a1a" stroke-width="2" />
-<text x="355.0" y="127.0" text-anchor="middle" dominant-baseline="central" font-size="13" font-family="Helvetica,Arial,sans-serif" fill="#1a1a1a" font-weight="600">25:h2,FB0</text>
-<ellipse cx="225.0" cy="202.0" rx="29.0" ry="22" fill="#ffffff" stroke="#1a1a1a" stroke-width="2" />
-<text x="225.0" y="202.0" text-anchor="middle" dominant-baseline="central" font-size="14" font-family="Helvetica,Arial,sans-serif" fill="#1a1a1a" font-weight="600">20:h2</text>
-<ellipse cx="95.0" cy="277.0" rx="29.0" ry="22" fill="#ffffff" stroke="#1a1a1a" stroke-width="2" />
-<text x="95.0" y="277.0" text-anchor="middle" dominant-baseline="central" font-size="14" font-family="Helvetica,Arial,sans-serif" fill="#1a1a1a" font-weight="600">10:h1</text>
-<ellipse cx="485.0" cy="202.0" rx="29.0" ry="22" fill="#ffffff" stroke="#1a1a1a" stroke-width="2" />
-<text x="485.0" y="202.0" text-anchor="middle" dominant-baseline="central" font-size="14" font-family="Helvetica,Arial,sans-serif" fill="#1a1a1a" font-weight="600">30:h1</text>
-<ellipse cx="745.0" cy="127.0" rx="29.0" ry="22" fill="#ffffff" stroke="#1a1a1a" stroke-width="2" />
-<text x="745.0" y="127.0" text-anchor="middle" dominant-baseline="central" font-size="14" font-family="Helvetica,Arial,sans-serif" fill="#1a1a1a" font-weight="600">50:h1</text>
+<line x1="485.0" y1="52.0" x2="225.0" y2="127.0" stroke="#666666" stroke-width="1.5" />
+<line x1="225.0" y1="127.0" x2="95.0" y2="202.0" stroke="#666666" stroke-width="1.5" />
+<line x1="225.0" y1="127.0" x2="355.0" y2="202.0" stroke="#666666" stroke-width="1.5" />
+<line x1="485.0" y1="52.0" x2="615.0" y2="127.0" stroke="#666666" stroke-width="1.5" />
+<line x1="615.0" y1="127.0" x2="745.0" y2="202.0" stroke="#666666" stroke-width="1.5" />
+<ellipse cx="95.0" cy="202.0" rx="29.0" ry="22" fill="#ffffff" stroke="#1a1a1a" stroke-width="2" />
+<text x="95.0" y="202.0" text-anchor="middle" dominant-baseline="central" font-size="14" font-family="Helvetica,Arial,sans-serif" fill="#1a1a1a" font-weight="600">10:h1</text>
+<ellipse cx="225.0" cy="127.0" rx="45.8" ry="22" fill="#ffffff" stroke="#1a1a1a" stroke-width="2" />
+<text x="225.0" y="127.0" text-anchor="middle" dominant-baseline="central" font-size="13" font-family="Helvetica,Arial,sans-serif" fill="#1a1a1a" font-weight="600">20:h2,FB0</text>
+<ellipse cx="355.0" cy="202.0" rx="29.0" ry="22" fill="#ffffff" stroke="#1a1a1a" stroke-width="2" />
+<text x="355.0" y="202.0" text-anchor="middle" dominant-baseline="central" font-size="14" font-family="Helvetica,Arial,sans-serif" fill="#1a1a1a" font-weight="600">25:h1</text>
+<ellipse cx="485.0" cy="52.0" rx="45.8" ry="22" fill="#ffffff" stroke="#1a1a1a" stroke-width="2" />
+<text x="485.0" y="52.0" text-anchor="middle" dominant-baseline="central" font-size="13" font-family="Helvetica,Arial,sans-serif" fill="#1a1a1a" font-weight="600">30:h3,FB0</text>
+<ellipse cx="615.0" cy="127.0" rx="50.0" ry="22" fill="#ffffff" stroke="#1a1a1a" stroke-width="2" />
+<text x="615.0" y="127.0" text-anchor="middle" dominant-baseline="central" font-size="13" font-family="Helvetica,Arial,sans-serif" fill="#1a1a1a" font-weight="600">40:h2,FB-1</text>
+<ellipse cx="745.0" cy="202.0" rx="29.0" ry="22" fill="#ffffff" stroke="#1a1a1a" stroke-width="2" />
+<text x="745.0" y="202.0" text-anchor="middle" dominant-baseline="central" font-size="14" font-family="Helvetica,Arial,sans-serif" fill="#1a1a1a" font-weight="600">50:h1</text>
 </svg>

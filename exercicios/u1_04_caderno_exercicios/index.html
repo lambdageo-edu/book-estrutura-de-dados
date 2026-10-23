@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Livro didático de Estruturas de Dados: Recursividade, TAD, Listas, Pilhas, Filas, Árvores (BST, AVL, Heaps) e Ordenação.
+        <meta name="description" content="Livro didático de Estruturas de Dados: Recursividade, TAD, Listas, Pilhas, Filas, Árvores (ABB e AVL) e Ordenação (incluindo Heap Sort).
 ">
       
       
@@ -380,7 +380,7 @@
   <span class="md-ellipsis">
     
   
-    Capítulo 1 — Introdução e TAD
+    Capítulo 1 — Introdução
   
 
     
@@ -515,7 +515,7 @@
   <span class="md-ellipsis">
     
   
-    2.3 Pilha Estática III: Alocação Dinâmica
+    2.3 Pilha III: Alocação Dinâmica
   
 
     
@@ -1667,6 +1667,133 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Questões">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-passagem-por-valor-vs-referencia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Passagem por valor vs referência
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-stack-vs-heap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Stack vs Heap
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-tipo-abstrato-de-dado-tad" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Tipo Abstrato de Dado (TAD)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-lifo-e-aplicacoes-reais" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. LIFO e aplicações reais
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-ponteiros-e-vetores" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Ponteiros e vetores
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-complexidade-pior-caso" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Complexidade (Pior Caso)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-encapsulamento-na-pratica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Encapsulamento na prática
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-alocacao-dinamica-vs-estatica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Alocação dinâmica vs estática
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#9-comparacao-de-pilhas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Comparação de Pilhas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#10-operador-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Operador -&gt;
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#11-rastreamento-de-memoria" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Rastreamento de memória
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
       </ul>
@@ -1694,6 +1821,177 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Exercícios">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-struct-ponteiro" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Struct + Ponteiro
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-alocacao-segura" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Alocação segura
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-refatoracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Refatoração
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-push-com-verificacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Push com verificação
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-pop-em-lista-encadeada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Pop em lista encadeada
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-inicializacao-segura" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Inicialização segura
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-busca-sequencial" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Busca sequencial
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-insercao-com-deslocamento" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Inserção com deslocamento
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#9-liberacao-de-lista" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Liberação de lista
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#10-realloc-seguro" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. realloc seguro
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#11-busca-por-posicao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Busca por posição
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-inversao-com-pilha" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Inversão com pilha
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-lista-circular" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Lista circular
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-reuso-de-funcoes-dry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Reuso de funções (DRY)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15-bug-de-precedencia-pratica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Bug de precedência (prática)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -2155,6 +2453,133 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Questões">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-passagem-por-valor-vs-referencia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Passagem por valor vs referência
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-stack-vs-heap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Stack vs Heap
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-tipo-abstrato-de-dado-tad" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Tipo Abstrato de Dado (TAD)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-lifo-e-aplicacoes-reais" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. LIFO e aplicações reais
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-ponteiros-e-vetores" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Ponteiros e vetores
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-complexidade-pior-caso" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Complexidade (Pior Caso)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-encapsulamento-na-pratica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Encapsulamento na prática
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-alocacao-dinamica-vs-estatica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Alocação dinâmica vs estática
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#9-comparacao-de-pilhas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Comparação de Pilhas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#10-operador-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Operador -&gt;
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#11-rastreamento-de-memoria" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Rastreamento de memória
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
       </ul>
@@ -2182,6 +2607,177 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Exercícios">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-struct-ponteiro" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Struct + Ponteiro
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-alocacao-segura" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Alocação segura
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-refatoracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Refatoração
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-push-com-verificacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Push com verificação
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-pop-em-lista-encadeada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Pop em lista encadeada
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-inicializacao-segura" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Inicialização segura
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-busca-sequencial" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Busca sequencial
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-insercao-com-deslocamento" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Inserção com deslocamento
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#9-liberacao-de-lista" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Liberação de lista
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#10-realloc-seguro" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. realloc seguro
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#11-busca-por-posicao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Busca por posição
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-inversao-com-pilha" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Inversão com pilha
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-lista-circular" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Lista circular
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-reuso-de-funcoes-dry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Reuso de funções (DRY)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15-bug-de-precedencia-pratica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Bug de precedência (prática)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -2318,17 +2914,11 @@
 </ul>
 <hr />
 <h3 id="questoes">Questões<a class="headerlink" href="#questoes" title="Permanent link">&para;</a></h3>
-<ol>
-<li>
-<p><strong>Passagem por valor vs referência</strong></p>
-<p>Explique por que funções como <code>empilha(Pilha *p, int x)</code> usam ponteiros.</p>
+<h4 id="1-passagem-por-valor-vs-referencia">1. Passagem por valor vs referência<a class="headerlink" href="#1-passagem-por-valor-vs-referencia" title="Permanent link">&para;</a></h4>
+<p>Explique por que funções como <code>empilha(int x, Pilha *p)</code> usam ponteiros.</p>
 <p>O que aconteceria se a pilha fosse passada por valor?</p>
-</li>
-</ol>
 <hr />
-<ol>
-<li>
-<p><strong>Stack vs Heap</strong></p>
+<h4 id="2-stack-vs-heap">2. Stack vs Heap<a class="headerlink" href="#2-stack-vs-heap" title="Permanent link">&para;</a></h4>
 <p>Diferencie:</p>
 <ul>
 <li>Stack (automática)</li>
@@ -2336,68 +2926,40 @@
 </ul>
 <p>Quem gerencia cada uma?</p>
 <p>Por que retornar variável local é perigoso?</p>
-</li>
-</ol>
 <hr />
-<ol>
-<li>
-<p><strong>Tipo Abstrato de Dado (TAD)</strong></p>
+<h4 id="3-tipo-abstrato-de-dado-tad">3. Tipo Abstrato de Dado (TAD)<a class="headerlink" href="#3-tipo-abstrato-de-dado-tad" title="Permanent link">&para;</a></h4>
 <p>Defina formalmente um TAD.</p>
 <p>Qual o papel do <code>.h</code>?</p>
-</li>
-</ol>
 <hr />
-<ol>
-<li>
-<p><strong>LIFO e aplicações reais</strong></p>
+<h4 id="4-lifo-e-aplicacoes-reais">4. LIFO e aplicações reais<a class="headerlink" href="#4-lifo-e-aplicacoes-reais" title="Permanent link">&para;</a></h4>
 <p>Explique LIFO e aplique em:</p>
 <ul>
 <li>Navegadores (histórico)</li>
 <li>Editores (undo/redo)</li>
 <li>Chamadas de função (recursão)</li>
 </ul>
-</li>
-</ol>
 <hr />
-<ol>
-<li>
-<p><strong>Ponteiros e vetores</strong></p>
+<h4 id="5-ponteiros-e-vetores">5. Ponteiros e vetores<a class="headerlink" href="#5-ponteiros-e-vetores" title="Permanent link">&para;</a></h4>
 <p>Explique:</p>
-</li>
-</ol>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>v[i] == *(v + i)
 </code></pre></div>
 <p>Como o compilador calcula o endereço?</p>
 <hr />
-<ol>
-<li>
-<p><strong>Complexidade (Pior Caso)</strong></p>
+<h4 id="6-complexidade-pior-caso">6. Complexidade (Pior Caso)<a class="headerlink" href="#6-complexidade-pior-caso" title="Permanent link">&para;</a></h4>
 <p>Qual o custo da busca em lista não ordenada?</p>
 <p>Por que usamos pior caso?</p>
-</li>
-</ol>
 <hr />
-<ol>
-<li>
-<p><strong>Encapsulamento na prática</strong></p>
+<h4 id="7-encapsulamento-na-pratica">7. Encapsulamento na prática<a class="headerlink" href="#7-encapsulamento-na-pratica" title="Permanent link">&para;</a></h4>
 <p>Por que <code>main.c</code> não deve acessar <code>l-&gt;ultimo</code>?</p>
-</li>
-</ol>
 <hr />
-<ol>
-<li>
-<p><strong>Alocação dinâmica vs estática</strong></p>
+<h4 id="8-alocacao-dinamica-vs-estatica">8. Alocação dinâmica vs estática<a class="headerlink" href="#8-alocacao-dinamica-vs-estatica" title="Permanent link">&para;</a></h4>
 <p>Compare:</p>
 <ul>
 <li>Flexibilidade</li>
 <li>Fragmentação</li>
 </ul>
-</li>
-</ol>
 <hr />
-<ol>
-<li><strong>Comparação de Pilhas</strong></li>
-</ol>
+<h4 id="9-comparacao-de-pilhas">9. Comparação de Pilhas<a class="headerlink" href="#9-comparacao-de-pilhas" title="Permanent link">&para;</a></h4>
 <table>
 <thead>
 <tr>
@@ -2424,29 +2986,22 @@
 </tr>
 <tr>
 <td>Limite</td>
-<td>Compilação</td>
+<td>Capacidade fixa (definida na criação)</td>
 <td>RAM</td>
 </tr>
 </tbody>
 </table>
+<p>Explique cada linha da tabela e diga em que situação você escolheria cada implementação.</p>
 <hr />
-<ol>
-<li>
-<p><strong>Operador <code>&gt;</code></strong></p>
+<h4 id="10-operador-">10. Operador <code>-&gt;</code><a class="headerlink" href="#10-operador-" title="Permanent link">&para;</a></h4>
 <p>Explique por que:</p>
-</li>
-</ol>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>*p.membro   // errado
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>(*p).membro // correto
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>p-&gt;membro   // correto
 </code></pre></div>
 <hr />
-<ol>
-<li>
-<p><strong>Rastreamento de memória</strong></p>
+<h4 id="11-rastreamento-de-memoria">11. Rastreamento de memória<a class="headerlink" href="#11-rastreamento-de-memoria" title="Permanent link">&para;</a></h4>
 <p>Dado:</p>
-</li>
-</ol>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>topo = -1
 </code></pre></div>
 <p>Simule:</p>
@@ -2462,26 +3017,20 @@
 <p>Aqui começa o nível <strong>engenharia real</strong>: ponteiros mal usados = bugs graves.</p>
 <hr />
 <h3 id="exercicios">Exercícios<a class="headerlink" href="#exercicios" title="Permanent link">&para;</a></h3>
-<ol>
-<li><strong>Struct + Ponteiro</strong><ul>
+<h4 id="1-struct-ponteiro">1. Struct + Ponteiro<a class="headerlink" href="#1-struct-ponteiro" title="Permanent link">&para;</a></h4>
+<ul>
 <li>Crie <code>struct Ponto</code></li>
 <li>Função que altera via ponteiro</li>
 </ul>
-</li>
-</ol>
 <hr />
-<ol>
-<li><strong>Alocação segura</strong><ul>
+<h4 id="2-alocacao-segura">2. Alocação segura<a class="headerlink" href="#2-alocacao-segura" title="Permanent link">&para;</a></h4>
+<ul>
 <li>Criar vetor dinâmico</li>
 <li>Verificar erro</li>
 <li>Inicializar com zero</li>
 </ul>
-</li>
-</ol>
 <hr />
-<ol>
-<li>
-<p><strong>Refatoração</strong></p>
+<h4 id="3-refatoracao">3. Refatoração<a class="headerlink" href="#3-refatoracao" title="Permanent link">&para;</a></h4>
 <ul>
 <li>
 <p>Remover globais:</p>
@@ -2493,96 +3042,75 @@
 <p>Criar TAD</p>
 </li>
 </ul>
-</li>
-</ol>
 <hr />
-<ol>
-<li><strong>Push com verificação</strong><ul>
+<h4 id="4-push-com-verificacao">4. Push com verificação<a class="headerlink" href="#4-push-com-verificacao" title="Permanent link">&para;</a></h4>
+<ul>
 <li>Implementar <code>empilha</code></li>
 <li>Tratar overflow</li>
 </ul>
-</li>
-</ol>
 <hr />
-<ol>
-<li><strong>Pop em lista encadeada</strong><ul>
+<h4 id="5-pop-em-lista-encadeada">5. Pop em lista encadeada<a class="headerlink" href="#5-pop-em-lista-encadeada" title="Permanent link">&para;</a></h4>
+<ul>
 <li>Remover nó</li>
 <li>Liberar memória</li>
 </ul>
-</li>
-</ol>
 <hr />
-<ol>
-<li><strong>Inicialização segura</strong><ul>
+<h4 id="6-inicializacao-segura">6. Inicialização segura<a class="headerlink" href="#6-inicializacao-segura" title="Permanent link">&para;</a></h4>
+<ul>
 <li><code>Lista* criaLista()</code></li>
 <li>Retornar <code>NULL</code> se falhar</li>
 </ul>
-</li>
-</ol>
 <hr />
-<ol>
-<li><strong>Busca sequencial</strong><ul>
+<h4 id="7-busca-sequencial">7. Busca sequencial<a class="headerlink" href="#7-busca-sequencial" title="Permanent link">&para;</a></h4>
+<ul>
 <li>Implementar</li>
 <li>Justificar O(n)</li>
 </ul>
-</li>
-</ol>
 <hr />
-<ol>
-<li><strong>Inserção com deslocamento</strong><ul>
+<h4 id="8-insercao-com-deslocamento">8. Inserção com deslocamento<a class="headerlink" href="#8-insercao-com-deslocamento" title="Permanent link">&para;</a></h4>
+<ul>
 <li>Lista estática</li>
 <li>Validar posição</li>
 </ul>
-</li>
-</ol>
 <hr />
-<ol>
-<li><strong>Liberação de lista</strong><ul>
+<h4 id="9-liberacao-de-lista">9. Liberação de lista<a class="headerlink" href="#9-liberacao-de-lista" title="Permanent link">&para;</a></h4>
+<ul>
 <li>Liberar todos os nós</li>
 <li>Evitar perda de referência</li>
 </ul>
-</li>
-</ol>
 <hr />
-<ol>
-<li><strong>realloc seguro</strong></li>
+<h4 id="10-realloc-seguro">10. realloc seguro<a class="headerlink" href="#10-realloc-seguro" title="Permanent link">&para;</a></h4>
+<ul>
 <li>Dobrar tamanho</li>
 <li>Usar ponteiro temporário</li>
-</ol>
+</ul>
 <hr />
-<ol>
-<li><strong>Busca por posição</strong></li>
+<h4 id="11-busca-por-posicao">11. Busca por posição<a class="headerlink" href="#11-busca-por-posicao" title="Permanent link">&para;</a></h4>
+<p>Implemente <code>buscaPos</code> nas duas versões e justifique as complexidades:</p>
+<ul>
 <li>Vetor → O(1)</li>
 <li>Lista → O(n)</li>
-</ol>
+</ul>
 <hr />
-<ol>
-<li><strong>Inversão com pilha</strong></li>
+<h4 id="12-inversao-com-pilha">12. Inversão com pilha<a class="headerlink" href="#12-inversao-com-pilha" title="Permanent link">&para;</a></h4>
+<ul>
 <li>Usar estrutura auxiliar</li>
-</ol>
+</ul>
 <hr />
-<ol>
-<li><strong>Lista circular</strong></li>
-<li>
-<p>Último aponta para primeiro</p>
+<h4 id="13-lista-circular">13. Lista circular<a class="headerlink" href="#13-lista-circular" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Último aponta para primeiro</li>
+</ul>
 <p>O <code>while (atual != NULL)</code> funciona?</p>
-</li>
-</ol>
 <hr />
-<ol>
-<li><strong>Reuso de funções (DRY)</strong></li>
-<li>
-<p><code>removeValor</code> usando outras funções</p>
+<h4 id="14-reuso-de-funcoes-dry">14. Reuso de funções (DRY)<a class="headerlink" href="#14-reuso-de-funcoes-dry" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>removeValor</code> usando outras funções</li>
+</ul>
 <p>Qual a complexidade total?</p>
-</li>
-</ol>
 <hr />
-<ol>
-<li>
-<p><strong>Bug de precedência</strong></p>
-<p>Corrigir:</p>
-</li>
-</ol>
+<h4 id="15-bug-de-precedencia-pratica">15. Bug de precedência (prática)<a class="headerlink" href="#15-bug-de-precedencia-pratica" title="Permanent link">&para;</a></h4>
+<p>Corrija o código abaixo e teste-o compilando:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>*p.membro = 10;
 </code></pre></div>
 <p>Explique o erro</p>
@@ -2618,13 +3146,9 @@
 <td>Alta</td>
 <td>Baixa</td>
 </tr>
-<tr>
-<td>- Pode ser O(1) com ponteiro para o último</td>
-<td></td>
-<td></td>
-</tr>
 </tbody>
 </table>
+<p>* Pode ser O(1) com ponteiro para o último.</p>
 <hr />
 <h2 id="6-questao-bonus-projeto">6. 🧪 Questão Bônus (Projeto)<a class="headerlink" href="#6-questao-bonus-projeto" title="Permanent link">&para;</a></h2>
 <p>Desenvolva uma pilha com:</p>
@@ -2648,7 +3172,7 @@
 <hr />
 <h2 id="regra-de-ouro">⚠️ Regra de Ouro<a class="headerlink" href="#regra-de-ouro" title="Permanent link">&para;</a></h2>
 <blockquote>
-<p>Variáveis globais são proibidas.</p>
+<p>Variáveis globais são proibidas nas soluções deste caderno.</p>
 <p>Controle de memória e escopo é responsabilidade do programador.</p>
 </blockquote>
 <hr />

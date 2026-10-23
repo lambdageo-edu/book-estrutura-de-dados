@@ -1,9 +1,9 @@
 <svg width="320" height="210" viewBox="0 0 320 210" xmlns="http://www.w3.org/2000/svg">
 <rect width="320" height="210" fill="#ffffff" stroke="#d0d0d0" stroke-width="1" rx="6"/>
 
-<line x1="225.0" y1="52.0" x2="95.0" y2="127.0" stroke="#666666" stroke-width="1.5" />
-<ellipse cx="225.0" cy="52.0" rx="50.0" ry="22" fill="#ffffff" stroke="#1a1a1a" stroke-width="2" />
-<text x="225.0" y="52.0" text-anchor="middle" dominant-baseline="central" font-size="13" font-family="Helvetica,Arial,sans-serif" fill="#1a1a1a" font-weight="600">20:h2,FB-1</text>
-<ellipse cx="95.0" cy="127.0" rx="45.800000000000004" ry="22" fill="#ffffff" stroke="#1a1a1a" stroke-width="2" />
-<text x="95.0" y="127.0" text-anchor="middle" dominant-baseline="central" font-size="13" font-family="Helvetica,Arial,sans-serif" fill="#1a1a1a" font-weight="600">10:h1,FB0</text>
+<line x1="95.0" y1="52.0" x2="225.0" y2="127.0" stroke="#666666" stroke-width="1.5" />
+<ellipse cx="95.0" cy="52.0" rx="50.0" ry="22" fill="#ffffff" stroke="#1a1a1a" stroke-width="2" />
+<text x="95.0" y="52.0" text-anchor="middle" dominant-baseline="central" font-size="13" font-family="Helvetica,Arial,sans-serif" fill="#1a1a1a" font-weight="600">10:h2,FB-1</text>
+<ellipse cx="225.0" cy="127.0" rx="45.8" ry="22" fill="#ffffff" stroke="#1a1a1a" stroke-width="2" />
+<text x="225.0" y="127.0" text-anchor="middle" dominant-baseline="central" font-size="13" font-family="Helvetica,Arial,sans-serif" fill="#1a1a1a" font-weight="600">20:h1,FB0</text>
 </svg>

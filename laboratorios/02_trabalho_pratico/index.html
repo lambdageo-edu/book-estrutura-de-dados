@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Livro didático de Estruturas de Dados: Recursividade, TAD, Listas, Pilhas, Filas, Árvores (BST, AVL, Heaps) e Ordenação.
+        <meta name="description" content="Livro didático de Estruturas de Dados: Recursividade, TAD, Listas, Pilhas, Filas, Árvores (ABB e AVL) e Ordenação (incluindo Heap Sort).
 ">
       
       
@@ -378,7 +378,7 @@
   <span class="md-ellipsis">
     
   
-    Capítulo 1 — Introdução e TAD
+    Capítulo 1 — Introdução
   
 
     
@@ -513,7 +513,7 @@
   <span class="md-ellipsis">
     
   
-    2.3 Pilha Estática III: Alocação Dinâmica
+    2.3 Pilha III: Alocação Dinâmica
   
 
     
@@ -2386,6 +2386,7 @@
 <h3 id="testes">Testes<a class="headerlink" href="#testes" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Arquivo <code>tests/test_basic.c</code> com <strong>no mínimo 2 casos por algoritmo</strong> (ex.: vetor aleatório, já ordenado, invertido).</li>
+<li>Instrumente os algoritmos para contar <strong>comparações e trocas</strong> (por exemplo, com contadores passados por ponteiro): esses números entram na análise experimental do vídeo.</li>
 <li>Cada teste deve imprimir <code>PASSOU</code> ou <code>FALHOU</code>.</li>
 <li>Comando: <code>make test</code>.</li>
 </ul>
@@ -2394,9 +2395,10 @@
 <ol>
 <li>
 <p><strong>Compile com suporte a cobertura:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>gcc<span class="w"> </span>--coverage<span class="w"> </span>-g<span class="w"> </span>-O0<span class="w"> </span>main.c<span class="w"> </span>-o<span class="w"> </span>main
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>gcc<span class="w"> </span>--coverage<span class="w"> </span>-g<span class="w"> </span>-O0<span class="w"> </span>-c<span class="w"> </span>main.c
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>gcc<span class="w"> </span>--coverage<span class="w"> </span>main.o<span class="w"> </span>-o<span class="w"> </span>main
 </code></pre></div>
-<p>As flags equivalentes <code>-fprofile-arcs -ftest-coverage</code> fazem o GCC gerar os arquivos (<code>.gcno</code>) necessários para o <code>gcov</code>.</p>
+<p>Compile e ligue em duas etapas: a partir do GCC 11, um único comando <code>gcc --coverage main.c -o main</code> nomeia os arquivos de dados como <code>main-main.gcda</code>, e o <code>gcov main.c</code> do passo 3 não os encontra. As flags equivalentes <code>-fprofile-arcs -ftest-coverage</code> fazem o GCC gerar os arquivos (<code>.gcno</code>) necessários para o <code>gcov</code>.</p>
 </li>
 <li>
 <p><strong>Execute o programa ou a suíte de testes</strong> (<code>./main</code> ou <code>make test</code>). Isso gera um arquivo <code>.gcda</code> com as estatísticas de execução.</p>
@@ -2660,48 +2662,54 @@
 <h2 id="apendice-makefile-base">Apêndice: Makefile Base<a class="headerlink" href="#apendice-makefile-base" title="Permanent link">&para;</a></h2>
 <p>Copie este arquivo para a raiz do repositório. Ele já inclui alvos para compilação, testes, <code>gcov</code> e <code>gprof</code>.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nv">CC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>gcc
-<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="nv">CFLAGS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>-Wall<span class="w"> </span>-Wextra<span class="w"> </span>-std<span class="o">=</span>c11<span class="w"> </span>-O2
-<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="nv">GCOV_FLAGS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>-fprofile-arcs<span class="w"> </span>-ftest-coverage<span class="w"> </span>-g
-<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="nv">PROFILE_FLAGS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>-pg<span class="w"> </span>-g<span class="w"> </span>-O0
-<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>
-<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="nv">SRCS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>src/main.c<span class="w"> </span>src/basicos/bubble.c<span class="w"> </span>src/basicos/selection.c<span class="w"> </span>src/basicos/insertion.c<span class="w"> </span><span class="se">\\</span>
-<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="w">       </span>src/avancados/merge.c<span class="w"> </span>src/avancados/quick.c<span class="w"> </span>src/avancados/heap.c
-<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="nv">TEST_SRCS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>tests/test_basic.c<span class="w"> </span><span class="k">$(</span>filter-out<span class="w"> </span>src/main.c,<span class="k">$(</span>SRCS<span class="k">))</span>
-<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="nv">OBJS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">$(</span>SRCS:.c<span class="o">=</span>.o<span class="k">)</span>
-<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="nv">TEST_OBJS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">$(</span>TEST_SRCS:.c<span class="o">=</span>.o<span class="k">)</span>
-<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>
-<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a><span class="nv">TARGET</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>sort_main
-<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a><span class="nv">TEST_TARGET</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>test_basic
-<a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a>
-<a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a><span class="nf">all</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">TARGET</span><span class="k">)</span>
-<a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a>
-<a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a><span class="nf">$(TARGET)</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">OBJS</span><span class="k">)</span>
-<a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a><span class="w">    </span><span class="k">$(</span>CC<span class="k">)</span><span class="w"> </span><span class="k">$(</span>CFLAGS<span class="k">)</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">$@</span><span class="w"> </span>$^
-<a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a>
-<a id="__codelineno-12-20" name="__codelineno-12-20" href="#__codelineno-12-20"></a><span class="nf">$(TEST_TARGET)</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">TEST_OBJS</span><span class="k">)</span>
-<a id="__codelineno-12-21" name="__codelineno-12-21" href="#__codelineno-12-21"></a><span class="w">    </span><span class="k">$(</span>CC<span class="k">)</span><span class="w"> </span><span class="k">$(</span>CFLAGS<span class="k">)</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">$@</span><span class="w"> </span>$^
-<a id="__codelineno-12-22" name="__codelineno-12-22" href="#__codelineno-12-22"></a>
-<a id="__codelineno-12-23" name="__codelineno-12-23" href="#__codelineno-12-23"></a><span class="nf">%.o</span><span class="o">:</span><span class="w"> </span>%.<span class="n">c</span>
-<a id="__codelineno-12-24" name="__codelineno-12-24" href="#__codelineno-12-24"></a><span class="w">    </span><span class="k">$(</span>CC<span class="k">)</span><span class="w"> </span><span class="k">$(</span>CFLAGS<span class="k">)</span><span class="w"> </span>-c<span class="w"> </span>$&lt;<span class="w"> </span>-o<span class="w"> </span><span class="nv">$@</span>
-<a id="__codelineno-12-25" name="__codelineno-12-25" href="#__codelineno-12-25"></a>
-<a id="__codelineno-12-26" name="__codelineno-12-26" href="#__codelineno-12-26"></a><span class="nf">test</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">TEST_TARGET</span><span class="k">)</span>
-<a id="__codelineno-12-27" name="__codelineno-12-27" href="#__codelineno-12-27"></a><span class="w">    </span>./<span class="k">$(</span>TEST_TARGET<span class="k">)</span>
-<a id="__codelineno-12-28" name="__codelineno-12-28" href="#__codelineno-12-28"></a>
-<a id="__codelineno-12-29" name="__codelineno-12-29" href="#__codelineno-12-29"></a><span class="nf">coverage</span><span class="o">:</span><span class="w"> </span><span class="n">CFLAGS</span> += <span class="k">$(</span><span class="nv">GCOV_FLAGS</span><span class="k">)</span>
-<a id="__codelineno-12-30" name="__codelineno-12-30" href="#__codelineno-12-30"></a><span class="nf">coverage</span><span class="o">:</span><span class="w"> </span><span class="n">clean</span> <span class="n">test</span>
-<a id="__codelineno-12-31" name="__codelineno-12-31" href="#__codelineno-12-31"></a><span class="w">    </span>@echo<span class="w"> </span><span class="s2">"Dados de cobertura gerados. Rode: gcov src/basicos/*.c src/avancados/*.c"</span>
-<a id="__codelineno-12-32" name="__codelineno-12-32" href="#__codelineno-12-32"></a>
-<a id="__codelineno-12-33" name="__codelineno-12-33" href="#__codelineno-12-33"></a><span class="nf">profile</span><span class="o">:</span><span class="w"> </span><span class="n">clean</span>
-<a id="__codelineno-12-34" name="__codelineno-12-34" href="#__codelineno-12-34"></a><span class="w">    </span><span class="k">$(</span>CC<span class="k">)</span><span class="w"> </span><span class="k">$(</span>PROFILE_FLAGS<span class="k">)</span><span class="w"> </span><span class="k">$(</span>CFLAGS<span class="k">)</span><span class="w"> </span>-o<span class="w"> </span>sort_profile<span class="w"> </span><span class="k">$(</span>SRCS<span class="k">)</span><span class="w"> </span>tests/test_basic.c
-<a id="__codelineno-12-35" name="__codelineno-12-35" href="#__codelineno-12-35"></a><span class="w">    </span>./sort_profile
-<a id="__codelineno-12-36" name="__codelineno-12-36" href="#__codelineno-12-36"></a><span class="w">    </span>gprof<span class="w"> </span>sort_profile<span class="w"> </span>gmon.out<span class="w"> </span>&gt;<span class="w"> </span>docs/perfil_bruto.txt
-<a id="__codelineno-12-37" name="__codelineno-12-37" href="#__codelineno-12-37"></a><span class="w">    </span>@echo<span class="w"> </span><span class="s2">"Profiling gerado em docs/perfil_bruto.txt"</span>
-<a id="__codelineno-12-38" name="__codelineno-12-38" href="#__codelineno-12-38"></a><span class="w">    </span>@echo<span class="w"> </span><span class="s2">"Abra o arquivo e analise a seção 'Flat Profile'"</span>
-<a id="__codelineno-12-39" name="__codelineno-12-39" href="#__codelineno-12-39"></a>
-<a id="__codelineno-12-40" name="__codelineno-12-40" href="#__codelineno-12-40"></a><span class="nf">clean</span><span class="o">:</span>
-<a id="__codelineno-12-41" name="__codelineno-12-41" href="#__codelineno-12-41"></a><span class="w">    </span>rm<span class="w"> </span>-f<span class="w"> </span><span class="k">$(</span>TARGET<span class="k">)</span><span class="w"> </span><span class="k">$(</span>TEST_TARGET<span class="k">)</span><span class="w"> </span>sort_profile<span class="w"> </span><span class="k">$(</span>OBJS<span class="k">)</span><span class="w"> </span><span class="k">$(</span>TEST_OBJS<span class="k">)</span><span class="w"> </span>*.gcda<span class="w"> </span>*.gcno<span class="w"> </span>*.gcov<span class="w"> </span>gmon.out
-<a id="__codelineno-12-42" name="__codelineno-12-42" href="#__codelineno-12-42"></a>
-<a id="__codelineno-12-43" name="__codelineno-12-43" href="#__codelineno-12-43"></a><span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">all</span> <span class="n">test</span> <span class="n">coverage</span> <span class="n">profile</span> <span class="n">clean</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="nv">WARN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>-Wall<span class="w"> </span>-Wextra<span class="w"> </span>-std<span class="o">=</span>c11
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="nv">CFLAGS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">$(</span>WARN<span class="k">)</span><span class="w"> </span>-O2
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="nv">GCOV_FLAGS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>--coverage<span class="w"> </span>-g<span class="w"> </span>-O0
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="nv">PROFILE_FLAGS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>-pg<span class="w"> </span>-g<span class="w"> </span>-O0
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="nv">SRCS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>src/main.c<span class="w"> </span>src/basicos/bubble.c<span class="w"> </span>src/basicos/selection.c<span class="w"> </span>src/basicos/insertion.c<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="w">       </span>src/avancados/merge.c<span class="w"> </span>src/avancados/quick.c<span class="w"> </span>src/avancados/heap.c
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="nv">TEST_SRCS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>tests/test_basic.c<span class="w"> </span><span class="k">$(</span>filter-out<span class="w"> </span>src/main.c,<span class="k">$(</span>SRCS<span class="k">))</span>
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="nv">OBJS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">$(</span>SRCS:.c<span class="o">=</span>.o<span class="k">)</span>
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a><span class="nv">TEST_OBJS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">$(</span>TEST_SRCS:.c<span class="o">=</span>.o<span class="k">)</span>
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>
+<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a><span class="nv">TARGET</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>sort_main
+<a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a><span class="nv">TEST_TARGET</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>test_basic
+<a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a>
+<a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a><span class="nf">all</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">TARGET</span><span class="k">)</span>
+<a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a>
+<a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a><span class="nf">$(TARGET)</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">OBJS</span><span class="k">)</span>
+<a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a><span class="w">    </span><span class="k">$(</span>CC<span class="k">)</span><span class="w"> </span><span class="k">$(</span>CFLAGS<span class="k">)</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">$@</span><span class="w"> </span>$^
+<a id="__codelineno-12-20" name="__codelineno-12-20" href="#__codelineno-12-20"></a>
+<a id="__codelineno-12-21" name="__codelineno-12-21" href="#__codelineno-12-21"></a><span class="nf">$(TEST_TARGET)</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">TEST_OBJS</span><span class="k">)</span>
+<a id="__codelineno-12-22" name="__codelineno-12-22" href="#__codelineno-12-22"></a><span class="w">    </span><span class="k">$(</span>CC<span class="k">)</span><span class="w"> </span><span class="k">$(</span>CFLAGS<span class="k">)</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">$@</span><span class="w"> </span>$^
+<a id="__codelineno-12-23" name="__codelineno-12-23" href="#__codelineno-12-23"></a>
+<a id="__codelineno-12-24" name="__codelineno-12-24" href="#__codelineno-12-24"></a><span class="nf">%.o</span><span class="o">:</span><span class="w"> </span>%.<span class="n">c</span>
+<a id="__codelineno-12-25" name="__codelineno-12-25" href="#__codelineno-12-25"></a><span class="w">    </span><span class="k">$(</span>CC<span class="k">)</span><span class="w"> </span><span class="k">$(</span>CFLAGS<span class="k">)</span><span class="w"> </span>-c<span class="w"> </span>$&lt;<span class="w"> </span>-o<span class="w"> </span><span class="nv">$@</span>
+<a id="__codelineno-12-26" name="__codelineno-12-26" href="#__codelineno-12-26"></a>
+<a id="__codelineno-12-27" name="__codelineno-12-27" href="#__codelineno-12-27"></a><span class="nf">test</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">TEST_TARGET</span><span class="k">)</span>
+<a id="__codelineno-12-28" name="__codelineno-12-28" href="#__codelineno-12-28"></a><span class="w">    </span>./<span class="k">$(</span>TEST_TARGET<span class="k">)</span>
+<a id="__codelineno-12-29" name="__codelineno-12-29" href="#__codelineno-12-29"></a>
+<a id="__codelineno-12-30" name="__codelineno-12-30" href="#__codelineno-12-30"></a><span class="c"># Cobertura: recompila tudo sem otimização e com instrumentação (CFLAGS substituído)</span>
+<a id="__codelineno-12-31" name="__codelineno-12-31" href="#__codelineno-12-31"></a><span class="nf">coverage</span><span class="o">:</span><span class="w"> </span><span class="n">CFLAGS</span> = <span class="k">$(</span><span class="nv">WARN</span><span class="k">)</span> <span class="k">$(</span><span class="nv">GCOV_FLAGS</span><span class="k">)</span>
+<a id="__codelineno-12-32" name="__codelineno-12-32" href="#__codelineno-12-32"></a><span class="nf">coverage</span><span class="o">:</span><span class="w"> </span><span class="n">clean</span> <span class="n">test</span>
+<a id="__codelineno-12-33" name="__codelineno-12-33" href="#__codelineno-12-33"></a><span class="w">    </span>gcov<span class="w"> </span>-o<span class="w"> </span>src/basicos<span class="w"> </span>src/basicos/*.c
+<a id="__codelineno-12-34" name="__codelineno-12-34" href="#__codelineno-12-34"></a><span class="w">    </span>gcov<span class="w"> </span>-o<span class="w"> </span>src/avancados<span class="w"> </span>src/avancados/*.c
+<a id="__codelineno-12-35" name="__codelineno-12-35" href="#__codelineno-12-35"></a><span class="w">    </span>@echo<span class="w"> </span><span class="s2">"Relatórios .gcov gerados na raiz do projeto"</span>
+<a id="__codelineno-12-36" name="__codelineno-12-36" href="#__codelineno-12-36"></a>
+<a id="__codelineno-12-37" name="__codelineno-12-37" href="#__codelineno-12-37"></a><span class="c"># Profiling: só -O0 (sem o -O2 de CFLAGS) e só o main.c como ponto de entrada</span>
+<a id="__codelineno-12-38" name="__codelineno-12-38" href="#__codelineno-12-38"></a><span class="nf">profile</span><span class="o">:</span><span class="w"> </span><span class="n">clean</span>
+<a id="__codelineno-12-39" name="__codelineno-12-39" href="#__codelineno-12-39"></a><span class="w">    </span><span class="k">$(</span>CC<span class="k">)</span><span class="w"> </span><span class="k">$(</span>WARN<span class="k">)</span><span class="w"> </span><span class="k">$(</span>PROFILE_FLAGS<span class="k">)</span><span class="w"> </span>-o<span class="w"> </span>sort_profile<span class="w"> </span><span class="k">$(</span>SRCS<span class="k">)</span>
+<a id="__codelineno-12-40" name="__codelineno-12-40" href="#__codelineno-12-40"></a><span class="w">    </span>./sort_profile
+<a id="__codelineno-12-41" name="__codelineno-12-41" href="#__codelineno-12-41"></a><span class="w">    </span>gprof<span class="w"> </span>sort_profile<span class="w"> </span>gmon.out<span class="w"> </span>&gt;<span class="w"> </span>docs/perfil_bruto.txt
+<a id="__codelineno-12-42" name="__codelineno-12-42" href="#__codelineno-12-42"></a><span class="w">    </span>@echo<span class="w"> </span><span class="s2">"Profiling gerado em docs/perfil_bruto.txt"</span>
+<a id="__codelineno-12-43" name="__codelineno-12-43" href="#__codelineno-12-43"></a><span class="w">    </span>@echo<span class="w"> </span><span class="s2">"Abra o arquivo e analise a seção 'Flat Profile'"</span>
+<a id="__codelineno-12-44" name="__codelineno-12-44" href="#__codelineno-12-44"></a>
+<a id="__codelineno-12-45" name="__codelineno-12-45" href="#__codelineno-12-45"></a><span class="nf">clean</span><span class="o">:</span>
+<a id="__codelineno-12-46" name="__codelineno-12-46" href="#__codelineno-12-46"></a><span class="w">    </span>rm<span class="w"> </span>-f<span class="w"> </span><span class="k">$(</span>TARGET<span class="k">)</span><span class="w"> </span><span class="k">$(</span>TEST_TARGET<span class="k">)</span><span class="w"> </span>sort_profile<span class="w"> </span><span class="k">$(</span>OBJS<span class="k">)</span><span class="w"> </span><span class="k">$(</span>TEST_OBJS<span class="k">)</span><span class="w"> </span>*.gcov<span class="w"> </span>gmon.out
+<a id="__codelineno-12-47" name="__codelineno-12-47" href="#__codelineno-12-47"></a><span class="w">    </span>find<span class="w"> </span>.<span class="w"> </span>-name<span class="w"> </span><span class="s1">'*.gcda'</span><span class="w"> </span>-o<span class="w"> </span>-name<span class="w"> </span><span class="s1">'*.gcno'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>xargs<span class="w"> </span>rm<span class="w"> </span>-f
+<a id="__codelineno-12-48" name="__codelineno-12-48" href="#__codelineno-12-48"></a>
+<a id="__codelineno-12-49" name="__codelineno-12-49" href="#__codelineno-12-49"></a><span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">all</span> <span class="n">test</span> <span class="n">coverage</span> <span class="n">profile</span> <span class="n">clean</span>
 </code></pre></div>
 <h2 id="dicas-rapidas">Dicas Rápidas<a class="headerlink" href="#dicas-rapidas" title="Permanent link">&para;</a></h2>
 <table>

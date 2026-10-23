@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Livro didático de Estruturas de Dados: Recursividade, TAD, Listas, Pilhas, Filas, Árvores (BST, AVL, Heaps) e Ordenação.
+        <meta name="description" content="Livro didático de Estruturas de Dados: Recursividade, TAD, Listas, Pilhas, Filas, Árvores (ABB e AVL) e Ordenação (incluindo Heap Sort).
 ">
       
       
@@ -380,7 +380,7 @@
   <span class="md-ellipsis">
     
   
-    Capítulo 1 — Introdução e TAD
+    Capítulo 1 — Introdução
   
 
     
@@ -515,7 +515,7 @@
   <span class="md-ellipsis">
     
   
-    2.3 Pilha Estática III: Alocação Dinâmica
+    2.3 Pilha III: Alocação Dinâmica
   
 
     
@@ -2809,11 +2809,13 @@
 <h2 id="3-funcoes-auxiliares-fundamentais">3. Funções Auxiliares Fundamentais<a class="headerlink" href="#3-funcoes-auxiliares-fundamentais" title="Permanent link">&para;</a></h2>
 <h3 id="31-obter-altura-com-seguranca">3.1 Obter Altura com Segurança<a class="headerlink" href="#31-obter-altura-com-seguranca" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">// Retorna a altura de um nó, ou 0 se for NULL</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kt">int</span><span class="w"> </span><span class="nf">altura</span><span class="p">(</span><span class="n">No</span><span class="w"> </span><span class="o">*</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">           </span><span class="c1">// Convenção: altura(NULL) = 0</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">n</span><span class="o">-&gt;</span><span class="n">altura</span><span class="p">;</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="p">}</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="c1">// Atenção: aqui folha = 1 e NULL = 0 (no capítulo anterior, folha = 0 e vazio = -1).</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="c1">// O fator de balanceamento é o mesmo nas duas convenções.</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="kt">int</span><span class="w"> </span><span class="nf">altura</span><span class="p">(</span><span class="n">No</span><span class="w"> </span><span class="o">*</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">           </span><span class="c1">// Convenção: altura(NULL) = 0</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">n</span><span class="o">-&gt;</span><span class="n">altura</span><span class="p">;</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="p">}</span>
 </code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">Importante</p>
@@ -2888,6 +2890,7 @@
 <p><img alt="Árvore genérica desbalanceada, caso LL" src="../images/avl_implementacao/caso_ll_antes.svg" /></p>
 <p><strong>Depois:</strong></p>
 <p><img alt="Árvore após rotação simples à direita, caso LL resolvido" src="../images/avl_implementacao/caso_ll_depois.svg" /></p>
+<p>Nas figuras, <code>z</code> é o nó desbalanceado e <code>y</code> o filho que sobe. No código abaixo, o nó desbalanceado recebe o nome <code>y</code> e o filho que sobe, <code>x</code>; <code>T2</code> é a subárvore que muda de pai (a <code>T3</code> da figura).</p>
 <p><strong>Implementação:</strong></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1">// Rotação simples à direita em torno de y</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">No</span><span class="o">*</span><span class="w"> </span><span class="nf">rotacaoDireita</span><span class="p">(</span><span class="n">No</span><span class="w"> </span><span class="o">*</span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
@@ -3040,9 +3043,9 @@
 <p><strong>Exemplo de saída:</strong></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>Inserindo [10, 20, 30]:
 <a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>
-<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>[30:h1,FB0]
-<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>    [20:h2,FB0]
-<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>        [10:h1,FB0]
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>    [30:h1,FB0]
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>[20:h2,FB0]
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>    [10:h1,FB0]
 <a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>
 <a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>Interpretação:
 <a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>- Raiz é 20 (altura 2, balanceada)
@@ -3216,8 +3219,8 @@
 <h3 id="insercao-10">Inserção 10<a class="headerlink" href="#insercao-10" title="Permanent link">&para;</a></h3>
 <p><code>[10:h1,FB0]</code> → Árvore com 1 nó, balanceada ✓</p>
 <h3 id="insercao-20">Inserção 20<a class="headerlink" href="#insercao-20" title="Permanent link">&para;</a></h3>
-<p><img alt="Árvore com 20 na raiz e 10 como filho esquerdo" src="../images/avl_implementacao/insercao20.svg" /></p>
-<p>→ FB(20) = 0-1 = -1 ✓ (dentro de [-1,1])</p>
+<p><img alt="Árvore com 10 na raiz e 20 como filho direito" src="../images/avl_implementacao/insercao20.svg" /></p>
+<p>→ FB(10) = 0-1 = -1 ✓ (dentro de [-1,1])</p>
 <h3 id="insercao-30-desbalanceamento-rr">Inserção 30 → <strong>Desbalanceamento RR!</strong><a class="headerlink" href="#insercao-30-desbalanceamento-rr" title="Permanent link">&para;</a></h3>
 <p><strong>Antes da rotação:</strong></p>
 <p><img alt="Árvore antes: 10 na raiz, 20 e 30 encadeados à direita, desbalanceada" src="../images/avl_implementacao/insercao30_antes.svg" /></p>
@@ -3230,17 +3233,19 @@
 <h3 id="insercao-50-desbalanceamento-rr-em-30">Inserção 50 → <strong>Desbalanceamento RR em 30!</strong><a class="headerlink" href="#insercao-50-desbalanceamento-rr-em-30" title="Permanent link">&para;</a></h3>
 <p><strong>Antes:</strong></p>
 <p><img alt="Árvore antes: 20 na raiz, com 30 desbalanceado à direita devido à cadeia 30→40→50" src="../images/avl_implementacao/insercao50_antes.svg" /></p>
+<p>Na volta da recursão, o primeiro ancestral desbalanceado é 30, e ele é rotacionado antes que a altura de 20 seja recalculada (por isso 20 aparece sem rótulo).</p>
 <p><strong>Rotação esquerda em 30:</strong></p>
 <p><img alt="Árvore balanceada após a rotação em 30, com 40 assumindo a posição" src="../images/avl_implementacao/insercao50_depois.svg" /></p>
 <p>→ Balanceada! ✓</p>
 <h3 id="insercao-25-desbalanceamento-rl-em-20">Inserção 25 → <strong>Desbalanceamento RL em 20!</strong><a class="headerlink" href="#insercao-25-desbalanceamento-rl-em-20" title="Permanent link">&para;</a></h3>
 <p><strong>Antes:</strong></p>
-<p><img alt="Árvore antes: 40 na raiz, 20 desbalanceado à esquerda devido à inserção de 25" src="../images/avl_implementacao/insercao25_antes.svg" /></p>
-<p>Caminho: 20 → Dir(30) → Esq(25) → Caso RL</p>
-<p><strong>Passo 1: Rotação direita em 30:</strong></p>
-<p><img alt="Passo intermediário: 25 sobe no lugar de 30" src="../images/avl_implementacao/insercao25_passo1.svg" /></p>
+<p><img alt="Árvore antes: 20 na raiz, desbalanceada à direita; 25 inserido como filho esquerdo de 30, que é filho esquerdo de 40" src="../images/avl_implementacao/insercao25_antes.svg" /></p>
+<p>O 25 desce por 20 → 40 → 30 e entra como filho esquerdo de 30. Os nós 30 e 40 continuam com |FB| ≤ 1, mas FB(20) = 1-3 = -2.</p>
+<p>Caminho: 20 → Dir(40) → Esq(30) → Caso RL (no código: <code>fb &lt; -1</code> e <code>25 &lt; no-&gt;dir-&gt;chave</code>, que é 40)</p>
+<p><strong>Passo 1: Rotação direita em 40:</strong></p>
+<p><img alt="Passo intermediário: 30 sobe no lugar de 40" src="../images/avl_implementacao/insercao25_passo1.svg" /></p>
 <p><strong>Passo 2: Rotação esquerda em 20:</strong></p>
-<p><img alt="Árvore final balanceada, com 25 assumindo a posição de 20" src="../images/avl_implementacao/insercao25_passo2.svg" /></p>
+<p><img alt="Árvore final balanceada, com 30 na raiz, 20 (filhos 10 e 25) à esquerda e 40 (filho 50) à direita" src="../images/avl_implementacao/insercao25_passo2.svg" /></p>
 <p>→ Balanceada! ✓</p>
 <h3 id="saida-final">Saída Final<a class="headerlink" href="#saida-final" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>Percurso em-ordem: 10 20 25 30 40 50  ← Ordenado! ✓
@@ -3264,8 +3269,9 @@ a) O percurso em-ordem imprime os valores em ordem crescente?</p>
 <summary>Gabarito esperado</summary>
 
 <div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>a) Saída em-ordem: 1 3 4 5 6 7 8 ✓
-<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>b) Sim, todos os FB ∈ {-1, 0, 1}
-<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>c) Altura = 2 (árvore cheia com 7 nós)
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>b) Sim, todos os FB ∈ {-1, 0, 1} (nenhuma rotação é necessária)
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>c) altura(raiz) = 3 na convenção deste código (folha = 1);
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>   equivale a altura 2 na convenção do capítulo anterior (árvore cheia com 7 nós)
 </code></pre></div>
 
 </details>
@@ -3278,16 +3284,17 @@ a) O percurso em-ordem imprime os valores em ordem crescente?</p>
 <details>
 <summary>Resposta</summary>
 
-<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>a) Rotações:
-<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>   - Após inserir 3: rotação esquerda em 1
-<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>   - Após inserir 5: rotação esquerda em 2 (ou similar)
-<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>   - Após inserir 7: rotação esquerda em 4
-<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>   Total: 3 rotações simples
-<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>
-<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>b) Altura final da AVL: 2
-<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>
-<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>c) ABB comum degenerada: altura = 6
-<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a>   Diferença: 6 vs 2 → busca em AVL é até 3x mais rápida!
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>a) Rotações (todas simples à esquerda, caso RR):
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>   - Após inserir 3: rotação em 1
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>   - Após inserir 5: rotação em 3
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>   - Após inserir 6: rotação em 2 (a raiz)
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>   - Após inserir 7: rotação em 5
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>   Total: 4 rotações simples. Árvore final: 4(2(1,3), 6(5,7))
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>b) altura(raiz) = 3 neste código (folha = 1), ou seja, 2 na convenção folha = 0
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>
+<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a>c) ABB comum degenerada: altura 6 (folha = 0)
+<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a>   Busca no pior caso: 7 comparações na ABB vs 3 na AVL
 </code></pre></div>
 
 </details>
@@ -3391,11 +3398,11 @@ a) O percurso em-ordem imprime os valores em ordem crescente?</p>
 <p><strong>Boas práticas:</strong> Verificar <code>malloc</code>, liberar memória com <code>free()</code></p>
 <hr />
 <h2 id="12-proximos-passos-ferramentas">12. Próximos Passos &amp; Ferramentas<a class="headerlink" href="#12-proximos-passos-ferramentas" title="Permanent link">&para;</a></h2>
-<p><strong>Tópicos para próximos capítulos:</strong></p>
+<p><strong>Para estudo complementar (fora do escopo deste livro):</strong></p>
 <ul>
-<li>Remoção em AVL (mais complexa que inserção)</li>
-<li>Balanceamento em remoção: casos adicionais</li>
-<li>Comparação de desempenho: AVL vs. ABB vs. Hash Table</li>
+<li>Remoção em AVL (mais complexa que inserção: pode exigir rotações em vários ancestrais)</li>
+<li>Árvores Rubro-Negras</li>
+<li>Comparação de desempenho: AVL vs. ABB vs. tabela hash</li>
 </ul>
 <p><strong>Prática sugerida:</strong></p>
 <ol>
@@ -3412,7 +3419,7 @@ a) O percurso em-ordem imprime os valores em ordem crescente?</p>
 </ol>
 <p><strong>Leitura complementar:</strong></p>
 <ul>
-<li>ZIVIANI, N. <em>Projeto de Algoritmos</em>. Seção 5.4: Implementação de AVL.</li>
+<li>SZWARCFITER, J. L.; MARKENZON, L. <em>Estruturas de Dados e Seus Algoritmos</em>. Capítulo 5: Árvores Balanceadas.</li>
 <li>CORMEN et al. <em>Introduction to Algorithms</em>. Capítulo 13: Red-Black Trees (próximo nível de balanceamento).</li>
 </ul>
 <hr />

@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Livro didático de Estruturas de Dados: Recursividade, TAD, Listas, Pilhas, Filas, Árvores (BST, AVL, Heaps) e Ordenação.
+        <meta name="description" content="Livro didático de Estruturas de Dados: Recursividade, TAD, Listas, Pilhas, Filas, Árvores (ABB e AVL) e Ordenação (incluindo Heap Sort).
 ">
       
       
@@ -28,7 +28,7 @@
     
     
       
-        <title>2.3 Pilha Estática III: Alocação Dinâmica - Estruturas de Dados</title>
+        <title>2.3 Pilha III: Alocação Dinâmica - Estruturas de Dados</title>
       
     
     
@@ -75,7 +75,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#pilha-estatica-iii-alocacao-dinamica" class="md-skip">
+        <a href="#pilha-iii-alocacao-dinamica" class="md-skip">
           Ir para o conteúdo
         </a>
       
@@ -111,7 +111,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              2.3 Pilha Estática III: Alocação Dinâmica
+              2.3 Pilha III: Alocação Dinâmica
             
           </span>
         </div>
@@ -380,7 +380,7 @@
   <span class="md-ellipsis">
     
   
-    Capítulo 1 — Introdução e TAD
+    Capítulo 1 — Introdução
   
 
     
@@ -524,7 +524,7 @@
   <span class="md-ellipsis">
     
   
-    2.3 Pilha Estática III: Alocação Dinâmica
+    2.3 Pilha III: Alocação Dinâmica
   
 
     
@@ -542,7 +542,7 @@
   <span class="md-ellipsis">
     
   
-    2.3 Pilha Estática III: Alocação Dinâmica
+    2.3 Pilha III: Alocação Dinâmica
   
 
     
@@ -2068,8 +2068,8 @@
 
 
 
-<h1 id="pilha-estatica-iii-alocacao-dinamica">Pilha Estática III: Alocação Dinâmica<a class="headerlink" href="#pilha-estatica-iii-alocacao-dinamica" title="Permanent link">&para;</a></h1>
-<p>Este capítulo mostra como modelar o TAD de pilha em C como se fosse um objeto referenciado por um ponteiro — semelhante ao que acontece em Java ou Python — e evolui a implementação para uma pilha completamente dinâmica, com tamanho configurável em tempo de execução. O caminho passa por: tratar a pilha sempre como ponteiro (<code>Pilha *p</code>); entender a diferença entre <code>stack</code> e <code>heap</code>; usar <code>malloc</code>, <code>calloc</code> e <code>free</code> na prática; explorar a relação entre vetores e ponteiros (<code>v[i]</code> é equivalente a <code>*(v + i)</code>); e, por fim, alocar tanto a <code>struct</code> quanto o vetor interno dinamicamente, a partir de um parâmetro <code>size</code>.</p>
+<h1 id="pilha-iii-alocacao-dinamica">Pilha III: Alocação Dinâmica<a class="headerlink" href="#pilha-iii-alocacao-dinamica" title="Permanent link">&para;</a></h1>
+<p>Este capítulo mostra como modelar o TAD de pilha em C como se fosse um objeto referenciado por um ponteiro — semelhante ao que acontece em Java ou Python — e evolui a implementação para uma pilha completamente dinâmica, com tamanho configurável em tempo de execução. O caminho passa por: tratar a pilha sempre como ponteiro (<code>Pilha *p</code>); entender a diferença entre <code>stack</code> e <code>heap</code>; usar <code>malloc</code> e <code>free</code> na prática (e conhecer <code>calloc</code> e <code>realloc</code>); explorar a relação entre vetores e ponteiros (<code>v[i]</code> é equivalente a <code>*(v + i)</code>); e, por fim, alocar tanto a <code>struct</code> quanto o vetor interno dinamicamente, a partir de um parâmetro <code>size</code>.</p>
 <h2 id="1-pilha-como-ponteiro-a-analogia-com-java-e-python">1. Pilha como Ponteiro: a Analogia com Java e Python<a class="headerlink" href="#1-pilha-como-ponteiro-a-analogia-com-java-e-python" title="Permanent link">&para;</a></h2>
 <p>Em C, <code>Pilha *p</code> é um ponteiro para a estrutura, não a estrutura em si — e isso é semelhante ao que acontece em linguagens como Java e Python. Quando se escreve <code>new Stack()</code> em Java ou <code>pilha = Pilha()</code> em Python, o objeto é criado no heap, e a variável é apenas um ponteiro ou referência para esse objeto. Trabalhar com <code>Pilha *p</code> em C é, portanto, tratar a pilha como referência, do mesmo jeito que essas linguagens fazem por baixo dos panos: <code>Pilha *p</code> é o equivalente conceitual ao "objeto no heap, acessado por referência".</p>
 <p>Isso também levanta uma questão sobre o tamanho do vetor interno da pilha: até aqui, <code>MAX</code> é fixo em tempo de compilação. Mas uma pilha é, no fundo, um container — e faz sentido que ela possa ter tamanhos diferentes em situações diferentes. É isso que este capítulo resolve.</p>
@@ -2102,7 +2102,7 @@
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="nf">malloc</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">tamanho_em_bytes</span><span class="p">);</span><span class="w">   </span><span class="c1">// Aloca N bytes brutos (não inicializa)</span>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="nf">calloc</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">size</span><span class="p">);</span><span class="w">     </span><span class="c1">// Aloca n elementos de size bytes (inicializa em 0)</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="kt">void</span><span class="w"> </span><span class="nf">free</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">ptr</span><span class="p">);</span><span class="w">                    </span><span class="c1">// Liberta memória alocada</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="kt">void</span><span class="w"> </span><span class="nf">free</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">ptr</span><span class="p">);</span><span class="w">                    </span><span class="c1">// Libera memória alocada</span>
 </code></pre></div>
 <p>A regra de ouro é simples: toda vez que se usa <code>malloc</code> ou <code>calloc</code> com sucesso, mais cedo ou mais tarde é preciso usar <code>free</code> sobre o mesmo ponteiro.</p>
 <h3 id="21-alocando-um-unico-inteiro">2.1 Alocando um Único Inteiro<a class="headerlink" href="#21-alocando-um-unico-inteiro" title="Permanent link">&para;</a></h3>
@@ -2181,7 +2181,7 @@
 <a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="p">(</span><span class="o">*</span><span class="n">self</span><span class="p">).</span><span class="n">topo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w">   </span><span class="c1">// Funciona, mas é verboso</span>
 <a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="n">self</span><span class="o">-&gt;</span><span class="n">topo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w">     </span><span class="c1">// Equivalente, mais simples</span>
 </code></pre></div>
-<p>Em <code>(*self).topo</code>, primeiro <code>self</code> é desreferenciado, e só depois o membro <code>topo</code> é acessado. Note que <code>self.topo</code> não seria equivalente: o operador <code>.</code> tem precedência maior que <code>*</code>, então a expressão seria interpretada como <code>*(self.topo)</code> — um erro, já que <code>self.topo</code> não existe antes de <code>self</code> ser desreferenciado. A regra geral é: para acessar um membro de uma struct por meio de um ponteiro, usa-se <code>(*p).membro</code> ou <code>p-&gt;membro</code>.</p>
+<p>Em <code>(*self).topo</code>, primeiro <code>self</code> é desreferenciado, e só depois o membro <code>topo</code> é acessado. Note que <code>*self.topo</code> não seria equivalente: o operador <code>.</code> tem precedência maior que <code>*</code>, então a expressão seria interpretada como <code>*(self.topo)</code> — um erro, já que <code>self</code> é um ponteiro e não tem membro <code>topo</code>; o <code>.</code> só pode ser aplicado depois de <code>self</code> ser desreferenciado. A regra geral é: para acessar um membro de uma struct por meio de um ponteiro, usa-se <code>(*p).membro</code> ou <code>p-&gt;membro</code>.</p>
 <p>De fato, <code>p-&gt;membro</code> é apenas uma sintaxe abreviada para <code>(*p).membro</code>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="p">(</span><span class="o">*</span><span class="n">self</span><span class="p">).</span><span class="n">topo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w">   </span><span class="c1">// Forma longa</span>
 <a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="n">self</span><span class="o">-&gt;</span><span class="n">topo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w">     </span><span class="c1">// Forma curta</span>
@@ -2383,7 +2383,7 @@
 <p><code>p1</code> e <code>p2</code> são duas pilhas completamente independentes, com tamanhos diferentes definidos em tempo de execução — exatamente o que a versão "nua" do primeiro capítulo era incapaz de oferecer.</p>
 <h2 id="sintese">Síntese<a class="headerlink" href="#sintese" title="Permanent link">&para;</a></h2>
 <p>Neste capítulo, a pilha deixou de ser uma coleção de variáveis globais e passou a ser tratada sempre como ponteiro (<code>Pilha *p</code>), no mesmo espírito de uma referência a objeto em Java ou Python. A <code>struct</code> e, em seguida, o vetor interno passaram a ser alocados na heap com <code>malloc</code>, com o tamanho definido em tempo de execução por um parâmetro <code>size</code> — e cada <code>malloc</code> bem-sucedido tem sua contraparte em <code>free</code>, na ordem correta.</p>
-<p>Uma pergunta natural fica em aberto: e se a pilha preencher todo o vetor e ainda precisar crescer? A função <code>realloc</code> permite aumentar <code>self-&gt;valores</code> em tempo de execução, criando uma pilha que "cresce sozinha" quando enche — um refinamento que fica como estudo adicional. O próximo capítulo aplica esses mesmos conceitos — <code>struct</code>, ponteiros, <code>malloc</code>/<code>free</code> — para construir uma <strong>lista encadeada</strong>, em que cada elemento é alocado individualmente na heap.</p>
+<p>Uma pergunta natural fica em aberto: e se a pilha preencher todo o vetor e ainda precisar crescer? A função <code>realloc</code> permite aumentar <code>self-&gt;valores</code> em tempo de execução, criando uma pilha que "cresce sozinha" quando enche — um refinamento que fica como estudo adicional. O próximo capítulo aplica esses mesmos conceitos — <code>struct</code>, ponteiros, <code>malloc</code>/<code>free</code> — ao TAD <strong>lista</strong>: primeiro com vetor e compilação separada (<code>.h</code>/<code>.c</code>), depois como <strong>lista encadeada</strong>, em que cada elemento é alocado individualmente na heap.</p>
 
 
 

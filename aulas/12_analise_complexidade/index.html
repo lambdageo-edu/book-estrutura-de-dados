@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Livro didático de Estruturas de Dados: Recursividade, TAD, Listas, Pilhas, Filas, Árvores (BST, AVL, Heaps) e Ordenação.
+        <meta name="description" content="Livro didático de Estruturas de Dados: Recursividade, TAD, Listas, Pilhas, Filas, Árvores (ABB e AVL) e Ordenação (incluindo Heap Sort).
 ">
       
       
@@ -380,7 +380,7 @@
   <span class="md-ellipsis">
     
   
-    Capítulo 1 — Introdução e TAD
+    Capítulo 1 — Introdução
   
 
     
@@ -515,7 +515,7 @@
   <span class="md-ellipsis">
     
   
-    2.3 Pilha Estática III: Alocação Dinâmica
+    2.3 Pilha III: Alocação Dinâmica
   
 
     
@@ -2263,7 +2263,8 @@
 <p>Neste capítulo, estudaremos a <strong>análise de algoritmos</strong> sob duas perspectivas: a <strong>teórica</strong> (notação Big-O) e a <strong>empírica</strong> (ferramentas práticas de profiling e cobertura em C, como <code>gcov</code> e <code>gprof</code>). Essas ferramentas ajudam a visualizar quais partes do código consomem mais tempo de execução ou quais caminhos não foram devidamente testados.</p>
 <hr />
 <h2 id="1-analise-teorica-a-notacao-big-o">1. Análise Teórica: A Notação Big-O<a class="headerlink" href="#1-analise-teorica-a-notacao-big-o" title="Permanent link">&para;</a></h2>
-<p>A <strong>complexidade de tempo</strong> descreve a taxa de crescimento do tempo de execução de um algoritmo à medida que o tamanho da entrada (<span class="arithmatex">\(n\)</span>) cresce. Usamos a notação <strong>Big-O</strong> para descrever o pior cenário (limite superior).</p>
+<p>A <strong>complexidade de tempo</strong> descreve a taxa de crescimento do tempo de execução de um algoritmo à medida que o tamanho da entrada (<span class="arithmatex">\(n\)</span>) cresce. Usamos a notação <strong>Big-O</strong> para expressar um <strong>limite superior</strong> desse crescimento: dizemos que <span class="arithmatex">\(f(n) = O(g(n))\)</span> se existem constantes <span class="arithmatex">\(c &gt; 0\)</span> e <span class="arithmatex">\(n_0\)</span> tais que <span class="arithmatex">\(f(n) \le c \cdot g(n)\)</span> para todo <span class="arithmatex">\(n \ge n_0\)</span>. Big-O é uma notação para funções, não para "casos": podemos falar do pior caso, do melhor caso ou do caso médio de um algoritmo, e cada um tem sua função de custo. Na prática, quando se diz apenas "o algoritmo é O(n²)", costuma-se referir ao pior caso.</p>
+<p>Duas notações irmãs completam o quadro: <span class="arithmatex">\(\Omega(g(n))\)</span> indica um <strong>limite inferior</strong> (<span class="arithmatex">\(f(n) \ge c \cdot g(n)\)</span> a partir de algum <span class="arithmatex">\(n_0\)</span>) e <span class="arithmatex">\(\Theta(g(n))\)</span> indica que a função é ao mesmo tempo <span class="arithmatex">\(O(g(n))\)</span> e <span class="arithmatex">\(\Omega(g(n))\)</span>, ou seja, cresce <strong>exatamente</strong> na ordem de <span class="arithmatex">\(g(n)\)</span>.</p>
 <h3 id="11-classes-de-complexidade-comuns">1.1 Classes de Complexidade Comuns<a class="headerlink" href="#11-classes-de-complexidade-comuns" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -2303,7 +2304,7 @@
 <td style="text-align: left;"><strong><span class="arithmatex">\(O(n^2)\)</span></strong></td>
 <td style="text-align: left;">Quadrático</td>
 <td style="text-align: left;">Bubble Sort, Selection Sort, Insertion Sort</td>
-<td style="text-align: left;">Laços aninhados. O tempo cresce exponencialmente pior com entradas maiores.</td>
+<td style="text-align: left;">Laços aninhados. Dobrar a entrada quadruplica o tempo.</td>
 </tr>
 </tbody>
 </table>
@@ -2320,9 +2321,11 @@
 <ol>
 <li>
 <p><strong>Compilação com suporte a cobertura:</strong>
-   Usamos a flag <code>--coverage</code> (ou <code>-fprofile-arcs -ftest-coverage</code>) junto com <code>-O0</code> (desativa otimizações do compilador para manter a correspondência direta de linhas):
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>gcc<span class="w"> </span>-O0<span class="w"> </span>-g<span class="w"> </span>--coverage<span class="w"> </span>-o<span class="w"> </span>programa<span class="w"> </span>main.c
-</code></pre></div></p>
+   Usamos a flag <code>--coverage</code> (ou <code>-fprofile-arcs -ftest-coverage</code>) junto com <code>-O0</code> (desativa otimizações do compilador para manter a correspondência direta de linhas). Compile e ligue em <strong>duas etapas</strong>:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>gcc<span class="w"> </span>-O0<span class="w"> </span>-g<span class="w"> </span>--coverage<span class="w"> </span>-c<span class="w"> </span>main.c
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>gcc<span class="w"> </span>--coverage<span class="w"> </span>main.o<span class="w"> </span>-o<span class="w"> </span>programa
+</code></pre></div>
+   <em>(A partir do GCC 11, compilar e ligar num único comando com <code>-o programa</code> gera os arquivos com o nome <code>programa-main.gcda</code>/<code>.gcno</code>, e <code>gcov main.c</code> não os encontra. Nesse caso, use <code>gcov programa-main.c</code> ou prefira as duas etapas acima.)</em></p>
 </li>
 <li>
 <p><strong>Executar o programa:</strong>
@@ -2355,9 +2358,9 @@
 <li>
 <p><strong>Compilação com suporte a profile:</strong>
    Use a flag <code>-pg</code>:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>gcc<span class="w"> </span>-O2<span class="w"> </span>-g<span class="w"> </span>-pg<span class="w"> </span>-o<span class="w"> </span>programa<span class="w"> </span>main.c
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>gcc<span class="w"> </span>-O0<span class="w"> </span>-g<span class="w"> </span>-pg<span class="w"> </span>-o<span class="w"> </span>programa<span class="w"> </span>main.c
 </code></pre></div>
-   <em>(Nota: Aqui podemos usar otimizações como <code>-O2</code> ou <code>-O3</code> para refletir o desempenho real de produção).</em></p>
+   <em>(Nota: com <code>-O2</code> ou <code>-O3</code> o compilador pode embutir (</em>inline<em>) funções inteiras dentro de quem as chama, e elas somem do relatório. Para fins didáticos, use <code>-O0</code>, lembrando que os tempos absolutos serão maiores que os de produção.)</em></p>
 </li>
 <li>
 <p><strong>Executar o programa:</strong>
@@ -2382,9 +2385,10 @@
 <a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>Each sample counts as 0.01 seconds.
 <a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>  %   cumulative   self              self     total           
 <a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a> time   seconds   seconds    calls  ms/call  ms/call  name    
-<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a> 82.4      0.82     0.82        1   820.00   820.00  bubble_sort
-<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a> 17.6      1.00     0.18        1   180.00   180.00  quick_sort
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>100.00      0.24     0.24        1   240.00   240.00  bubble_sort
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>  0.00      0.24     0.00        1     0.00     0.00  quick_sort
 </code></pre></div>
+<em>(Saída real do programa da Seção 4, com N = 10000. O Quick Sort leva menos que o intervalo de amostragem de 0,01 s e aparece com 0%. A coluna <code>calls</code> mostra só a chamada externa; as 11928 chamadas recursivas aparecem no Call Graph como <code>1+11928</code>.)</em>
 - <strong><code>% time</code></strong>: Porcentagem do tempo total gasta nesta função.
 - <strong><code>self seconds</code></strong>: Tempo gasto exclusivamente nesta função.
 - <strong><code>calls</code></strong>: Número total de vezes que a função foi chamada.</p>
@@ -2456,24 +2460,25 @@
 <p>Você pode usar um script automatizado para compilar e analisar:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="ch">#!/bin/bash</span>
 <a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">"=== 1. COMPILANDO PARA COBERTURA (GCOV) ==="</span>
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>gcc<span class="w"> </span>-O0<span class="w"> </span>-g<span class="w"> </span>--coverage<span class="w"> </span>ordenacao.c<span class="w"> </span>-o<span class="w"> </span>prog_cov
-<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>
-<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">"=== 2. EXECUTANDO COBERTURA ==="</span>
-<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>./prog_cov
-<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>
-<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">"=== 3. GERANDO RELATÓRIO GCOV ==="</span>
-<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>gcov<span class="w"> </span>ordenacao.c
-<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>cat<span class="w"> </span>ordenacao.c.gcov<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-n<span class="w"> </span><span class="m">35</span>
-<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>
-<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">"=== 4. COMPILANDO PARA PROFILE (GPROF) ==="</span>
-<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>gcc<span class="w"> </span>-O2<span class="w"> </span>-pg<span class="w"> </span>ordenacao.c<span class="w"> </span>-o<span class="w"> </span>prog_prof
-<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>
-<a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">"=== 5. EXECUTANDO PROFILE ==="</span>
-<a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a>./prog_prof
-<a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a>
-<a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">"=== 6. GERANDO GRAFO DE CHAMADAS ==="</span>
-<a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a>gprof<span class="w"> </span>prog_prof<span class="w"> </span>gmon.out<span class="w"> </span>&gt;<span class="w"> </span>relatorio_gprof.txt
-<a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a>head<span class="w"> </span>-n<span class="w"> </span><span class="m">25</span><span class="w"> </span>relatorio_gprof.txt
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>gcc<span class="w"> </span>-O0<span class="w"> </span>-g<span class="w"> </span>--coverage<span class="w"> </span>-c<span class="w"> </span>ordenacao.c
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>gcc<span class="w"> </span>--coverage<span class="w"> </span>ordenacao.o<span class="w"> </span>-o<span class="w"> </span>prog_cov
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">"=== 2. EXECUTANDO COBERTURA ==="</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>./prog_cov
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">"=== 3. GERANDO RELATÓRIO GCOV ==="</span>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>gcov<span class="w"> </span>ordenacao.c
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>cat<span class="w"> </span>ordenacao.c.gcov<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-n<span class="w"> </span><span class="m">35</span>
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>
+<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">"=== 4. COMPILANDO PARA PROFILE (GPROF) ==="</span>
+<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>gcc<span class="w"> </span>-O0<span class="w"> </span>-g<span class="w"> </span>-pg<span class="w"> </span>ordenacao.c<span class="w"> </span>-o<span class="w"> </span>prog_prof
+<a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a>
+<a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">"=== 5. EXECUTANDO PROFILE ==="</span>
+<a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a>./prog_prof
+<a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a>
+<a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">"=== 6. GERANDO GRAFO DE CHAMADAS ==="</span>
+<a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a>gprof<span class="w"> </span>prog_prof<span class="w"> </span>gmon.out<span class="w"> </span>&gt;<span class="w"> </span>relatorio_gprof.txt
+<a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a>head<span class="w"> </span>-n<span class="w"> </span><span class="m">25</span><span class="w"> </span>relatorio_gprof.txt
 </code></pre></div>
 <hr />
 <h2 id="5-resumo-de-comandos-uteis">5. Resumo de Comandos Úteis<a class="headerlink" href="#5-resumo-de-comandos-uteis" title="Permanent link">&para;</a></h2>
@@ -2481,19 +2486,20 @@
 <a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>│ COMMAND CHEATSHEET – COBERTURA &amp; PERFILAMENTO          │
 <a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>├────────────────────────────────────────────────────────┤
 <a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>│ GCOV (COBERTURA DE CÓDIGO)                             │
-<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>│ 1. gcc -O0 -g --coverage -o bin fonte.c                │
-<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>│ 2. ./bin (roda testes)                                 │
-<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>│ 3. gcov fonte.c (gera fonte.c.gcov)                    │
-<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>│                                                        │
-<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>│ GPROF (ANÁLISE DE TEMPO DE CPU)                        │
-<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>│ 1. gcc -O2 -pg -o bin fonte.c                          │
-<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>│ 2. ./bin (gera gmon.out)                               │
-<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>│ 3. gprof bin gmon.out &gt; relatorio.txt                  │
-<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a>│                                                        │
-<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a>│ FERRAMENTAS VISUAIS COMPLEMENTARES                     │
-<a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a>│ • lcov / genhtml (gera relatórios em HTML para o gcov) │
-<a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a>│ • gprof2dot (converte o grafo do gprof em imagem .png) │
-<a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a>└────────────────────────────────────────────────────────┘
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>│ 1. gcc -O0 -g --coverage -c fonte.c                    │
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>│    gcc --coverage fonte.o -o bin                       │
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>│ 2. ./bin (roda testes)                                 │
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>│ 3. gcov fonte.c (gera fonte.c.gcov)                    │
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>│                                                        │
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>│ GPROF (ANÁLISE DE TEMPO DE CPU)                        │
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>│ 1. gcc -O0 -g -pg -o bin fonte.c                       │
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>│ 2. ./bin (gera gmon.out)                               │
+<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a>│ 3. gprof bin gmon.out &gt; relatorio.txt                  │
+<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a>│                                                        │
+<a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a>│ FERRAMENTAS VISUAIS COMPLEMENTARES                     │
+<a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a>│ • lcov / genhtml (gera relatórios em HTML para o gcov) │
+<a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a>│ • gprof2dot (converte o grafo do gprof em imagem .png) │
+<a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a>└────────────────────────────────────────────────────────┘
 </code></pre></div>
 
 

@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Livro didático de Estruturas de Dados: Recursividade, TAD, Listas, Pilhas, Filas, Árvores (BST, AVL, Heaps) e Ordenação.
+        <meta name="description" content="Livro didático de Estruturas de Dados: Recursividade, TAD, Listas, Pilhas, Filas, Árvores (ABB e AVL) e Ordenação (incluindo Heap Sort).
 ">
       
       
@@ -380,7 +380,7 @@
   <span class="md-ellipsis">
     
   
-    Capítulo 1 — Introdução e TAD
+    Capítulo 1 — Introdução
   
 
     
@@ -515,7 +515,7 @@
   <span class="md-ellipsis">
     
   
-    2.3 Pilha Estática III: Alocação Dinâmica
+    2.3 Pilha III: Alocação Dinâmica
   
 
     
@@ -1269,10 +1269,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#63-arvore-binaria-cheia-full" class="md-nav__link">
+  <a href="#63-arvore-binaria-cheia-perfeita" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6.3 Árvore Binária Cheia (Full)
+        6.3 Árvore Binária Cheia (Perfeita)
       
     </span>
   </a>
@@ -2747,10 +2747,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#63-arvore-binaria-cheia-full" class="md-nav__link">
+  <a href="#63-arvore-binaria-cheia-perfeita" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6.3 Árvore Binária Cheia (Full)
+        6.3 Árvore Binária Cheia (Perfeita)
       
     </span>
   </a>
@@ -3084,7 +3084,7 @@
 <p>Uma <strong>árvore enraizada</strong> <em>T</em>, ou simplesmente árvore, é um conjunto finito de elementos denominados <strong>nós</strong> ou <strong>vértices</strong>, tal que:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>• T = Ø, quando a árvore é dita vazia, ou
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>• T = {r} ∪ {T₁} ∪ {T₂} ∪ {T₃} ∪ ... ∪ {Tₙ}, com n ≥ 0
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>• T = {r} ∪ T₁ ∪ T₂ ∪ T₃ ∪ ... ∪ Tₙ, com n ≥ 0
 </code></pre></div>
 <p><strong>Nesta definição:</strong></p>
 <ul>
@@ -3139,14 +3139,15 @@
 </code></pre></div>
 <h4 id="c-representacao-grafica-como-grafo">c) Representação Gráfica (como grafo)<a class="headerlink" href="#c-representacao-grafica-como-grafo" title="Permanent link">&para;</a></h4>
 <pre class="mermaid"><code>graph TD
-    D((D)) --&gt;|E| E((E))
-    D --&gt;|D| G((G))
+    D((D)) --&gt; E((E))
+    D --&gt; G((G))
     E --&gt; F((F))
     G --&gt; H((H))
     G --&gt; J((J))
     G --&gt; M((M))
-    J --&gt;|E| K((K))
-    J --&gt;|D| L((L))</code></pre>
+    H --&gt; I((I))
+    J --&gt; K((K))
+    J --&gt; L((L))</code></pre>
 <hr />
 <h2 id="3-terminologia-de-arvores">3. Terminologia de Árvores<a class="headerlink" href="#3-terminologia-de-arvores" title="Permanent link">&para;</a></h2>
 <p>Considere a árvore: <code>T = {A, {B, {D}, {E}}, {C, {F}}}</code></p>
@@ -3242,12 +3243,12 @@
 <p>Uma <strong>árvore binária</strong> <em>T</em> é um conjunto finito de elementos, denominados nós ou vértices, tal que:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>• T = Ø, quando a árvore é dita vazia, ou
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>• T = {r} ∪ {Tₑ} ∪ {Tₑ}
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>• T = {r} ∪ T_esq ∪ T_dir
 </code></pre></div>
 <p><strong>Nesta definição:</strong></p>
 <ul>
 <li><strong>r</strong> é um nó especial chamado <strong>raiz</strong></li>
-<li><strong>Tₑ</strong> e <strong>Tₑ</strong> são conjuntos disjuntos (podem ser vazios), chamados <strong>subárvore à esquerda</strong> e <strong>subárvore à direita</strong> de <strong>r</strong>, cada qual uma árvore binária</li>
+<li><strong>T_esq</strong> e <strong>T_dir</strong> são conjuntos disjuntos (podem ser vazios), chamados <strong>subárvore à esquerda</strong> e <strong>subárvore à direita</strong> de <strong>r</strong>, cada qual uma árvore binária</li>
 </ul>
 <blockquote>
 <p><strong>Diferença crucial:</strong> Em árvores binárias, a ordem das subárvores importa! Subárvore esquerda ≠ subárvore direita.</p>
@@ -3256,10 +3257,10 @@
 <p><strong>Árvore Geral (n filhos):</strong> ordem dos filhos não importa, grau arbitrário.</p>
 <pre class="mermaid"><code>graph TD
     R1((•)) --&gt; A1((•))
-    R1 --&gt;|E| A2((•))
-    R1 --&gt;|D| A3((•))
-    A1 --&gt;|E| B1((•))
-    A1 --&gt;|D| B2((•))</code></pre>
+    R1 --&gt; A2((•))
+    R1 --&gt; A3((•))
+    A1 --&gt; B1((•))
+    A1 --&gt; B2((•))</code></pre>
 <p><strong>Árvore Binária (máx. 2 filhos):</strong> esquerda e direita são distintos, grau máximo = 2.</p>
 <p><img alt="Exemplo de árvore binária com no máximo dois filhos por nó" src="../images/arvores_conceitos/comparacao_binaria.svg" /></p>
 <hr />
@@ -3347,12 +3348,13 @@
 <a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">        </span><span class="n">liberarArvore</span><span class="p">(</span><span class="n">raiz</span><span class="o">-&gt;</span><span class="n">esquerda</span><span class="p">);</span>
 <a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">        </span><span class="n">liberarArvore</span><span class="p">(</span><span class="n">raiz</span><span class="o">-&gt;</span><span class="n">direita</span><span class="p">);</span>
 <a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>
-<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">        </span><span class="c1">// Depois libera o nó atual</span>
-<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">        </span><span class="n">free</span><span class="p">(</span><span class="n">raiz</span><span class="p">);</span>
-<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="w">        </span><span class="c1">// Opcional: mensagem de debug</span>
-<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="w">        </span><span class="c1">// printf("Nó liberado: %c\n", raiz-&gt;valor);</span>
-<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="p">}</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">        </span><span class="c1">// Opcional: mensagem de debug (ANTES do free: depois dele, raiz não pode ser acessado)</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">        </span><span class="c1">// printf("Liberando nó: %c\n", raiz-&gt;valor);</span>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="w">        </span><span class="c1">// Depois libera o nó atual</span>
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="w">        </span><span class="n">free</span><span class="p">(</span><span class="n">raiz</span><span class="p">);</span>
+<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="p">}</span>
 </code></pre></div>
 <blockquote>
 <p><strong>Importante:</strong> Sempre chame <code>liberarArvore(raiz)</code> no final do <code>main()</code> para evitar <em>memory leaks</em>.</p>
@@ -3369,16 +3371,20 @@
 <p><img alt="Árvore não estritamente binária: um nó tem apenas 1 filho" src="../images/arvores_conceitos/estritamente_binaria_b.svg" /></p>
 <h3 id="62-arvore-binaria-completa">6.2 Árvore Binária Completa<a class="headerlink" href="#62-arvore-binaria-completa" title="Permanent link">&para;</a></h3>
 <blockquote>
-<p><strong>Definição:</strong> Árvore estritamente binária na qual todo nó que apresente alguma subárvore vazia está localizado no <strong>último ou penúltimo nível</strong> da árvore.</p>
+<p><strong>Definição:</strong> Árvore binária na qual todo nó que apresente alguma subárvore vazia está localizado no <strong>último ou penúltimo nível</strong> da árvore.</p>
 </blockquote>
 <p><strong>a) Completa</strong> — nós com subárvores vazias apenas nos últimos níveis ✓</p>
 <p><img alt="Árvore completa: subárvores vazias só nos últimos níveis" src="../images/arvores_conceitos/completa_a.svg" /></p>
 <p><strong>b) NÃO completa</strong> — nó com subárvore vazia em nível intermediário ✗</p>
 <p><img alt="Árvore não completa: subárvore vazia em nível intermediário" src="../images/arvores_conceitos/completa_b.svg" /></p>
-<h3 id="63-arvore-binaria-cheia-full">6.3 Árvore Binária Cheia (Full)<a class="headerlink" href="#63-arvore-binaria-cheia-full" title="Permanent link">&para;</a></h3>
+<h3 id="63-arvore-binaria-cheia-perfeita">6.3 Árvore Binária Cheia (Perfeita)<a class="headerlink" href="#63-arvore-binaria-cheia-perfeita" title="Permanent link">&para;</a></h3>
 <blockquote>
 <p><strong>Definição:</strong> Todos os nós internos têm grau 2 e <strong>todas as folhas estão no mesmo nível</strong>.</p>
 </blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Cuidado com a terminologia em inglês</p>
+<p>O que chamamos aqui de árvore <strong>cheia</strong> corresponde, em inglês, a <em>perfect binary tree</em>. O termo <em>full binary tree</em> costuma designar a árvore <strong>estritamente binária</strong> (todo nó com 0 ou 2 filhos).</p>
+</div>
 <p><img alt="Árvore binária cheia: todos os nós internos com 2 filhos, folhas no mesmo nível" src="../images/arvores_conceitos/cheia_perfeita.svg" /></p>
 <p>✓ Todos os nós internos têm 2 filhos
 ✓ Todas as folhas estão no nível 2</p>
@@ -3702,10 +3708,10 @@
 <h3 id="exercicio-4-arvore-cheia-verificacao">Exercício 4 — Árvore Cheia: Verificação<a class="headerlink" href="#exercicio-4-arvore-cheia-verificacao" title="Permanent link">&para;</a></h3>
 <p>Escreva uma função que verifique se uma árvore binária é <strong>cheia</strong>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="kt">int</span><span class="w"> </span><span class="nf">ehCheia</span><span class="p">(</span><span class="n">No</span><span class="o">*</span><span class="w"> </span><span class="n">raiz</span><span class="p">);</span>
-<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="c1">// Dica: um nó é válido se:</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="c1">// Dica: uma árvore é cheia se:</span>
 <a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="c1">// - for NULL, ou</span>
-<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="c1">// - for folha (ambos filhos NULL), ou</span>
-<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="c1">// - tiver ambos os filhos não-NULL e ambos forem cheios</span>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="c1">// - suas duas subárvores forem cheias E tiverem a mesma altura</span>
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="c1">// (Alternativa: compare contarNos(raiz) com 2^(altura+1) - 1)</span>
 </code></pre></div>
 <h3 id="exercicio-5-impressao-formatada">Exercício 5 — Impressão Formatada<a class="headerlink" href="#exercicio-5-impressao-formatada" title="Permanent link">&para;</a></h3>
 <p>Crie uma função que imprima a árvore com identação para visualização hierárquica:</p>
@@ -3719,29 +3725,34 @@
 <details>
 <summary>Dica de implementação</summary>
 
-<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">imprimirArvore</span><span class="p">(</span><span class="n">No</span><span class="o">*</span><span class="w"> </span><span class="n">raiz</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">nivel</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">raiz</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
-<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>
-<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="w">    </span><span class="c1">// Imprime espaços para identação</span>
-<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nivel</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">"   "</span><span class="p">);</span>
-<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%c</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">raiz</span><span class="o">-&gt;</span><span class="n">valor</span><span class="p">);</span>
-<a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a>
-<a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a><span class="w">    </span><span class="c1">// Chama recursivamente para filhos</span>
-<a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">raiz</span><span class="o">-&gt;</span><span class="n">esquerda</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">raiz</span><span class="o">-&gt;</span><span class="n">direita</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">raiz</span><span class="o">-&gt;</span><span class="n">esquerda</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a><span class="w">            </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nivel</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">"   "</span><span class="p">);</span>
-<a id="__codelineno-22-12" name="__codelineno-22-12" href="#__codelineno-22-12"></a><span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">"├─ "</span><span class="p">);</span>
-<a id="__codelineno-22-13" name="__codelineno-22-13" href="#__codelineno-22-13"></a><span class="w">            </span><span class="n">imprimirArvore</span><span class="p">(</span><span class="n">raiz</span><span class="o">-&gt;</span><span class="n">esquerda</span><span class="p">,</span><span class="w"> </span><span class="n">nivel</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
-<a id="__codelineno-22-14" name="__codelineno-22-14" href="#__codelineno-22-14"></a><span class="w">        </span><span class="p">}</span>
-<a id="__codelineno-22-15" name="__codelineno-22-15" href="#__codelineno-22-15"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">raiz</span><span class="o">-&gt;</span><span class="n">direita</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-22-16" name="__codelineno-22-16" href="#__codelineno-22-16"></a><span class="w">            </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nivel</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">"   "</span><span class="p">);</span>
-<a id="__codelineno-22-17" name="__codelineno-22-17" href="#__codelineno-22-17"></a><span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">"└─ "</span><span class="p">);</span>
-<a id="__codelineno-22-18" name="__codelineno-22-18" href="#__codelineno-22-18"></a><span class="w">            </span><span class="n">imprimirArvore</span><span class="p">(</span><span class="n">raiz</span><span class="o">-&gt;</span><span class="n">direita</span><span class="p">,</span><span class="w"> </span><span class="n">nivel</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
-<a id="__codelineno-22-19" name="__codelineno-22-19" href="#__codelineno-22-19"></a><span class="w">        </span><span class="p">}</span>
-<a id="__codelineno-22-20" name="__codelineno-22-20" href="#__codelineno-22-20"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-22-21" name="__codelineno-22-21" href="#__codelineno-22-21"></a><span class="p">}</span>
-<a id="__codelineno-22-22" name="__codelineno-22-22" href="#__codelineno-22-22"></a><span class="c1">// Chamar com: imprimirArvore(raiz, 0);</span>
+O segredo é passar adiante um **prefixo** com as barras verticais dos níveis de cima: quem ainda tem irmão abaixo deixa `│  `; quem é o último deixa espaços.
+
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="kt">void</span><span class="w"> </span><span class="nf">imprimirRec</span><span class="p">(</span><span class="n">No</span><span class="o">*</span><span class="w"> </span><span class="n">no</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">prefixo</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">ehUltimo</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%s%s%c</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">prefixo</span><span class="p">,</span><span class="w"> </span><span class="n">ehUltimo</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s">"└─ "</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s">"├─ "</span><span class="p">,</span><span class="w"> </span><span class="n">no</span><span class="o">-&gt;</span><span class="n">valor</span><span class="p">);</span>
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>
+<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">novoPrefixo</span><span class="p">[</span><span class="mi">256</span><span class="p">];</span>
+<a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="w">    </span><span class="n">snprintf</span><span class="p">(</span><span class="n">novoPrefixo</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="w"> </span><span class="n">novoPrefixo</span><span class="p">,</span><span class="w"> </span><span class="s">"%s%s"</span><span class="p">,</span><span class="w"> </span><span class="n">prefixo</span><span class="p">,</span><span class="w"> </span><span class="n">ehUltimo</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s">"   "</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s">"│  "</span><span class="p">);</span>
+<a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a>
+<a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">no</span><span class="o">-&gt;</span><span class="n">esquerda</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span>
+<a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a><span class="w">        </span><span class="n">imprimirRec</span><span class="p">(</span><span class="n">no</span><span class="o">-&gt;</span><span class="n">esquerda</span><span class="p">,</span><span class="w"> </span><span class="n">novoPrefixo</span><span class="p">,</span><span class="w"> </span><span class="n">no</span><span class="o">-&gt;</span><span class="n">direita</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+<a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">no</span><span class="o">-&gt;</span><span class="n">direita</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span>
+<a id="__codelineno-22-12" name="__codelineno-22-12" href="#__codelineno-22-12"></a><span class="w">        </span><span class="n">imprimirRec</span><span class="p">(</span><span class="n">no</span><span class="o">-&gt;</span><span class="n">direita</span><span class="p">,</span><span class="w"> </span><span class="n">novoPrefixo</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<a id="__codelineno-22-13" name="__codelineno-22-13" href="#__codelineno-22-13"></a><span class="p">}</span>
+<a id="__codelineno-22-14" name="__codelineno-22-14" href="#__codelineno-22-14"></a>
+<a id="__codelineno-22-15" name="__codelineno-22-15" href="#__codelineno-22-15"></a><span class="kt">void</span><span class="w"> </span><span class="nf">imprimirArvore</span><span class="p">(</span><span class="n">No</span><span class="o">*</span><span class="w"> </span><span class="n">raiz</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-22-16" name="__codelineno-22-16" href="#__codelineno-22-16"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">raiz</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
+<a id="__codelineno-22-17" name="__codelineno-22-17" href="#__codelineno-22-17"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%c</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">raiz</span><span class="o">-&gt;</span><span class="n">valor</span><span class="p">);</span>
+<a id="__codelineno-22-18" name="__codelineno-22-18" href="#__codelineno-22-18"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">raiz</span><span class="o">-&gt;</span><span class="n">esquerda</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span>
+<a id="__codelineno-22-19" name="__codelineno-22-19" href="#__codelineno-22-19"></a><span class="w">        </span><span class="n">imprimirRec</span><span class="p">(</span><span class="n">raiz</span><span class="o">-&gt;</span><span class="n">esquerda</span><span class="p">,</span><span class="w"> </span><span class="s">""</span><span class="p">,</span><span class="w"> </span><span class="n">raiz</span><span class="o">-&gt;</span><span class="n">direita</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+<a id="__codelineno-22-20" name="__codelineno-22-20" href="#__codelineno-22-20"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">raiz</span><span class="o">-&gt;</span><span class="n">direita</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span>
+<a id="__codelineno-22-21" name="__codelineno-22-21" href="#__codelineno-22-21"></a><span class="w">        </span><span class="n">imprimirRec</span><span class="p">(</span><span class="n">raiz</span><span class="o">-&gt;</span><span class="n">direita</span><span class="p">,</span><span class="w"> </span><span class="s">""</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<a id="__codelineno-22-22" name="__codelineno-22-22" href="#__codelineno-22-22"></a><span class="p">}</span>
+<a id="__codelineno-22-23" name="__codelineno-22-23" href="#__codelineno-22-23"></a><span class="c1">// Chamar com: imprimirArvore(raiz);</span>
 </code></pre></div>
+
+Repare que, quando um nó tem um único filho, o desenho não mostra se ele é esquerdo ou direito. Como extensão, imprima `(E)` ou `(D)` ao lado de cada nó.
 
 </details>
 
@@ -3749,13 +3760,13 @@
 <h2 id="10-resumo-do-capitulo">10. Resumo do Capítulo<a class="headerlink" href="#10-resumo-do-capitulo" title="Permanent link">&para;</a></h2>
 <p><strong>Conceitos de árvores gerais</strong></p>
 <ul>
-<li>Definição recursiva: <code>T = {r} ∪ {T₁} ∪ ... ∪ {Tₙ}</code></li>
+<li>Definição recursiva: <code>T = {r} ∪ T₁ ∪ ... ∪ Tₙ</code></li>
 <li>Representações: textual <code>{}</code>, identação, gráfica</li>
 <li>Terminologia: raiz, filho, pai, grau, folha, ancestral, nível, altura</li>
 </ul>
 <p><strong>Árvores binárias: especificidades</strong></p>
 <ul>
-<li>Definição: <code>T = {r} ∪ {Tₑ} ∪ {Tₑ}</code> (ordem importa!)</li>
+<li>Definição: <code>T = {r} ∪ T_esq ∪ T_dir</code> (ordem importa!)</li>
 <li>Implementação em C com <code>struct</code>, ponteiros e alocação dinâmica</li>
 <li>Tipos: estritamente binária, completa, cheia</li>
 <li>Propriedades matemáticas da árvore cheia</li>
@@ -3783,13 +3794,13 @@
 <p><strong>Tópicos abordados nos próximos capítulos:</strong></p>
 <ul>
 <li>Árvores Binárias de Busca (ABB): inserção, busca e remoção com ordenação</li>
-<li>Balanceamento de árvores (AVL, Rubro-Negra)</li>
-<li>Aplicações práticas: expressões aritméticas, índices de banco de dados, compressão (Huffman)</li>
+<li>Balanceamento de árvores (AVL)</li>
+<li>Para pesquisa complementar (fora do escopo deste livro): árvores Rubro-Negras, expressões aritméticas, índices de banco de dados (árvores B), compressão (Huffman)</li>
 </ul>
 <p><strong>Leitura recomendada:</strong></p>
 <ul>
-<li>ZIVIANI, N. <em>Projeto de Algoritmos</em>. Capítulo 5: Árvores.</li>
-<li>GOODRICH, M. T. <em>Data Structures and Algorithms in C</em>. Seção 7: Trees.</li>
+<li>ZIVIANI, N. <em>Projeto de Algoritmos</em>. Capítulo 5: Pesquisa em Memória Primária (árvores de pesquisa).</li>
+<li>GOODRICH, M. T.; TAMASSIA, R.; MOUNT, D. <em>Data Structures and Algorithms in C++</em>. Capítulo 7: Trees.</li>
 </ul>
 <p><strong>Prática sugerida:</strong></p>
 <ol>

@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Livro didático de Estruturas de Dados: Recursividade, TAD, Listas, Pilhas, Filas, Árvores (BST, AVL, Heaps) e Ordenação.
+        <meta name="description" content="Livro didático de Estruturas de Dados: Recursividade, TAD, Listas, Pilhas, Filas, Árvores (ABB e AVL) e Ordenação (incluindo Heap Sort).
 ">
       
       
@@ -380,7 +380,7 @@
   <span class="md-ellipsis">
     
   
-    Capítulo 1 — Introdução e TAD
+    Capítulo 1 — Introdução
   
 
     
@@ -515,7 +515,7 @@
   <span class="md-ellipsis">
     
   
-    2.3 Pilha Estática III: Alocação Dinâmica
+    2.3 Pilha III: Alocação Dinâmica
   
 
     
@@ -1869,12 +1869,16 @@
 
 
 <h1 id="exercicios-sobre-arvores-avl">Exercícios sobre Árvores AVL<a class="headerlink" href="#exercicios-sobre-arvores-avl" title="Permanent link">&para;</a></h1>
-<p><strong>1.</strong> Qual é o requisito fundamental para que uma árvore binária de busca seja considerada uma árvore AVL? Explique também como é calculado o fator de balanceamento de um nó, considerando a definição: <code>FB = Altura(SAD) - Altura(SAE)</code>.</p>
-<p><strong>2.</strong> Para cada uma das árvores binárias de busca abaixo (representadas em notação parentética), calcule o fator de balanceamento de todos os nós e justifique quais são AVL e quais não são:</p>
+<div class="admonition note">
+<p class="admonition-title">Sobre remoção em AVL</p>
+<p>Os exercícios 4, 5, 9 e 10 envolvem <strong>remoção</strong>, que o livro não detalha. Remova o nó como em uma ABB (capítulo 6.2) e, no caminho de volta até a raiz, recalcule a altura e o FB de cada ancestral, aplicando a rotação adequada <strong>em cada</strong> nó desbalanceado. Diferente da inserção, aqui pode surgir um filho com FB = 0: nesse caso, use a rotação simples.</p>
+</div>
+<p><strong>1.</strong> Qual é o requisito fundamental para que uma árvore binária de busca seja considerada uma árvore AVL? Explique também como é calculado o fator de balanceamento de um nó, considerando a definição adotada no livro: <code>FB = Altura(SAE) - Altura(SAD)</code>.</p>
+<p><strong>2.</strong> Para cada uma das árvores binárias de busca abaixo (em notação parentética: <code>X(r, E, D)</code> é a árvore chamada X com raiz <code>r</code>, subárvore esquerda <code>E</code> e direita <code>D</code>; <code>n(e, d)</code> é um nó com seus filhos; <code>·</code> indica subárvore vazia), calcule o fator de balanceamento de todos os nós e justifique quais são AVL e quais não são:</p>
 <ul>
 <li><code>A(5, 3(1, 4), 8(6, 9))</code></li>
 <li><code>B(10, 5(2, 7(6, 8)), 15(12, 18(16, 20)))</code></li>
-<li><code>C(4, 2(1, 3), 6(5, 7(8, 9)))</code></li>
+<li><code>C(4, 2, 6(5, 8(7, 9)))</code></li>
 </ul>
 <p><strong>3.</strong> Seja uma árvore AVL inicialmente vazia. Mostre seu estado final após a inserção, <strong>nessa ordem</strong>, dos elementos: <code>2, 1, 3, 4, 5, 7</code>. Indique em qual momento ocorrem rotações, qual o tipo (LL, RR, LR, RL) e, ao final, apresente a saída da travessia <strong>em pós-ordem</strong>.</p>
 <p><strong>4.</strong> Seja uma árvore AVL inicialmente vazia. Execute as seguintes operações na ordem indicada:</p>
@@ -1887,9 +1891,9 @@
 <p><strong>5.</strong> Considere a árvore AVL abaixo (desenhe-a antes de responder):</p>
 <p><img alt="Árvore AVL para o exercício 5: raiz 30" src="../images/arvores_avl/exercicio5_avl.svg" /></p>
 <p>a) Calcule o fator de balanceamento de cada nó.</p>
-<p>b) Remova o nó com valor <code>20</code> e mostre as rotações necessárias para reestabelecer a propriedade AVL.</p>
+<p>b) Remova, nesta ordem, os nós <code>10</code>, <code>25</code> e <code>20</code>. Após cada remoção, recalcule os FB e mostre as rotações necessárias para restabelecer a propriedade AVL (se houver).</p>
 <p>c) Apresente a árvore resultante e sua travessia <strong>em pós-ordem</strong>.</p>
-<p><strong>6.</strong> Dada a sequência de inserção: <code>12, 6, 18, 3, 9, 15, 21, 1, 4, 8, 10</code>.</p>
+<p><strong>6.</strong> Dada a sequência de inserção: <code>12, 6, 18, 3, 9, 15, 21, 1, 0, 4, 5</code>.</p>
 <p>Construa a árvore AVL passo a passo, indicando explicitamente o tipo de rotação aplicada sempre que o fator de balanceamento sair de <code>{-1, 0, 1}</code>. Ao final, liste os nós visitados em <strong>pós-ordem</strong>.</p>
 <p><strong>7.</strong> Classifique como Verdadeiro (V) ou Falso (F) e justifique tecnicamente:</p>
 <ul>
@@ -1900,7 +1904,7 @@
 </ul>
 <p><strong>8.</strong> Uma árvore AVL contém os nós <code>{8, 4, 12, 2, 6, 10, 14}</code>.
 a) Desenhe a árvore e calcule o fator de balanceamento de cada nó.</p>
-<p>b) Insira os valores <code>1</code> e <code>15</code> (nessa ordem), mostrando as rotações necessárias.</p>
+<p>b) Insira os valores <code>1</code>, <code>0</code>, <code>15</code> e <code>16</code> (nessa ordem), mostrando as rotações necessárias.</p>
 <p>c) Após as inserções, apresente a árvore final e a sequência em <strong>pós-ordem</strong>.</p>
 <p><strong>9.</strong> (Desafio) Seja uma AVL vazia. Insira a sequência: <code>50, 30, 70, 20, 40, 60, 80, 10, 25, 35, 45</code>. Em seguida, remova <code>30</code> e <code>70</code>.</p>
 <ul>
@@ -1908,11 +1912,11 @@ a) Desenhe a árvore e calcule o fator de balanceamento de cada nó.</p>
 <li>Calcule o fator de balanceamento de todos os nós na árvore final.</li>
 <li>Forneça a saída em <strong>pós-ordem</strong> da árvore resultante.</li>
 </ul>
-<p><strong>10.</strong> Explique, com suas palavras, por que a operação de remoção em uma árvore AVL pode exigir o "propagação do desbalanceamento" até a raiz, enquanto a inserção normalmente exige no máximo duas rotações em um único caminho. Ilustre com um exemplo mínimo de 4 nós.</p>
+<p><strong>10.</strong> Explique, com suas palavras, por que a operação de remoção em uma árvore AVL pode exigir a "propagação do desbalanceamento" até a raiz, enquanto a inserção exige no máximo uma rotação (simples ou dupla, ou seja, até duas rotações simples) em um único ponto do caminho. Ilustre com um exemplo mínimo de 4 nós.</p>
 <hr />
 <h2 id="dicas-para-resolucao">💡 Dicas para resolução<a class="headerlink" href="#dicas-para-resolucao" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Use a definição solicitada: <code>FB = Altura(SAD) - Altura(SAE)</code>. Valores válidos em uma AVL: <code>-1, 0, 1</code>.</li>
+<li>Use a definição do livro: <code>FB = Altura(SAE) - Altura(SAD)</code>. Valores válidos em uma AVL: <code>-1, 0, 1</code>. Com essa convenção, FB = +2 indica peso à esquerda (casos LL/LR) e FB = −2, peso à direita (RR/RL).</li>
 <li>Rotações: <code>LL</code> → rotação simples à direita; <code>RR</code> → rotação simples à esquerda; <code>LR</code> → rotação dupla (esquerda-direita); <code>RL</code> → rotação dupla (direita-esquerda).</li>
 <li>Pós-ordem: visite a subárvore esquerda, depois a direita, e por fim a raiz.</li>
 <li>Desenhe passo a passo. A maioria dos erros vem de pular a atualização de alturas após rotações ou remoções.</li>

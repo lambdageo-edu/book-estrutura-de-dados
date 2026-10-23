@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Livro didático de Estruturas de Dados: Recursividade, TAD, Listas, Pilhas, Filas, Árvores (BST, AVL, Heaps) e Ordenação.
+        <meta name="description" content="Livro didático de Estruturas de Dados: Recursividade, TAD, Listas, Pilhas, Filas, Árvores (ABB e AVL) e Ordenação (incluindo Heap Sort).
 ">
       
       
@@ -380,7 +380,7 @@
   <span class="md-ellipsis">
     
   
-    Capítulo 1 — Introdução e TAD
+    Capítulo 1 — Introdução
   
 
     
@@ -515,7 +515,7 @@
   <span class="md-ellipsis">
     
   
-    2.3 Pilha Estática III: Alocação Dinâmica
+    2.3 Pilha III: Alocação Dinâmica
   
 
     
@@ -2665,12 +2665,12 @@
 <li>Todas as funções devem ser <strong>recursivas</strong>, salvo indicação contrária.</li>
 <li>Árvores vazias são representadas por <code>NULL</code>.</li>
 <li>Use <code>int</code> para valores e retornos lógicos (<code>1</code> = verdadeiro, <code>0</code> = falso).</li>
-<li>Libere a memória com <code>liberar_arvore()</code> ao final dos programas de teste.</li>
+<li>Libere a memória com <code>destruir_arvore()</code> (fornecida no código inicial) ao final dos programas de teste.</li>
 </ul>
 <hr />
 <h2 id="nivel-1-representacao-e-compreensao-estrutural">🔹 Nível 1: Representação e Compreensão Estrutural<a class="headerlink" href="#nivel-1-representacao-e-compreensao-estrutural" title="Permanent link">&para;</a></h2>
 <h3 id="exercicio-1-da-notacao-textual-para-o-desenho">Exercício 1 — Da Notação Textual para o Desenho<a class="headerlink" href="#exercicio-1-da-notacao-textual-para-o-desenho" title="Permanent link">&para;</a></h3>
-<p>Dada a representação textual:</p>
+<p>Dada a representação textual (<code>NULL</code> indica subárvore vazia; a ordem é raiz, esquerda, direita):</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>T = {10, {20, {30, NULL, NULL}, {40, NULL, NULL}}, {50, NULL, {60, {70, NULL, NULL}, NULL}}}
 </code></pre></div>
 <p>a) Desenhe a árvore correspondente em formato gráfico.</p>
@@ -2789,6 +2789,7 @@ a) <code>pre_ordem(raiz)</code></p>
 <a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>│  └─ 40
 <a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>└─ 50
 <a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>   └─ 60
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>      └─ 70
 </code></pre></div>
 <blockquote>
 <p>Chame inicialmente com <code>imprimir_formatado(raiz, 0);</code></p>
@@ -2799,7 +2800,7 @@ a) <code>pre_ordem(raiz)</code></p>
 <p>Implemente:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">liberar_arvore</span><span class="p">(</span><span class="n">Arvore</span><span class="o">*</span><span class="w"> </span><span class="n">raiz</span><span class="p">);</span>
 </code></pre></div>
-<p>Libera recursivamente toda a memória alocada. Use percurso <strong>pós-ordem</strong> para garantir que filhos sejam liberados antes dos pais.</p>
+<p>Sem consultar a <code>destruir_arvore()</code> do código inicial, reescreva-a com este nome. Libera recursivamente toda a memória alocada. Use percurso <strong>pós-ordem</strong> para garantir que filhos sejam liberados antes dos pais, e explique o que daria errado em pré-ordem.</p>
 <h3 id="exercicio-b2-busca-de-valor-sem-ordenacao">Exercício B2 — Busca de Valor (Sem Ordenação)<a class="headerlink" href="#exercicio-b2-busca-de-valor-sem-ordenacao" title="Permanent link">&para;</a></h3>
 <p>Implemente:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="kt">int</span><span class="w"> </span><span class="nf">buscar_valor</span><span class="p">(</span><span class="n">Arvore</span><span class="o">*</span><span class="w"> </span><span class="n">raiz</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">alvo</span><span class="p">);</span>

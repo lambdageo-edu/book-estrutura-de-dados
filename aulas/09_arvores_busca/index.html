@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Livro didático de Estruturas de Dados: Recursividade, TAD, Listas, Pilhas, Filas, Árvores (BST, AVL, Heaps) e Ordenação.
+        <meta name="description" content="Livro didático de Estruturas de Dados: Recursividade, TAD, Listas, Pilhas, Filas, Árvores (ABB e AVL) e Ordenação (incluindo Heap Sort).
 ">
       
       
@@ -380,7 +380,7 @@
   <span class="md-ellipsis">
     
   
-    Capítulo 1 — Introdução e TAD
+    Capítulo 1 — Introdução
   
 
     
@@ -515,7 +515,7 @@
   <span class="md-ellipsis">
     
   
-    2.3 Pilha Estática III: Alocação Dinâmica
+    2.3 Pilha III: Alocação Dinâmica
   
 
     
@@ -2954,7 +2954,7 @@
 - As subárvores à esquerda e à direita também são ABBs (recursividade)</p>
 </blockquote>
 <h3 id="22-exemplos-visuais">2.2 Exemplos Visuais<a class="headerlink" href="#22-exemplos-visuais" title="Permanent link">&para;</a></h3>
-<p><img alt="image.png" src="../images/arvores_busca/image.png" /></p>
+<p><img alt="Comparação entre uma ABB válida (raiz 20) e uma árvore que não é ABB, com 25 à esquerda de 20 e 15 à direita" src="../images/arvores_busca/image.png" /></p>
 <h3 id="23-consequencia-importante-percurso-em-ordem">2.3 Consequência Importante: Percurso Em-Ordem<a class="headerlink" href="#23-consequencia-importante-percurso-em-ordem" title="Permanent link">&para;</a></h3>
 <blockquote>
 <p><strong>Teorema:</strong> O percurso <strong>em-ordem</strong> (Esquerda → Raiz → Direita) de uma ABB retorna os elementos em <strong>ordem crescente</strong>.</p>
@@ -3058,7 +3058,7 @@
 <li>raiz=20 → 18 &lt; 20 → vai para esquerda</li>
 <li>atual=10 → 18 &gt; 10 → vai para direita</li>
 <li>atual=15 → 18 &gt; 15 → vai para direita</li>
-<li>atual=NULL → ✗ Não encontrado (4 comparações)</li>
+<li>atual=NULL → ✗ Não encontrado (3 comparações com chaves)</li>
 </ol>
 <h3 id="34-operacao-2-insercao">3.4 Operação 2: Inserção<a class="headerlink" href="#34-operacao-2-insercao" title="Permanent link">&para;</a></h3>
 <blockquote>
@@ -3088,7 +3088,7 @@
 <a id="__codelineno-8-22" name="__codelineno-8-22" href="#__codelineno-8-22"></a><span class="p">}</span>
 </code></pre></div>
 <h4 id="exemplo-visual-de-insercoes-sequenciais">Exemplo Visual de Inserções Sequenciais<a class="headerlink" href="#exemplo-visual-de-insercoes-sequenciais" title="Permanent link">&para;</a></h4>
-<p><img alt="image.png" src="../images/arvores_busca/image_1.png" /></p>
+<p><img alt="Construção passo a passo da ABB inserindo 20, 10, 30, 5, 15, 25 e 35" src="../images/arvores_busca/image_1.png" /></p>
 <h3 id="35-operacao-3-remocao-caso-mais-complexo">3.5 Operação 3: Remoção (Caso Mais Complexo)<a class="headerlink" href="#35-operacao-3-remocao-caso-mais-complexo" title="Permanent link">&para;</a></h3>
 <blockquote>
 <p><strong>Desafio:</strong> Remover um nó mantendo a propriedade da ABB.</p>
@@ -3101,11 +3101,12 @@
 <p><img alt="Árvore depois de remover o nó 5" src="../images/arvores_busca/remocao_folha_depois.svg" /></p>
 <p>Implementação: simplesmente libera o nó e retorna <code>NULL</code>.</p>
 <h4 id="caso-2-no-tem-um-unico-filho">Caso 2: Nó tem um único filho<a class="headerlink" href="#caso-2-no-tem-um-unico-filho" title="Permanent link">&para;</a></h4>
-<p><strong>Antes (remover o nó 10, marcado com ↑):</strong></p>
-<p><img alt="Árvore antes de remover o nó 10, que tem um único filho" src="../images/arvores_busca/remocao_umfilho_antes.svg" /></p>
+<p>Partindo da árvore obtida no Caso 1:</p>
+<p><strong>Antes (remover o nó 10, destacado):</strong></p>
+<p><img alt="Árvore antes de remover o nó 10, que tem um único filho, o 15" src="../images/arvores_busca/remocao_umfilho_antes.svg" /></p>
 <p><strong>Depois:</strong></p>
 <p><img alt="Árvore depois de remover o nó 10" src="../images/arvores_busca/remocao_umfilho_depois.svg" /></p>
-<p>Implementação: "puxa" o filho para o lugar do pai.</p>
+<p>Implementação: "puxa" o filho (15) para o lugar do pai, liberando o nó removido.</p>
 <h4 id="caso-3-no-tem-dois-filhos-mais-complexo">Caso 3: Nó tem dois filhos (mais complexo)<a class="headerlink" href="#caso-3-no-tem-dois-filhos-mais-complexo" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p><strong>Estratégia:</strong> Substituir o valor do nó a ser removido pelo:
@@ -3281,62 +3282,74 @@
 <a id="__codelineno-11-68" name="__codelineno-11-68" href="#__codelineno-11-68"></a><span class="w">    </span><span class="p">}</span>
 <a id="__codelineno-11-69" name="__codelineno-11-69" href="#__codelineno-11-69"></a><span class="p">}</span>
 <a id="__codelineno-11-70" name="__codelineno-11-70" href="#__codelineno-11-70"></a>
-<a id="__codelineno-11-71" name="__codelineno-11-71" href="#__codelineno-11-71"></a><span class="kt">void</span><span class="w"> </span><span class="nf">imprimirABB</span><span class="p">(</span><span class="n">No</span><span class="o">*</span><span class="w"> </span><span class="n">raiz</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">nivel</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-11-72" name="__codelineno-11-72" href="#__codelineno-11-72"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">raiz</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
-<a id="__codelineno-11-73" name="__codelineno-11-73" href="#__codelineno-11-73"></a><span class="w">    </span><span class="n">imprimirABB</span><span class="p">(</span><span class="n">raiz</span><span class="o">-&gt;</span><span class="n">direita</span><span class="p">,</span><span class="w"> </span><span class="n">nivel</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
-<a id="__codelineno-11-74" name="__codelineno-11-74" href="#__codelineno-11-74"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nivel</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">"    "</span><span class="p">);</span>
-<a id="__codelineno-11-75" name="__codelineno-11-75" href="#__codelineno-11-75"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">raiz</span><span class="o">-&gt;</span><span class="n">valor</span><span class="p">);</span>
-<a id="__codelineno-11-76" name="__codelineno-11-76" href="#__codelineno-11-76"></a><span class="w">    </span><span class="n">imprimirABB</span><span class="p">(</span><span class="n">raiz</span><span class="o">-&gt;</span><span class="n">esquerda</span><span class="p">,</span><span class="w"> </span><span class="n">nivel</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
-<a id="__codelineno-11-77" name="__codelineno-11-77" href="#__codelineno-11-77"></a><span class="p">}</span>
-<a id="__codelineno-11-78" name="__codelineno-11-78" href="#__codelineno-11-78"></a>
-<a id="__codelineno-11-79" name="__codelineno-11-79" href="#__codelineno-11-79"></a><span class="kt">void</span><span class="w"> </span><span class="nf">liberarABB</span><span class="p">(</span><span class="n">No</span><span class="o">*</span><span class="w"> </span><span class="n">raiz</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-11-80" name="__codelineno-11-80" href="#__codelineno-11-80"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">raiz</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-11-81" name="__codelineno-11-81" href="#__codelineno-11-81"></a><span class="w">        </span><span class="n">liberarABB</span><span class="p">(</span><span class="n">raiz</span><span class="o">-&gt;</span><span class="n">esquerda</span><span class="p">);</span>
-<a id="__codelineno-11-82" name="__codelineno-11-82" href="#__codelineno-11-82"></a><span class="w">        </span><span class="n">liberarABB</span><span class="p">(</span><span class="n">raiz</span><span class="o">-&gt;</span><span class="n">direita</span><span class="p">);</span>
-<a id="__codelineno-11-83" name="__codelineno-11-83" href="#__codelineno-11-83"></a><span class="w">        </span><span class="n">free</span><span class="p">(</span><span class="n">raiz</span><span class="p">);</span>
-<a id="__codelineno-11-84" name="__codelineno-11-84" href="#__codelineno-11-84"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-11-85" name="__codelineno-11-85" href="#__codelineno-11-85"></a><span class="p">}</span>
-<a id="__codelineno-11-86" name="__codelineno-11-86" href="#__codelineno-11-86"></a>
-<a id="__codelineno-11-87" name="__codelineno-11-87" href="#__codelineno-11-87"></a><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-11-88" name="__codelineno-11-88" href="#__codelineno-11-88"></a><span class="w">    </span><span class="n">No</span><span class="o">*</span><span class="w"> </span><span class="n">raiz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
-<a id="__codelineno-11-89" name="__codelineno-11-89" href="#__codelineno-11-89"></a>
-<a id="__codelineno-11-90" name="__codelineno-11-90" href="#__codelineno-11-90"></a><span class="w">    </span><span class="c1">// Inserindo valores</span>
-<a id="__codelineno-11-91" name="__codelineno-11-91" href="#__codelineno-11-91"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">valores</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span><span class="w"> </span><span class="mi">25</span><span class="p">,</span><span class="w"> </span><span class="mi">35</span><span class="p">};</span>
-<a id="__codelineno-11-92" name="__codelineno-11-92" href="#__codelineno-11-92"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">7</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-11-93" name="__codelineno-11-93" href="#__codelineno-11-93"></a><span class="w">        </span><span class="n">raiz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">inserir</span><span class="p">(</span><span class="n">raiz</span><span class="p">,</span><span class="w"> </span><span class="n">valores</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
-<a id="__codelineno-11-94" name="__codelineno-11-94" href="#__codelineno-11-94"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-11-95" name="__codelineno-11-95" href="#__codelineno-11-95"></a>
-<a id="__codelineno-11-96" name="__codelineno-11-96" href="#__codelineno-11-96"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"Árvore após inserções (visualização rotacionada 90°):</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
-<a id="__codelineno-11-97" name="__codelineno-11-97" href="#__codelineno-11-97"></a><span class="w">    </span><span class="n">imprimirABB</span><span class="p">(</span><span class="n">raiz</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<a id="__codelineno-11-71" name="__codelineno-11-71" href="#__codelineno-11-71"></a><span class="kt">int</span><span class="w"> </span><span class="nf">contarNos</span><span class="p">(</span><span class="n">No</span><span class="o">*</span><span class="w"> </span><span class="n">raiz</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-11-72" name="__codelineno-11-72" href="#__codelineno-11-72"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">raiz</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<a id="__codelineno-11-73" name="__codelineno-11-73" href="#__codelineno-11-73"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">contarNos</span><span class="p">(</span><span class="n">raiz</span><span class="o">-&gt;</span><span class="n">esquerda</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">contarNos</span><span class="p">(</span><span class="n">raiz</span><span class="o">-&gt;</span><span class="n">direita</span><span class="p">);</span>
+<a id="__codelineno-11-74" name="__codelineno-11-74" href="#__codelineno-11-74"></a><span class="p">}</span>
+<a id="__codelineno-11-75" name="__codelineno-11-75" href="#__codelineno-11-75"></a>
+<a id="__codelineno-11-76" name="__codelineno-11-76" href="#__codelineno-11-76"></a><span class="kt">int</span><span class="w"> </span><span class="nf">altura</span><span class="p">(</span><span class="n">No</span><span class="o">*</span><span class="w"> </span><span class="n">raiz</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-11-77" name="__codelineno-11-77" href="#__codelineno-11-77"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">raiz</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+<a id="__codelineno-11-78" name="__codelineno-11-78" href="#__codelineno-11-78"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">hEsq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">altura</span><span class="p">(</span><span class="n">raiz</span><span class="o">-&gt;</span><span class="n">esquerda</span><span class="p">);</span>
+<a id="__codelineno-11-79" name="__codelineno-11-79" href="#__codelineno-11-79"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">hDir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">altura</span><span class="p">(</span><span class="n">raiz</span><span class="o">-&gt;</span><span class="n">direita</span><span class="p">);</span>
+<a id="__codelineno-11-80" name="__codelineno-11-80" href="#__codelineno-11-80"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">hEsq</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">hDir</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">hEsq</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">hDir</span><span class="p">);</span>
+<a id="__codelineno-11-81" name="__codelineno-11-81" href="#__codelineno-11-81"></a><span class="p">}</span>
+<a id="__codelineno-11-82" name="__codelineno-11-82" href="#__codelineno-11-82"></a>
+<a id="__codelineno-11-83" name="__codelineno-11-83" href="#__codelineno-11-83"></a><span class="kt">void</span><span class="w"> </span><span class="nf">imprimirABB</span><span class="p">(</span><span class="n">No</span><span class="o">*</span><span class="w"> </span><span class="n">raiz</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">nivel</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-11-84" name="__codelineno-11-84" href="#__codelineno-11-84"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">raiz</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
+<a id="__codelineno-11-85" name="__codelineno-11-85" href="#__codelineno-11-85"></a><span class="w">    </span><span class="n">imprimirABB</span><span class="p">(</span><span class="n">raiz</span><span class="o">-&gt;</span><span class="n">direita</span><span class="p">,</span><span class="w"> </span><span class="n">nivel</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<a id="__codelineno-11-86" name="__codelineno-11-86" href="#__codelineno-11-86"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nivel</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">"    "</span><span class="p">);</span>
+<a id="__codelineno-11-87" name="__codelineno-11-87" href="#__codelineno-11-87"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">raiz</span><span class="o">-&gt;</span><span class="n">valor</span><span class="p">);</span>
+<a id="__codelineno-11-88" name="__codelineno-11-88" href="#__codelineno-11-88"></a><span class="w">    </span><span class="n">imprimirABB</span><span class="p">(</span><span class="n">raiz</span><span class="o">-&gt;</span><span class="n">esquerda</span><span class="p">,</span><span class="w"> </span><span class="n">nivel</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<a id="__codelineno-11-89" name="__codelineno-11-89" href="#__codelineno-11-89"></a><span class="p">}</span>
+<a id="__codelineno-11-90" name="__codelineno-11-90" href="#__codelineno-11-90"></a>
+<a id="__codelineno-11-91" name="__codelineno-11-91" href="#__codelineno-11-91"></a><span class="kt">void</span><span class="w"> </span><span class="nf">liberarABB</span><span class="p">(</span><span class="n">No</span><span class="o">*</span><span class="w"> </span><span class="n">raiz</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-11-92" name="__codelineno-11-92" href="#__codelineno-11-92"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">raiz</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-11-93" name="__codelineno-11-93" href="#__codelineno-11-93"></a><span class="w">        </span><span class="n">liberarABB</span><span class="p">(</span><span class="n">raiz</span><span class="o">-&gt;</span><span class="n">esquerda</span><span class="p">);</span>
+<a id="__codelineno-11-94" name="__codelineno-11-94" href="#__codelineno-11-94"></a><span class="w">        </span><span class="n">liberarABB</span><span class="p">(</span><span class="n">raiz</span><span class="o">-&gt;</span><span class="n">direita</span><span class="p">);</span>
+<a id="__codelineno-11-95" name="__codelineno-11-95" href="#__codelineno-11-95"></a><span class="w">        </span><span class="n">free</span><span class="p">(</span><span class="n">raiz</span><span class="p">);</span>
+<a id="__codelineno-11-96" name="__codelineno-11-96" href="#__codelineno-11-96"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-11-97" name="__codelineno-11-97" href="#__codelineno-11-97"></a><span class="p">}</span>
 <a id="__codelineno-11-98" name="__codelineno-11-98" href="#__codelineno-11-98"></a>
-<a id="__codelineno-11-99" name="__codelineno-11-99" href="#__codelineno-11-99"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">Percurso em-ordem (deve sair ordenado): "</span><span class="p">);</span>
-<a id="__codelineno-11-100" name="__codelineno-11-100" href="#__codelineno-11-100"></a><span class="w">    </span><span class="n">emOrdem</span><span class="p">(</span><span class="n">raiz</span><span class="p">);</span>
-<a id="__codelineno-11-101" name="__codelineno-11-101" href="#__codelineno-11-101"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
-<a id="__codelineno-11-102" name="__codelineno-11-102" href="#__codelineno-11-102"></a>
-<a id="__codelineno-11-103" name="__codelineno-11-103" href="#__codelineno-11-103"></a><span class="w">    </span><span class="c1">// Testando busca</span>
-<a id="__codelineno-11-104" name="__codelineno-11-104" href="#__codelineno-11-104"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">chave</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">25</span><span class="p">;</span>
-<a id="__codelineno-11-105" name="__codelineno-11-105" href="#__codelineno-11-105"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">buscar</span><span class="p">(</span><span class="n">raiz</span><span class="p">,</span><span class="w"> </span><span class="n">chave</span><span class="p">))</span>
-<a id="__codelineno-11-106" name="__codelineno-11-106" href="#__codelineno-11-106"></a><span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">"✓ %d encontrado na árvore</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">chave</span><span class="p">);</span>
-<a id="__codelineno-11-107" name="__codelineno-11-107" href="#__codelineno-11-107"></a><span class="w">    </span><span class="k">else</span>
-<a id="__codelineno-11-108" name="__codelineno-11-108" href="#__codelineno-11-108"></a><span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">"✗ %d não encontrado</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">chave</span><span class="p">);</span>
-<a id="__codelineno-11-109" name="__codelineno-11-109" href="#__codelineno-11-109"></a>
-<a id="__codelineno-11-110" name="__codelineno-11-110" href="#__codelineno-11-110"></a><span class="w">    </span><span class="c1">// Removendo um nó com dois filhos</span>
-<a id="__codelineno-11-111" name="__codelineno-11-111" href="#__codelineno-11-111"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">Removendo 20 (nó com dois filhos)...</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
-<a id="__codelineno-11-112" name="__codelineno-11-112" href="#__codelineno-11-112"></a><span class="w">    </span><span class="n">raiz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">remover</span><span class="p">(</span><span class="n">raiz</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">);</span>
-<a id="__codelineno-11-113" name="__codelineno-11-113" href="#__codelineno-11-113"></a><span class="w">    </span><span class="n">imprimirABB</span><span class="p">(</span><span class="n">raiz</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<a id="__codelineno-11-99" name="__codelineno-11-99" href="#__codelineno-11-99"></a><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-11-100" name="__codelineno-11-100" href="#__codelineno-11-100"></a><span class="w">    </span><span class="n">No</span><span class="o">*</span><span class="w"> </span><span class="n">raiz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
+<a id="__codelineno-11-101" name="__codelineno-11-101" href="#__codelineno-11-101"></a>
+<a id="__codelineno-11-102" name="__codelineno-11-102" href="#__codelineno-11-102"></a><span class="w">    </span><span class="c1">// Inserindo valores</span>
+<a id="__codelineno-11-103" name="__codelineno-11-103" href="#__codelineno-11-103"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">valores</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span><span class="w"> </span><span class="mi">25</span><span class="p">,</span><span class="w"> </span><span class="mi">35</span><span class="p">};</span>
+<a id="__codelineno-11-104" name="__codelineno-11-104" href="#__codelineno-11-104"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">7</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-11-105" name="__codelineno-11-105" href="#__codelineno-11-105"></a><span class="w">        </span><span class="n">raiz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">inserir</span><span class="p">(</span><span class="n">raiz</span><span class="p">,</span><span class="w"> </span><span class="n">valores</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+<a id="__codelineno-11-106" name="__codelineno-11-106" href="#__codelineno-11-106"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-11-107" name="__codelineno-11-107" href="#__codelineno-11-107"></a>
+<a id="__codelineno-11-108" name="__codelineno-11-108" href="#__codelineno-11-108"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"Árvore após inserções (visualização rotacionada 90°):</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+<a id="__codelineno-11-109" name="__codelineno-11-109" href="#__codelineno-11-109"></a><span class="w">    </span><span class="n">imprimirABB</span><span class="p">(</span><span class="n">raiz</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<a id="__codelineno-11-110" name="__codelineno-11-110" href="#__codelineno-11-110"></a>
+<a id="__codelineno-11-111" name="__codelineno-11-111" href="#__codelineno-11-111"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">Percurso em-ordem (deve sair ordenado): "</span><span class="p">);</span>
+<a id="__codelineno-11-112" name="__codelineno-11-112" href="#__codelineno-11-112"></a><span class="w">    </span><span class="n">emOrdem</span><span class="p">(</span><span class="n">raiz</span><span class="p">);</span>
+<a id="__codelineno-11-113" name="__codelineno-11-113" href="#__codelineno-11-113"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
 <a id="__codelineno-11-114" name="__codelineno-11-114" href="#__codelineno-11-114"></a>
-<a id="__codelineno-11-115" name="__codelineno-11-115" href="#__codelineno-11-115"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">Em-ordem após remoção: "</span><span class="p">);</span>
-<a id="__codelineno-11-116" name="__codelineno-11-116" href="#__codelineno-11-116"></a><span class="w">    </span><span class="n">emOrdem</span><span class="p">(</span><span class="n">raiz</span><span class="p">);</span>
-<a id="__codelineno-11-117" name="__codelineno-11-117" href="#__codelineno-11-117"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
-<a id="__codelineno-11-118" name="__codelineno-11-118" href="#__codelineno-11-118"></a>
-<a id="__codelineno-11-119" name="__codelineno-11-119" href="#__codelineno-11-119"></a><span class="w">    </span><span class="c1">// Estatísticas</span>
-<a id="__codelineno-11-120" name="__codelineno-11-120" href="#__codelineno-11-120"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">Estatísticas:</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
-<a id="__codelineno-11-121" name="__codelineno-11-121" href="#__codelineno-11-121"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"  Nós: %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">contarNos</span><span class="p">(</span><span class="n">raiz</span><span class="p">));</span>
-<a id="__codelineno-11-122" name="__codelineno-11-122" href="#__codelineno-11-122"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"  Altura: %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">altura</span><span class="p">(</span><span class="n">raiz</span><span class="p">));</span>
-<a id="__codelineno-11-123" name="__codelineno-11-123" href="#__codelineno-11-123"></a>
-<a id="__codelineno-11-124" name="__codelineno-11-124" href="#__codelineno-11-124"></a><span class="w">    </span><span class="n">liberarABB</span><span class="p">(</span><span class="n">raiz</span><span class="p">);</span>
-<a id="__codelineno-11-125" name="__codelineno-11-125" href="#__codelineno-11-125"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<a id="__codelineno-11-126" name="__codelineno-11-126" href="#__codelineno-11-126"></a><span class="p">}</span>
+<a id="__codelineno-11-115" name="__codelineno-11-115" href="#__codelineno-11-115"></a><span class="w">    </span><span class="c1">// Testando busca</span>
+<a id="__codelineno-11-116" name="__codelineno-11-116" href="#__codelineno-11-116"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">chave</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">25</span><span class="p">;</span>
+<a id="__codelineno-11-117" name="__codelineno-11-117" href="#__codelineno-11-117"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">buscar</span><span class="p">(</span><span class="n">raiz</span><span class="p">,</span><span class="w"> </span><span class="n">chave</span><span class="p">))</span>
+<a id="__codelineno-11-118" name="__codelineno-11-118" href="#__codelineno-11-118"></a><span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">"✓ %d encontrado na árvore</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">chave</span><span class="p">);</span>
+<a id="__codelineno-11-119" name="__codelineno-11-119" href="#__codelineno-11-119"></a><span class="w">    </span><span class="k">else</span>
+<a id="__codelineno-11-120" name="__codelineno-11-120" href="#__codelineno-11-120"></a><span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">"✗ %d não encontrado</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">chave</span><span class="p">);</span>
+<a id="__codelineno-11-121" name="__codelineno-11-121" href="#__codelineno-11-121"></a>
+<a id="__codelineno-11-122" name="__codelineno-11-122" href="#__codelineno-11-122"></a><span class="w">    </span><span class="c1">// Removendo um nó com dois filhos</span>
+<a id="__codelineno-11-123" name="__codelineno-11-123" href="#__codelineno-11-123"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">Removendo 20 (nó com dois filhos)...</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+<a id="__codelineno-11-124" name="__codelineno-11-124" href="#__codelineno-11-124"></a><span class="w">    </span><span class="n">raiz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">remover</span><span class="p">(</span><span class="n">raiz</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">);</span>
+<a id="__codelineno-11-125" name="__codelineno-11-125" href="#__codelineno-11-125"></a><span class="w">    </span><span class="n">imprimirABB</span><span class="p">(</span><span class="n">raiz</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<a id="__codelineno-11-126" name="__codelineno-11-126" href="#__codelineno-11-126"></a>
+<a id="__codelineno-11-127" name="__codelineno-11-127" href="#__codelineno-11-127"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">Em-ordem após remoção: "</span><span class="p">);</span>
+<a id="__codelineno-11-128" name="__codelineno-11-128" href="#__codelineno-11-128"></a><span class="w">    </span><span class="n">emOrdem</span><span class="p">(</span><span class="n">raiz</span><span class="p">);</span>
+<a id="__codelineno-11-129" name="__codelineno-11-129" href="#__codelineno-11-129"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+<a id="__codelineno-11-130" name="__codelineno-11-130" href="#__codelineno-11-130"></a>
+<a id="__codelineno-11-131" name="__codelineno-11-131" href="#__codelineno-11-131"></a><span class="w">    </span><span class="c1">// Estatísticas</span>
+<a id="__codelineno-11-132" name="__codelineno-11-132" href="#__codelineno-11-132"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">Estatísticas:</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+<a id="__codelineno-11-133" name="__codelineno-11-133" href="#__codelineno-11-133"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"  Nós: %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">contarNos</span><span class="p">(</span><span class="n">raiz</span><span class="p">));</span>
+<a id="__codelineno-11-134" name="__codelineno-11-134" href="#__codelineno-11-134"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"  Altura: %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">altura</span><span class="p">(</span><span class="n">raiz</span><span class="p">));</span>
+<a id="__codelineno-11-135" name="__codelineno-11-135" href="#__codelineno-11-135"></a>
+<a id="__codelineno-11-136" name="__codelineno-11-136" href="#__codelineno-11-136"></a><span class="w">    </span><span class="n">liberarABB</span><span class="p">(</span><span class="n">raiz</span><span class="p">);</span>
+<a id="__codelineno-11-137" name="__codelineno-11-137" href="#__codelineno-11-137"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<a id="__codelineno-11-138" name="__codelineno-11-138" href="#__codelineno-11-138"></a><span class="p">}</span>
 </code></pre></div>
 <p><strong>Saída esperada:</strong></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>Árvore após inserções (visualização rotacionada 90°):
@@ -3354,17 +3367,16 @@
 <a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a>Removendo 20 (nó com dois filhos)...
 <a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a>        35
 <a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a>    30
-<a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a>        25
-<a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a>25
-<a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a>        15
-<a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a>    10
-<a id="__codelineno-12-20" name="__codelineno-12-20" href="#__codelineno-12-20"></a>        5
-<a id="__codelineno-12-21" name="__codelineno-12-21" href="#__codelineno-12-21"></a>
-<a id="__codelineno-12-22" name="__codelineno-12-22" href="#__codelineno-12-22"></a>Em-ordem após remoção: 5 10 15 25 30 35
-<a id="__codelineno-12-23" name="__codelineno-12-23" href="#__codelineno-12-23"></a>
-<a id="__codelineno-12-24" name="__codelineno-12-24" href="#__codelineno-12-24"></a>Estatísticas:
-<a id="__codelineno-12-25" name="__codelineno-12-25" href="#__codelineno-12-25"></a>  Nós: 6
-<a id="__codelineno-12-26" name="__codelineno-12-26" href="#__codelineno-12-26"></a>  Altura: 3
+<a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a>25
+<a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a>        15
+<a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a>    10
+<a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a>        5
+<a id="__codelineno-12-20" name="__codelineno-12-20" href="#__codelineno-12-20"></a>
+<a id="__codelineno-12-21" name="__codelineno-12-21" href="#__codelineno-12-21"></a>Em-ordem após remoção: 5 10 15 25 30 35
+<a id="__codelineno-12-22" name="__codelineno-12-22" href="#__codelineno-12-22"></a>
+<a id="__codelineno-12-23" name="__codelineno-12-23" href="#__codelineno-12-23"></a>Estatísticas:
+<a id="__codelineno-12-24" name="__codelineno-12-24" href="#__codelineno-12-24"></a>  Nós: 6
+<a id="__codelineno-12-25" name="__codelineno-12-25" href="#__codelineno-12-25"></a>  Altura: 2
 </code></pre></div>
 <hr />
 <h2 id="5-analise-de-complexidade">5. Análise de Complexidade<a class="headerlink" href="#5-analise-de-complexidade" title="Permanent link">&para;</a></h2>
@@ -3461,7 +3473,7 @@
 </tbody>
 </table>
 <blockquote>
-<p><em>Inserção no final; </em>*Considerando ponteiro para a posição</p>
+<p>*Inserção no final; **Considerando ponteiro para a posição</p>
 </blockquote>
 <hr />
 <h2 id="6-exercicios-para-fixacao">6. Exercícios para Fixação<a class="headerlink" href="#6-exercicios-para-fixacao" title="Permanent link">&para;</a></h2>
@@ -3501,17 +3513,23 @@ d) Busca por 10: 50→30→20→10 = 4 comparações
 <details>
 <summary>Esboço de solução</summary>
 
-<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="kt">bool</span><span class="w"> </span><span class="nf">ehABBAux</span><span class="p">(</span><span class="n">No</span><span class="o">*</span><span class="w"> </span><span class="n">raiz</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">min</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">max</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">raiz</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
-<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">raiz</span><span class="o">-&gt;</span><span class="n">valor</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">min</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">raiz</span><span class="o">-&gt;</span><span class="n">valor</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">max</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
-<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">ehABBAux</span><span class="p">(</span><span class="n">raiz</span><span class="o">-&gt;</span><span class="n">esquerda</span><span class="p">,</span><span class="w"> </span><span class="n">min</span><span class="p">,</span><span class="w"> </span><span class="n">raiz</span><span class="o">-&gt;</span><span class="n">valor</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span>
-<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="w">           </span><span class="n">ehABBAux</span><span class="p">(</span><span class="n">raiz</span><span class="o">-&gt;</span><span class="n">direita</span><span class="p">,</span><span class="w"> </span><span class="n">raiz</span><span class="o">-&gt;</span><span class="n">valor</span><span class="p">,</span><span class="w"> </span><span class="n">max</span><span class="p">);</span>
-<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="p">}</span>
-<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>
-<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="kt">bool</span><span class="w"> </span><span class="nf">ehABB</span><span class="p">(</span><span class="n">No</span><span class="o">*</span><span class="w"> </span><span class="n">raiz</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">ehABBAux</span><span class="p">(</span><span class="n">raiz</span><span class="p">,</span><span class="w"> </span><span class="n">INT_MIN</span><span class="p">,</span><span class="w"> </span><span class="n">INT_MAX</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;limits.h&gt;</span><span class="w">   </span><span class="cm">/* LONG_MIN, LONG_MAX */</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdbool.h&gt;</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="cm">/* Limites em long para que chaves iguais a INT_MIN/INT_MAX também sejam aceitas */</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="kt">bool</span><span class="w"> </span><span class="nf">ehABBAux</span><span class="p">(</span><span class="n">No</span><span class="o">*</span><span class="w"> </span><span class="n">raiz</span><span class="p">,</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">min</span><span class="p">,</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">max</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">raiz</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">raiz</span><span class="o">-&gt;</span><span class="n">valor</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">min</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">raiz</span><span class="o">-&gt;</span><span class="n">valor</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">max</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">ehABBAux</span><span class="p">(</span><span class="n">raiz</span><span class="o">-&gt;</span><span class="n">esquerda</span><span class="p">,</span><span class="w"> </span><span class="n">min</span><span class="p">,</span><span class="w"> </span><span class="n">raiz</span><span class="o">-&gt;</span><span class="n">valor</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span>
+<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="w">           </span><span class="n">ehABBAux</span><span class="p">(</span><span class="n">raiz</span><span class="o">-&gt;</span><span class="n">direita</span><span class="p">,</span><span class="w"> </span><span class="n">raiz</span><span class="o">-&gt;</span><span class="n">valor</span><span class="p">,</span><span class="w"> </span><span class="n">max</span><span class="p">);</span>
 <a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="p">}</span>
+<a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a>
+<a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a><span class="kt">bool</span><span class="w"> </span><span class="nf">ehABB</span><span class="p">(</span><span class="n">No</span><span class="o">*</span><span class="w"> </span><span class="n">raiz</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">ehABBAux</span><span class="p">(</span><span class="n">raiz</span><span class="p">,</span><span class="w"> </span><span class="n">LONG_MIN</span><span class="p">,</span><span class="w"> </span><span class="n">LONG_MAX</span><span class="p">);</span>
+<a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a><span class="p">}</span>
 </code></pre></div>
+
+(Se `long` tiver o mesmo tamanho de `int` na sua plataforma, use `long long`.)
 
 </details>
 
@@ -3563,7 +3581,7 @@ d) Busca por 10: 50→30→20→10 = 4 comparações
 <tbody>
 <tr>
 <td>Altura</td>
-<td>≈ log₂(7) = 2~3</td>
+<td>2 (mínima: ⌊log₂ 7⌋)</td>
 <td>6</td>
 </tr>
 <tr>
@@ -3593,9 +3611,8 @@ d) Busca por 10: 50→30→20→10 = 4 comparações
 <p><strong>Como resolver?</strong></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>🔜 Próximo capítulo: Árvores Balanceadas
 <a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>• AVL: balanceamento por fator de altura
-<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>• Rubro-Negra: balanceamento por cores e regras de rotação
-<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>• Ideia central: realizar rotações durante inserção/remoção
-<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>  para manter a altura próxima de log₂(n)
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>• Ideia central: realizar rotações durante inserção/remoção
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>  para manter a altura próxima de log₂(n)
 </code></pre></div>
 <p><strong>Exemplo de rotação simples (AVL):</strong></p>
 <p>Antes da rotação (desbalanceada à direita):</p>
@@ -3605,7 +3622,7 @@ d) Busca por 10: 50→30→20→10 = 4 comparações
 <ul>
 <li>A altura diminui de 2 para 1</li>
 <li>A propriedade da ABB é preservada</li>
-<li>Operações continuam em O(log n) garantido</li>
+<li>Aplicadas sistematicamente a cada inserção, rotações como esta garantem altura O(log n)</li>
 </ul>
 <hr />
 <h2 id="8-resumo-do-capitulo">8. Resumo do Capítulo<a class="headerlink" href="#8-resumo-do-capitulo" title="Permanent link">&para;</a></h2>
@@ -3641,7 +3658,7 @@ d) Busca por 10: 50→30→20→10 = 4 comparações
 <p><strong>Limitação importante</strong></p>
 <ul>
 <li>ABB <strong>não se auto-balanceia</strong> → ordem de inserção impacta desempenho</li>
-<li>Gancho para estudo de <strong>árvores AVL e Rubro-Negras</strong></li>
+<li>Gancho para o estudo de <strong>árvores AVL</strong> (próximo capítulo)</li>
 </ul>
 <hr />
 <h2 id="9-proximos-passos">9. Próximos Passos<a class="headerlink" href="#9-proximos-passos" title="Permanent link">&para;</a></h2>
@@ -3649,7 +3666,7 @@ d) Busca por 10: 50→30→20→10 = 4 comparações
 <ul>
 <li>Fator de balanceamento e altura</li>
 <li>Rotações simples e duplas (LL, RR, LR, RL)</li>
-<li>Inserção e remoção em AVL com rebalanceamento</li>
+<li>Inserção em AVL com rebalanceamento</li>
 <li>Comparação prática: ABB vs. AVL em cenários reais</li>
 </ul>
 <p><strong>Leitura recomendada:</strong></p>

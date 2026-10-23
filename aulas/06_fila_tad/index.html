@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Livro didático de Estruturas de Dados: Recursividade, TAD, Listas, Pilhas, Filas, Árvores (BST, AVL, Heaps) e Ordenação.
+        <meta name="description" content="Livro didático de Estruturas de Dados: Recursividade, TAD, Listas, Pilhas, Filas, Árvores (ABB e AVL) e Ordenação (incluindo Heap Sort).
 ">
       
       
@@ -380,7 +380,7 @@
   <span class="md-ellipsis">
     
   
-    Capítulo 1 — Introdução e TAD
+    Capítulo 1 — Introdução
   
 
     
@@ -515,7 +515,7 @@
   <span class="md-ellipsis">
     
   
-    2.3 Pilha Estática III: Alocação Dinâmica
+    2.3 Pilha III: Alocação Dinâmica
   
 
     
@@ -1121,10 +1121,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#102-proximo-capitulo-estruturas-nao-lineares" class="md-nav__link">
+  <a href="#102-proximo-capitulo-recursao-e-busca" class="md-nav__link">
     <span class="md-ellipsis">
       
-        10.2 Próximo Capítulo: Estruturas Não-Lineares
+        10.2 Próximo Capítulo: Recursão e Busca
       
     </span>
   </a>
@@ -2570,10 +2570,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#102-proximo-capitulo-estruturas-nao-lineares" class="md-nav__link">
+  <a href="#102-proximo-capitulo-recursao-e-busca" class="md-nav__link">
     <span class="md-ellipsis">
       
-        10.2 Próximo Capítulo: Estruturas Não-Lineares
+        10.2 Próximo Capítulo: Recursão e Busca
       
     </span>
   </a>
@@ -2823,6 +2823,10 @@
 <a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>
 <a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="cp">#endif</span>
 </code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Diferença em relação à pilha</p>
+<p>Aqui <code>desenfileira</code> apenas remove e devolve <code>1</code>/<code>0</code> (sucesso/falha); o valor é lido antes com <code>frente</code>. Na pilha, <code>desempilha</code> devolve o próprio valor. As duas convenções são comuns; o importante é saber qual o TAD adota. Note também que nomes como <code>vazia</code> e <code>cheia</code> coincidem com os de <code>lista.h</code>: um programa que use os dois TADs precisaria de prefixos (<code>filaVazia</code>, <code>listaVazia</code>).</p>
+</div>
 <hr />
 <h2 id="4-implementacao-estatica-o-problema-do-deslocamento">4. Implementação Estática: O Problema do Deslocamento<a class="headerlink" href="#4-implementacao-estatica-o-problema-do-deslocamento" title="Permanent link">&para;</a></h2>
 <h3 id="41-abordagem-ingenua-vetor-linear">4.1 Abordagem Ingênua (Vetor Linear)<a class="headerlink" href="#41-abordagem-ingenua-vetor-linear" title="Permanent link">&para;</a></h3>
@@ -2846,29 +2850,31 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">struct</span><span class="w"> </span><span class="nc">fila</span><span class="w"> </span><span class="p">{</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">valores</span><span class="p">[</span><span class="n">MAX</span><span class="p">];</span>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">inicio</span><span class="p">;</span><span class="w">  </span><span class="cm">/* Índice do primeiro elemento */</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">fim</span><span class="p">;</span><span class="w">     </span><span class="cm">/* Índice do último elemento */</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">fim</span><span class="p">;</span><span class="w">     </span><span class="cm">/* Índice da próxima posição livre (logo após o último) */</span>
 <a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w">       </span><span class="cm">/* Quantidade de elementos */</span>
 <a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="p">};</span>
 </code></pre></div>
-<p><strong>Problema do Espaço Falso:</strong> Conforme <code>inicio</code> e <code>fim</code> avançam, o espaço no início do vetor fica inutilizado, mesmo estando vazio. Eventualmente, <code>fim</code> chega em <code>MAX-1</code> e a fila diz "cheia", embora haja espaço livre no início.</p>
+<p><strong>Problema do Espaço Falso:</strong> Conforme <code>inicio</code> e <code>fim</code> avançam, o espaço no início do vetor fica inutilizado, mesmo estando vazio. Eventualmente, <code>fim</code> chega em <code>MAX</code> e a fila diz "cheia", embora haja espaço livre no início.</p>
 <hr />
 <h2 id="5-fila-circular-estatica">5. Fila Circular Estática<a class="headerlink" href="#5-fila-circular-estatica" title="Permanent link">&para;</a></h2>
 <h3 id="51-conceito">5.1 Conceito<a class="headerlink" href="#51-conceito" title="Permanent link">&para;</a></h3>
 <p>Para resolver o problema do espaço falso, tratamos o vetor como <strong>circular</strong>. </p>
-<p><img alt="image.png" src="../images/fila_tad/image.png" /></p>
+<p><img alt="Fila circular com 6 posições: A, B, C e D nas posições 0 a 3, inicio na posição 0 e fim na posição 4, a próxima livre" src="../images/fila_tad/image.png" /></p>
 <p>Quando o índice chega ao fim, ele volta para o início usando o operador módulo (<code>%</code>).</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Índice próximo = (índice atual + 1) % MAX
 </code></pre></div>
 <h3 id="52-visualizacao">5.2 Visualização<a class="headerlink" href="#52-visualizacao" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Vetor de tamanho 5 (MAX=5)
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Vetor de tamanho 5 (MAX=5); fim = próxima posição livre
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>Estado 1: [10, 20, 30, ?, ?]  (inicio=0, fim=2)
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>Estado 2: Remove 10 → [?, 20, 30, ?, ?] (inicio=1, fim=2)
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>Estado 3: Insere 40 → [?, 20, 30, 40, ?] (inicio=1, fim=3)
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>Estado 4: Insere 50 → [?, 20, 30, 40, 50] (inicio=1, fim=4)
-<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>Estado 5: Insere 60 → [60, 20, 30, 40, 50] (inicio=1, fim=0) ← Voltou ao início!
-<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>          ↑
-<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>          fim=(4+1)%5 = 0
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>Estado 1: [10, 20, 30, ?, ?]  (inicio=0, fim=3, n=3)
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>Estado 2: Remove 10 → [?, 20, 30, ?, ?] (inicio=1, fim=3, n=2)
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>Estado 3: Insere 40 → [?, 20, 30, 40, ?] (inicio=1, fim=4, n=3)
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>Estado 4: Insere 50 → [?, 20, 30, 40, 50] (inicio=1, fim=0, n=4) ← Voltou ao início!
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>                                                    fim=(4+1)%5 = 0
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>Estado 5: Insere 60 → [60, 20, 30, 40, 50] (inicio=1, fim=1, n=5) ← Cheia
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>Repare que no Estado 5 vale inicio == fim, a mesma igualdade de uma fila vazia.
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>É o contador n que distingue os dois casos.
 </code></pre></div>
 <h3 id="53-implementacao-fila_estaticac">5.3 Implementação (<code>fila_estatica.c</code>)<a class="headerlink" href="#53-implementacao-fila_estaticac" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="cm">/* fila_estatica.c */</span>
@@ -3156,7 +3162,7 @@
 <ol>
 <li>
 <p><strong>Por que usar um contador <code>n</code> na fila circular?</strong></p>
-<p>→ Em implementações sem contador, é impossível distinguir entre "fila vazia" e "fila cheia" apenas com <code>inicio == fim</code>, pois ambas resultam nessa igualdade. O contador resolve essa ambiguidade.</p>
+<p>→ Sem contador, a condição <code>inicio == fim</code> vale tanto para "fila vazia" quanto para "fila cheia". O contador resolve essa ambiguidade. A alternativa, vista no primeiro exercício acima, é sacrificar uma posição do vetor.</p>
 </li>
 <li>
 <p><strong>Como implementar uma Fila de Prioridade?</strong></p>
@@ -3207,10 +3213,8 @@ Correção:
 <li><strong>Filas (FIFO):</strong> Acesso restrito às extremidades.</li>
 <li><strong>Listas:</strong> Acesso livre a qualquer posição.</li>
 </ol>
-<h3 id="102-proximo-capitulo-estruturas-nao-lineares">10.2 Próximo Capítulo: Estruturas Não-Lineares<a class="headerlink" href="#102-proximo-capitulo-estruturas-nao-lineares" title="Permanent link">&para;</a></h3>
-<blockquote>
-<p>"Até agora, todos os dados estavam organizados em uma única dimensão (sequência). No próximo capítulo, sairemos da linearidade para explorar <strong>Árvores</strong>, onde cada elemento pode ter múltiplos sucessores, permitindo hierarquias e buscas mais eficientes (O(log n))."</p>
-</blockquote>
+<h3 id="102-proximo-capitulo-recursao-e-busca">10.2 Próximo Capítulo: Recursão e Busca<a class="headerlink" href="#102-proximo-capitulo-recursao-e-busca" title="Permanent link">&para;</a></h3>
+<p>Até agora, todos os dados estavam organizados em uma única dimensão (sequência). O próximo capítulo apresenta a <strong>recursão</strong> e a <strong>busca binária</strong>, as duas ferramentas de que precisaremos para sair da linearidade e estudar <strong>Árvores</strong>, onde cada elemento pode ter múltiplos sucessores, permitindo hierarquias e buscas mais eficientes (O(log n)).</p>
 <h3 id="103-exercicio-de-consolidacao">10.3 Exercício de Consolidação<a class="headerlink" href="#103-exercicio-de-consolidacao" title="Permanent link">&para;</a></h3>
 <p>Crie um programa que simule um caixa de supermercado:</p>
 <ul>
@@ -3221,8 +3225,8 @@ Correção:
 <hr />
 <h2 id="referencias-e-leitura-complementar">🔗 Referências e Leitura Complementar<a class="headerlink" href="#referencias-e-leitura-complementar" title="Permanent link">&para;</a></h2>
 <ol>
-<li><strong>Queue (Abstract Data Type) – Wikipedia</strong>: Definição formal e variações [[31]]</li>
-<li><strong>Circular Queue Implementation – GeeksforGeeks</strong>: Detalhes sobre aritmética modular [[25]]</li>
+<li><strong>Queue (Abstract Data Type) – Wikipedia</strong>: Definição formal e variações</li>
+<li><strong>Circular Queue Implementation – GeeksforGeeks</strong>: Detalhes sobre aritmética modular</li>
 <li><strong>Celes, W. et al. – Introdução a Estruturas de Dados</strong>: Capítulos sobre Filas em C</li>
 <li><a href="http://visualgo.net/queue"><strong>Visualgo.net/queue</strong></a>: Animações interativas de operações em filas</li>
 <li><strong>MIT OpenCourseWare – Queues</strong>: Aula sobre implementação e complexidade</li>
