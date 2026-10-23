@@ -58,6 +58,7 @@ Esperado no histórico:
 ### Testes
 
 - Arquivo `tests/test_basic.c` com **no mínimo 2 casos por algoritmo** (ex.: vetor aleatório, já ordenado, invertido).
+- Instrumente os algoritmos para contar **comparações e trocas** (por exemplo, com contadores passados por ponteiro): esses números entram na análise experimental do vídeo.
 - Cada teste deve imprimir `PASSOU` ou `FALHOU`.
 - Comando: `make test`.
 
@@ -68,10 +69,11 @@ O `gcov` mede quais linhas do programa foram de fato executadas pelos testes.
 1. **Compile com suporte a cobertura:**
 
     ```bash
-    gcc --coverage -g -O0 main.c -o main
+    gcc --coverage -g -O0 -c main.c
+    gcc --coverage main.o -o main
     ```
 
-    As flags equivalentes `-fprofile-arcs -ftest-coverage` fazem o GCC gerar os arquivos (`.gcno`) necessários para o `gcov`.
+    Compile e ligue em duas etapas: a partir do GCC 11, um único comando `gcc --coverage main.c -o main` nomeia os arquivos de dados como `main-main.gcda`, e o `gcov main.c` do passo 3 não os encontra. As flags equivalentes `-fprofile-arcs -ftest-coverage` fazem o GCC gerar os arquivos (`.gcno`) necessários para o `gcov`.
 
 2. **Execute o programa ou a suíte de testes** (`./main` ou `make test`). Isso gera um arquivo `.gcda` com as estatísticas de execução.
 
@@ -287,11 +289,12 @@ Copie este arquivo para a raiz do repositório. Ele já inclui alvos para compil
 
 ```makefile
 CC = gcc
-CFLAGS = -Wall -Wextra -std=c11 -O2
-GCOV_FLAGS = -fprofile-arcs -ftest-coverage -g
+WARN = -Wall -Wextra -std=c11
+CFLAGS = $(WARN) -O2
+GCOV_FLAGS = --coverage -g -O0
 PROFILE_FLAGS = -pg -g -O0
 
-SRCS = src/main.c src/basicos/bubble.c src/basicos/selection.c src/basicos/insertion.c \\
+SRCS = src/main.c src/basicos/bubble.c src/basicos/selection.c src/basicos/insertion.c \
        src/avancados/merge.c src/avancados/quick.c src/avancados/heap.c
 TEST_SRCS = tests/test_basic.c $(filter-out src/main.c,$(SRCS))
 OBJS = $(SRCS:.c=.o)
@@ -314,19 +317,24 @@ $(TEST_TARGET): $(TEST_OBJS)
 test: $(TEST_TARGET)
 	./$(TEST_TARGET)
 
-coverage: CFLAGS += $(GCOV_FLAGS)
+# Cobertura: recompila tudo sem otimização e com instrumentação (CFLAGS substituído)
+coverage: CFLAGS = $(WARN) $(GCOV_FLAGS)
 coverage: clean test
-	@echo "Dados de cobertura gerados. Rode: gcov src/basicos/*.c src/avancados/*.c"
+	gcov -o src/basicos src/basicos/*.c
+	gcov -o src/avancados src/avancados/*.c
+	@echo "Relatórios .gcov gerados na raiz do projeto"
 
+# Profiling: só -O0 (sem o -O2 de CFLAGS) e só o main.c como ponto de entrada
 profile: clean
-	$(CC) $(PROFILE_FLAGS) $(CFLAGS) -o sort_profile $(SRCS) tests/test_basic.c
+	$(CC) $(WARN) $(PROFILE_FLAGS) -o sort_profile $(SRCS)
 	./sort_profile
 	gprof sort_profile gmon.out > docs/perfil_bruto.txt
 	@echo "Profiling gerado em docs/perfil_bruto.txt"
 	@echo "Abra o arquivo e analise a seção 'Flat Profile'"
 
 clean:
-	rm -f $(TARGET) $(TEST_TARGET) sort_profile $(OBJS) $(TEST_OBJS) *.gcda *.gcno *.gcov gmon.out
+	rm -f $(TARGET) $(TEST_TARGET) sort_profile $(OBJS) $(TEST_OBJS) *.gcov gmon.out
+	find . -name '*.gcda' -o -name '*.gcno' | xargs rm -f
 
 .PHONY: all test coverage profile clean
 ```

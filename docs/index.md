@@ -10,12 +10,12 @@ Bem-vindos ao universo das Estruturas de Dados! Este livro foi desenhado para gu
 
 ### Parte I: Fundamentos e Estruturas Lineares
 
-* **Capítulo 1: Introdução aos Tipos Abstratos de Dados**
+* **Capítulo 1: Introdução**
     * [Apresentação e Conceitos Gerais](aulas/00_apresentacao.md)
 * **Capítulo 2: Pilhas**
     * [Pilha Estática I: Implementação básica com vetores globais](aulas/01_pilha_estatica_1.md)
     * [Pilha Estática II: Funções, ponteiros e structs](aulas/02_pilha_estatica_2.md)
-    * [Pilha Estática III: Alocação dinâmica](aulas/03_pilha_estatica_3.md)
+    * [Pilha III: Alocação dinâmica](aulas/03_pilha_estatica_3.md)
 * **Capítulo 3: Listas**
     * [Listas Estáticas como TAD em C](aulas/04_lista_estatica.md)
     * [Listas Encadeadas como TAD em C](aulas/05_lista_encadeada.md)

@@ -8,7 +8,9 @@ Neste capítulo, estudaremos a **análise de algoritmos** sob duas perspectivas:
 
 ## 1. Análise Teórica: A Notação Big-O
 
-A **complexidade de tempo** descreve a taxa de crescimento do tempo de execução de um algoritmo à medida que o tamanho da entrada ($n$) cresce. Usamos a notação **Big-O** para descrever o pior cenário (limite superior).
+A **complexidade de tempo** descreve a taxa de crescimento do tempo de execução de um algoritmo à medida que o tamanho da entrada ($n$) cresce. Usamos a notação **Big-O** para expressar um **limite superior** desse crescimento: dizemos que $f(n) = O(g(n))$ se existem constantes $c > 0$ e $n_0$ tais que $f(n) \le c \cdot g(n)$ para todo $n \ge n_0$. Big-O é uma notação para funções, não para "casos": podemos falar do pior caso, do melhor caso ou do caso médio de um algoritmo, e cada um tem sua função de custo. Na prática, quando se diz apenas "o algoritmo é O(n²)", costuma-se referir ao pior caso.
+
+Duas notações irmãs completam o quadro: $\Omega(g(n))$ indica um **limite inferior** ($f(n) \ge c \cdot g(n)$ a partir de algum $n_0$) e $\Theta(g(n))$ indica que a função é ao mesmo tempo $O(g(n))$ e $\Omega(g(n))$, ou seja, cresce **exatamente** na ordem de $g(n)$.
 
 ### 1.1 Classes de Complexidade Comuns
 
@@ -18,7 +20,7 @@ A **complexidade de tempo** descreve a taxa de crescimento do tempo de execuçã
 | **$O(\log n)$** | Logarítmico | Busca Binária, inserção em Árvore AVL | O tamanho do problema é dividido pela metade a cada passo. Cresce muito devagar. |
 | **$O(n)$** | Linear | Busca Sequencial, percurso de Lista Encadeada | O tempo cresce proporcionalmente ao tamanho da entrada. |
 | **$O(n \log n)$** | Linearítmico | Merge Sort, Quick Sort (médio), Heap Sort | Complexidade típica de algoritmos eficientes de ordenação. |
-| **$O(n^2)$** | Quadrático | Bubble Sort, Selection Sort, Insertion Sort | Laços aninhados. O tempo cresce exponencialmente pior com entradas maiores. |
+| **$O(n^2)$** | Quadrático | Bubble Sort, Selection Sort, Insertion Sort | Laços aninhados. Dobrar a entrada quadruplica o tempo. |
 
 ### 1.2 Comparação Visual do Crescimento
 
@@ -39,10 +41,12 @@ Ao compilar o programa com flags especiais, o GCC insere instruções adicionais
 ### 2.2 Passo a Passo de Uso
 
 1. **Compilação com suporte a cobertura:**
-   Usamos a flag `--coverage` (ou `-fprofile-arcs -ftest-coverage`) junto com `-O0` (desativa otimizações do compilador para manter a correspondência direta de linhas):
+   Usamos a flag `--coverage` (ou `-fprofile-arcs -ftest-coverage`) junto com `-O0` (desativa otimizações do compilador para manter a correspondência direta de linhas). Compile e ligue em **duas etapas**:
    ```bash
-   gcc -O0 -g --coverage -o programa main.c
+   gcc -O0 -g --coverage -c main.c
+   gcc --coverage main.o -o programa
    ```
+   *(A partir do GCC 11, compilar e ligar num único comando com `-o programa` gera os arquivos com o nome `programa-main.gcda`/`.gcno`, e `gcov main.c` não os encontra. Nesse caso, use `gcov programa-main.c` ou prefira as duas etapas acima.)*
 
 2. **Executar o programa:**
    Rode o programa normalmente para gerar os dados de contagem:
@@ -78,9 +82,9 @@ Ele monitora a execução fazendo amostragens periódicas e gravando chamadas de
 1. **Compilação com suporte a profile:**
    Use a flag `-pg`:
    ```bash
-   gcc -O2 -g -pg -o programa main.c
+   gcc -O0 -g -pg -o programa main.c
    ```
-   *(Nota: Aqui podemos usar otimizações como `-O2` ou `-O3` para refletir o desempenho real de produção).*
+   *(Nota: com `-O2` ou `-O3` o compilador pode embutir (*inline*) funções inteiras dentro de quem as chama, e elas somem do relatório. Para fins didáticos, use `-O0`, lembrando que os tempos absolutos serão maiores que os de produção.)*
 
 2. **Executar o programa:**
    Execute o programa normalmente:
@@ -107,9 +111,10 @@ Flat profile:
 Each sample counts as 0.01 seconds.
   %   cumulative   self              self     total           
  time   seconds   seconds    calls  ms/call  ms/call  name    
- 82.4      0.82     0.82        1   820.00   820.00  bubble_sort
- 17.6      1.00     0.18        1   180.00   180.00  quick_sort
+100.00      0.24     0.24        1   240.00   240.00  bubble_sort
+  0.00      0.24     0.00        1     0.00     0.00  quick_sort
 ```
+*(Saída real do programa da Seção 4, com N = 10000. O Quick Sort leva menos que o intervalo de amostragem de 0,01 s e aparece com 0%. A coluna `calls` mostra só a chamada externa; as 11928 chamadas recursivas aparecem no Call Graph como `1+11928`.)*
 - **`% time`**: Porcentagem do tempo total gasta nesta função.
 - **`self seconds`**: Tempo gasto exclusivamente nesta função.
 - **`calls`**: Número total de vezes que a função foi chamada.
@@ -190,7 +195,8 @@ Você pode usar um script automatizado para compilar e analisar:
 ```bash
 #!/bin/bash
 echo "=== 1. COMPILANDO PARA COBERTURA (GCOV) ==="
-gcc -O0 -g --coverage ordenacao.c -o prog_cov
+gcc -O0 -g --coverage -c ordenacao.c
+gcc --coverage ordenacao.o -o prog_cov
 
 echo "=== 2. EXECUTANDO COBERTURA ==="
 ./prog_cov
@@ -200,7 +206,7 @@ gcov ordenacao.c
 cat ordenacao.c.gcov | head -n 35
 
 echo "=== 4. COMPILANDO PARA PROFILE (GPROF) ==="
-gcc -O2 -pg ordenacao.c -o prog_prof
+gcc -O0 -g -pg ordenacao.c -o prog_prof
 
 echo "=== 5. EXECUTANDO PROFILE ==="
 ./prog_prof
@@ -219,12 +225,13 @@ head -n 25 relatorio_gprof.txt
 │ COMMAND CHEATSHEET – COBERTURA & PERFILAMENTO          │
 ├────────────────────────────────────────────────────────┤
 │ GCOV (COBERTURA DE CÓDIGO)                             │
-│ 1. gcc -O0 -g --coverage -o bin fonte.c                │
+│ 1. gcc -O0 -g --coverage -c fonte.c                    │
+│    gcc --coverage fonte.o -o bin                       │
 │ 2. ./bin (roda testes)                                 │
 │ 3. gcov fonte.c (gera fonte.c.gcov)                    │
 │                                                        │
 │ GPROF (ANÁLISE DE TEMPO DE CPU)                        │
-│ 1. gcc -O2 -pg -o bin fonte.c                          │
+│ 1. gcc -O0 -g -pg -o bin fonte.c                       │
 │ 2. ./bin (gera gmon.out)                               │
 │ 3. gprof bin gmon.out > relatorio.txt                  │
 │                                                        │

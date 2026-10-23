@@ -62,52 +62,52 @@ Separar:
 
 ### Questões
 
-1. **Passagem por valor vs referência**
-    
-    Explique por que funções como `empilha(Pilha *p, int x)` usam ponteiros.
-    
-    O que aconteceria se a pilha fosse passada por valor?
-    
+#### 1. Passagem por valor vs referência
+
+Explique por que funções como `empilha(int x, Pilha *p)` usam ponteiros.
+
+O que aconteceria se a pilha fosse passada por valor?
+
 
 ---
 
-1. **Stack vs Heap**
-    
-    Diferencie:
-    
-    - Stack (automática)
-    - Heap (dinâmica)
-    
-    Quem gerencia cada uma?
-    
-    Por que retornar variável local é perigoso?
-    
+#### 2. Stack vs Heap
+
+Diferencie:
+
+- Stack (automática)
+- Heap (dinâmica)
+
+Quem gerencia cada uma?
+
+Por que retornar variável local é perigoso?
+
 
 ---
 
-1. **Tipo Abstrato de Dado (TAD)**
-    
-    Defina formalmente um TAD.
-    
-    Qual o papel do `.h`?
-    
+#### 3. Tipo Abstrato de Dado (TAD)
+
+Defina formalmente um TAD.
+
+Qual o papel do `.h`?
+
 
 ---
 
-1. **LIFO e aplicações reais**
-    
-    Explique LIFO e aplique em:
-    
-    - Navegadores (histórico)
-    - Editores (undo/redo)
-    - Chamadas de função (recursão)
+#### 4. LIFO e aplicações reais
+
+Explique LIFO e aplique em:
+
+- Navegadores (histórico)
+- Editores (undo/redo)
+- Chamadas de função (recursão)
 
 ---
 
-1. **Ponteiros e vetores**
-    
-    Explique:
-    
+#### 5. Ponteiros e vetores
+
+Explique:
+
 
 ```
 v[i] == *(v + i)
@@ -117,46 +117,48 @@ Como o compilador calcula o endereço?
 
 ---
 
-1. **Complexidade (Pior Caso)**
-    
-    Qual o custo da busca em lista não ordenada?
-    
-    Por que usamos pior caso?
-    
+#### 6. Complexidade (Pior Caso)
+
+Qual o custo da busca em lista não ordenada?
+
+Por que usamos pior caso?
+
 
 ---
 
-1. **Encapsulamento na prática**
-    
-    Por que `main.c` não deve acessar `l->ultimo`?
-    
+#### 7. Encapsulamento na prática
+
+Por que `main.c` não deve acessar `l->ultimo`?
+
 
 ---
 
-1. **Alocação dinâmica vs estática**
-    
-    Compare:
-    
-    - Flexibilidade
-    - Fragmentação
+#### 8. Alocação dinâmica vs estática
+
+Compare:
+
+- Flexibilidade
+- Fragmentação
 
 ---
 
-1. **Comparação de Pilhas**
+#### 9. Comparação de Pilhas
 
 | Critério | Estática (Vetor) | Dinâmica (Encadeada) |
 | --- | --- | --- |
 | Overhead | Baixo | Alto |
 | Cache | Alto | Baixo |
 | Crescimento | Fixo | Dinâmico |
-| Limite | Compilação | RAM |
+| Limite | Capacidade fixa (definida na criação) | RAM |
+
+Explique cada linha da tabela e diga em que situação você escolheria cada implementação.
 
 ---
 
-1. **Operador `>`**
-    
-    Explique por que:
-    
+#### 10. Operador `->`
+
+Explique por que:
+
 
 ```
 *p.membro   // errado
@@ -166,10 +168,10 @@ p->membro   // correto
 
 ---
 
-1. **Rastreamento de memória**
-    
-    Dado:
-    
+#### 11. Rastreamento de memória
+
+Dado:
+
 
 ```
 topo = -1
@@ -197,104 +199,106 @@ Aqui começa o nível **engenharia real**: ponteiros mal usados = bugs graves.
 
 ### Exercícios
 
-1. **Struct + Ponteiro**
-    - Crie `struct Ponto`
-    - Função que altera via ponteiro
+#### 1. Struct + Ponteiro
+- Crie `struct Ponto`
+- Função que altera via ponteiro
 
 ---
 
-1. **Alocação segura**
-    - Criar vetor dinâmico
-    - Verificar erro
-    - Inicializar com zero
+#### 2. Alocação segura
+- Criar vetor dinâmico
+- Verificar erro
+- Inicializar com zero
 
 ---
 
-1. **Refatoração**
-    - Remover globais:
-        
-        ```
-        int pilha[MAX];
-        int topo;
-        ```
-        
-    - Criar TAD
+#### 3. Refatoração
+- Remover globais:
+    
+    ```
+    int pilha[MAX];
+    int topo;
+    ```
+    
+- Criar TAD
 
 ---
 
-1. **Push com verificação**
-    - Implementar `empilha`
-    - Tratar overflow
+#### 4. Push com verificação
+- Implementar `empilha`
+- Tratar overflow
 
 ---
 
-1. **Pop em lista encadeada**
-    - Remover nó
-    - Liberar memória
+#### 5. Pop em lista encadeada
+- Remover nó
+- Liberar memória
 
 ---
 
-1. **Inicialização segura**
-    - `Lista* criaLista()`
-    - Retornar `NULL` se falhar
+#### 6. Inicialização segura
+- `Lista* criaLista()`
+- Retornar `NULL` se falhar
 
 ---
 
-1. **Busca sequencial**
-    - Implementar
-    - Justificar O(n)
+#### 7. Busca sequencial
+- Implementar
+- Justificar O(n)
 
 ---
 
-1. **Inserção com deslocamento**
-    - Lista estática
-    - Validar posição
+#### 8. Inserção com deslocamento
+- Lista estática
+- Validar posição
 
 ---
 
-1. **Liberação de lista**
-    - Liberar todos os nós
-    - Evitar perda de referência
+#### 9. Liberação de lista
+- Liberar todos os nós
+- Evitar perda de referência
 
 ---
 
-1. **realloc seguro**
+#### 10. realloc seguro
 - Dobrar tamanho
 - Usar ponteiro temporário
 
 ---
 
-1. **Busca por posição**
+#### 11. Busca por posição
+Implemente `buscaPos` nas duas versões e justifique as complexidades:
+
 - Vetor → O(1)
 - Lista → O(n)
 
 ---
 
-1. **Inversão com pilha**
+#### 12. Inversão com pilha
 - Usar estrutura auxiliar
 
 ---
 
-1. **Lista circular**
+#### 13. Lista circular
 - Último aponta para primeiro
-    
-    O `while (atual != NULL)` funciona?
-    
+
+O `while (atual != NULL)` funciona?
+
 
 ---
 
-1. **Reuso de funções (DRY)**
+#### 14. Reuso de funções (DRY)
 - `removeValor` usando outras funções
-    
-    Qual a complexidade total?
-    
+
+Qual a complexidade total?
+
 
 ---
 
-1. **Bug de precedência**
-    
-    Corrigir:
-    
+#### 15. Bug de precedência (prática)
+
+Corrija o código abaixo e teste-o compilando:
+
 
 ```
 *p.membro = 10;
@@ -314,7 +318,8 @@ Explique o erro
 | Inserção início | O(n) | O(1) |
 | Inserção fim | O(1) | O(n)* |
 | Localidade | Alta | Baixa |
-- Pode ser O(1) com ponteiro para o último
+
+\* Pode ser O(1) com ponteiro para o último.
 
 ---
 
@@ -346,7 +351,7 @@ Antes de entregar:
 
 ## ⚠️ Regra de Ouro
 
-> Variáveis globais são proibidas.
+> Variáveis globais são proibidas nas soluções deste caderno.
 >
 > Controle de memória e escopo é responsabilidade do programador.
 

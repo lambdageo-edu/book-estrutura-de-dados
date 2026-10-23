@@ -54,7 +54,7 @@ Onde:
 
 - `SAE` = Subárvore à Esquerda
 - `SAD` = Subárvore à Direita
-- `altura(∅) = -1` (convenção usual) ou `0` (conforme material de referência). *Usaremos altura de folha = 0 para facilitar a contagem manual.*
+- `altura(∅) = -1` (convenção usual) ou `0` (conforme material de referência). *Neste capítulo, usaremos altura de folha = 0 e altura(∅) = -1 para facilitar a contagem manual.* O próximo capítulo, de implementação, adota folha = 1 e altura(NULL) = 0, como é comum em código; o FB é o mesmo nas duas convenções, só as alturas mudam em 1.
 
 | Valor do FB | Significado |
 | --- | --- |
@@ -77,11 +77,11 @@ Alturas (folha = 0):
 
 | Árvore A | Árvore B |
 | --- | --- |
-| FB(5)=0, FB(15)=0 | FB(5)=0 |
+| FB(5)=0, FB(15)=0 | FB(5)=0, FB(25)=0, FB(40)=0 |
 | FB(10)=0-0=0 | FB(10)=0-(-1)=1 ✓ |
-| FB(25)=0, FB(35)=0 | FB(25)=0 |
-| FB(30)=0-0=0 | FB(35)=1-(-1)=1 ✓ |
-| FB(20)=0-0=0 ✓ (AVL!) | FB(20)=2-1=1 ✓ (AVL!) |
+| FB(25)=0, FB(35)=0 | FB(35)=(-1)-0=-1 ✓ |
+| FB(30)=0-0=0 | FB(30)=0-1=-1 ✓ |
+| FB(20)=1-1=0 ✓ (AVL!) | FB(20)=1-2=-1 ✓ (AVL!) |
 
 Ambas são AVLs válidas. A diferença está na distribuição, mas nenhuma viola `|FB| ≤ 1`.
 
@@ -97,6 +97,8 @@ Quando um nó fica com `|FB| ≥ 2`, aplicamos **rotações**. Rotações são r
 
 Existem **4 configurações** e **4 rotações** correspondentes:
 
+Nas figuras das rotações simples, os círculos são nós e os triângulos (A, C, D, E) representam **subárvores**, com a altura indicada abaixo de cada uma. Nas rotações duplas, usamos o menor exemplo possível, só com nós.
+
 ### 3.1 Rotação Simples à Direita (Caso LL)
 
 **Ocorre quando:** Desbalanceamento na **esquerda** e o filho à esquerda também está "pesado" na **esquerda**.
@@ -109,9 +111,10 @@ Existem **4 configurações** e **4 rotações** correspondentes:
 
 ![Árvore balanceada após a rotação à direita](images/avl_conceito/rotacao_direita_depois.svg)
 
+- FB(C) = (h+2) − h = +2 e FB(B) = +1: o peso extra está na esquerda da esquerda
 - B sobe, C desce para a direita
-- D (filho direito de B) passa a ser filho esquerdo de C
-- Propriedade ABB mantida: A < B < D < C < E
+- D (subárvore direita de B) passa a ser subárvore esquerda de C
+- Propriedade ABB mantida: chaves de A < B < chaves de D < C < chaves de E
 
 ### 3.2 Rotação Simples à Esquerda (Caso RR)
 
@@ -125,9 +128,10 @@ Existem **4 configurações** e **4 rotações** correspondentes:
 
 ![Árvore balanceada após a rotação à esquerda](images/avl_conceito/rotacao_esquerda_depois.svg)
 
+- FB(A) = h − (h+2) = −2 e FB(B) = −1: o peso extra está na direita da direita
 - B sobe, A desce para a esquerda
-- C (filho esquerdo de B) passa a ser filho direito de A
-- Ordem mantida: A < C < B < E
+- C (subárvore esquerda de B) passa a ser subárvore direita de A
+- Ordem mantida: chaves de D < A < chaves de C < B < chaves de E
 
 ### 3.3 Rotação Dupla Esquerda-Direita (Caso LR)
 
@@ -187,8 +191,7 @@ Existem **4 configurações** e **4 rotações** correspondentes:
     - Identifique o tipo de desbalanceamento (LL, RR, LR, RL)
     - Aplique a rotação correspondente
     - Atualize alturas/FB dos nós envolvidos
-4. **Pare** (uma única rotação é suficiente para rebalancear toda a árvore após uma inserção).
-5. Continue verificando se necessário (em remoções, pode exigir mais de uma rotação, mas em inserções, uma basta).
+4. **Pare**: na inserção, uma única rotação (simples ou dupla) no primeiro nó desbalanceado restaura a altura que a subárvore tinha antes e rebalanceia a árvore inteira. Na remoção isso não vale: pode ser preciso rotacionar em vários ancestrais.
 
 ---
 
@@ -248,11 +251,11 @@ FB: todos 0. AVL válida! ✓
 
 ### Exemplo 3: Inserção de `[10, 30, 20, 40, 35]`
 
-Inserimos: 10 → 30 → 20 → 40
+Inserimos 10 e 30 sem problemas. Ao inserir **20**:
 
-![Árvore 10 com filho 30, que tem 20 e 40](images/avl_conceito/ex3_antes.svg)
+![Árvore 10 com filho direito 30, que tem 20 como filho esquerdo](images/avl_conceito/ex3_antes.svg)
 
-FB(10) = 0-2 = -2 ❌ → Caminho: 10 → Dir(30) → Esq(20). Tipo: **RL (Direita-Esquerda)**
+FB(10) = (-1)-1 = -2 ❌ → Caminho: 10 → Dir(30) → Esq(20). Tipo: **RL (Direita-Esquerda)**
 
 **Passo 1: Rotação Dir em 30 → 20 sobe, 30 desce à direita**
 
@@ -260,9 +263,15 @@ FB(10) = 0-2 = -2 ❌ → Caminho: 10 → Dir(30) → Esq(20). Tipo: **RL (Direi
 
 **Passo 2: Rotação Esq em 10 → 20 sobe, 10 desce à esquerda**
 
-![Árvore balanceada com 20 como raiz, 10 à esquerda, 30 e 40 à direita](images/avl_conceito/ex3_passo2.svg)
+![Árvore balanceada com 20 como raiz, 10 à esquerda e 30 à direita](images/avl_conceito/ex3_passo2.svg)
 
-FB: 10→0, 40→0, 30→-1, 20→0. Balanceada! ✓
+FB: todos 0. Balanceada! ✓
+
+**Inserimos 40** (sem rotação):
+
+![Árvore com 20 na raiz, 10 à esquerda e 30 à direita, com 40 como filho direito de 30](images/avl_conceito/ex3_insere40.svg)
+
+FB: 10→0, 40→0, 30→(-1)-0=-1, 20→0-1=-1. Balanceada! ✓
 
 **Agora inserimos 35:**
 
@@ -333,9 +342,9 @@ d) Qual tipo de rotação seria necessária?
 <details>
 <summary>Gabarito</summary>
 
-a) Alturas (folha=0): 10→0, 20→1, 40→0, 75→0, 80→1, 30→2, 70→2, 50→3
+a) Alturas (folha=0, vazia=-1): 10→0, 20→1, 40→0, 75→0, 80→1, 30→2, 70→2, 50→3
 
-b) FB: 10→0, 20→1-0=1, 40→0, 75→0, 80→0-1=-1, 30→1-0=1, 70→0-2=-2, 50→2-2=0
+b) FB: 10→0, 20→0-(-1)=1, 40→0, 75→0, 80→0-(-1)=1, 30→1-0=1, 70→(-1)-1=-2, 50→2-2=0
 
 c) Sim: nó **70** tem FB = -2
 
@@ -348,7 +357,7 @@ d) Caminho do nó inserido (75): 70 → Dir(80) → Esq(75) → **Caso RL** → 
 
 ### Exercício 2 — Inserção Sequencial com Rebalanceamento
 
-Insira os valores na ordem: `[20, 10, 30, 5, 15, 25, 35, 3]` em uma AVL inicialmente vazia.
+Insira os valores na ordem: `[20, 10, 30, 5, 15, 3]` em uma AVL inicialmente vazia.
 
 - Desenhe a árvore após cada inserção.
 - Marque o FB de cada nó.
@@ -357,14 +366,13 @@ Insira os valores na ordem: `[20, 10, 30, 5, 15, 25, 35, 3]` em uma AVL inicialm
 <details>
 <summary>Dica de resolução</summary>
 
-- Após `20,10,30`: balanceada (20 raiz)
-- Após `5`: 20 FB=1, 10 FB=1, 30 FB=0 ✓
-- Após `15`: 20 FB=1-0=1, 10 FB=1-1=0, 15 FB=0, 5 FB=0 ✓
-- Após `25,35`: 20 FB=1-2=-1, 30 FB=0-1=-1, 35 FB=0 ✓
-- Após `3`: 10 FB=2-0=2 ❌ → Caso LL (caminho 10→Esq(5)→Esq(3)) → Rotação Simples à Direita em 10
+- Após `20,10,30`: balanceada (20 raiz), todos FB=0
+- Após `5`: 20 FB=1-0=1, 10 FB=0-(-1)=1, 30 FB=0 ✓
+- Após `15`: 20 FB=1-0=1, 10 FB=0-0=0, 15 FB=0, 5 FB=0 ✓
+- Após `3`: 5 FB=1, 10 FB=1-0=1, 20 FB=2-0=2 ❌ → Caso LL (caminho 20→Esq(10)→Esq(5)) → Rotação Simples à Direita em 20 (o 15 passa a ser filho esquerdo de 20)
 - Árvore final balanceada:
 
-![Árvore final do exercício 2: raiz 20, com 5 e 30 como filhos](images/avl_conceito/exercicio2_final.svg)
+![Árvore final do exercício 2: raiz 10, com 5 (e seu filho 3) à esquerda e 20 (com filhos 15 e 30) à direita](images/avl_conceito/exercicio2_final.svg)
 
 **Valide no VisuAlgo:** Insira a sequência completa e compare com seu desenho
 </details>
@@ -381,11 +389,11 @@ Para cada situação abaixo, identifique:
 
 **Situação A:**
 
-![Situação A: árvore 40→20, com 10 e 30 como filhos de 20](images/avl_conceito/exercicio3_situacaoA.svg)
+![Situação A: árvore 40 com filho esquerdo 20, que tem 30 como filho direito](images/avl_conceito/exercicio3_situacaoA.svg)
 
 **Situação B:**
 
-![Situação B: árvore 50→80, com 70 e 90 como filhos, e 60 filho de 70](images/avl_conceito/exercicio3_situacaoB.svg)
+![Situação B: árvore 50 com filho direito 80, que tem 70 como filho esquerdo](images/avl_conceito/exercicio3_situacaoB.svg)
 
 <details>
 <summary>Gabarito</summary>
@@ -436,7 +444,7 @@ Altura = 2. Busca pior caso = 3 comparações.
 
 ### Exercício 5 — Prática Guiada com VisuAlgo
 
-**Sequência:** `[50, 25, 75, 10, 30, 60, 90, 5, 15, 28, 55, 65]`
+**Sequência:** `[15, 10, 50, 75, 25, 60, 35, 55, 30, 5, 40, 70]`
 
 Para cada inserção:
 
@@ -449,6 +457,18 @@ Para cada inserção:
 
 !!! note "Objetivo"
     Desenvolver intuição para prever quando e qual rotação ocorrerá.
+
+<details>
+<summary>Gabarito: onde ocorrem as rotações</summary>
+
+- Inserir 60: RR em 15 (rotação simples à esquerda)
+- Inserir 55: LL em 75 (rotação simples à direita)
+- Inserir 30: RL em 25 (rotação dupla direita-esquerda)
+- Inserir 40: LR em 50 (rotação dupla esquerda-direita)
+- Demais inserções: sem rotação
+- Árvore final: raiz 30; à esquerda 15(10(5), 25); à direita 50(35(·, 40), 60(55, 75(70)))
+
+</details>
 
 ---
 
@@ -477,7 +497,7 @@ Para cada inserção:
 
 ## 9. Próximos Passos & Ferramentas Recomendadas
 
-**Próximo capítulo:** Implementação em C de AVLs (struct com campo `altura`, funções de rotação, inserção com rebalanceamento automático, remoção avançada).
+**Próximo capítulo:** Implementação em C de AVLs (struct com campo `altura`, funções de rotação, inserção com rebalanceamento automático).
 
 **Prática sugerida (sem código):**
 
@@ -490,8 +510,8 @@ Para cada inserção:
 
 **Leitura complementar:**
 
-- ZIVIANI, N. *Projeto de Algoritmos*. Seção 5.4: Árvores AVL.
-- GOODRICH, M. T. *Data Structures and Algorithms in C*. Capítulo 11: Balanced Search Trees.
+- SZWARCFITER, J. L.; MARKENZON, L. *Estruturas de Dados e Seus Algoritmos*. Capítulo 5: Árvores Balanceadas.
+- GOODRICH, M. T.; TAMASSIA, R.; MOUNT, D. *Data Structures and Algorithms in C++*. Capítulo 10: Search Trees.
 
 ---
 

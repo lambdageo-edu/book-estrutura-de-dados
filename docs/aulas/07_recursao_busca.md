@@ -22,7 +22,7 @@
 
 ### 2. As Três Leis da Recursão
 
-Todos os algoritmos recursivos devem obedecer a três leis importantes:
+Todos os algoritmos recursivos devem obedecer a três leis importantes (formulação de Miller e Ranum, *Problem Solving with Algorithms and Data Structures*):
 
 1. **Um algoritmo recursivo deve possuir um caso base (base case).**
 2. **Um algoritmo recursivo deve modificar o seu estado e se aproximar do caso base.**
@@ -46,7 +46,7 @@ $$
 
 #### Implementação em C
 
-```
+```c
 #include <stdio.h>
 
 // Função recursiva para calcular o fatorial
@@ -71,16 +71,28 @@ O computador resolve isso utilizando a **Pilha de Execução (Call Stack)**, ond
 
 ### 4. Iteração para Recursão (Soma de Array)
 
+Na versão iterativa, um laço acumula a soma:
+
+```c
+int soma_array_iter(int numeros[], int tamanho) {
+    int soma = 0;
+    for (int i = 0; i < tamanho; i++) {
+        soma += numeros[i];
+    }
+    return soma;
+}
+```
+
 Qual é a regra para somar os elementos de um array recursivamente?
 **"A soma de uma lista de números é o primeiro elemento mais a soma do restante da lista."**
 
-```
+```c
 #include <stdio.h>
 
 // Solução Recursiva usando ponteiros em C
 int soma_array_rec(int numeros[], int tamanho) {
-    if (tamanho == 1) { // Caso base
-        return numeros[0];
+    if (tamanho == 0) { // Caso base: vetor vazio soma 0
+        return 0;
     }
     else {
         // Retorna o 1º elemento + a soma do resto (avança o ponteiro e diminui tamanho)
@@ -99,7 +111,7 @@ Por que busca é importante na computação? Pense no Google, uma das maiores em
 
 Quando itens são armazenados em um array, eles têm uma relação linear. Na busca sequencial, começamos pelo primeiro item e visitamos elemento por elemento até achar o alvo ou chegar ao fim do array.
 
-```
+```c
 #include <stdio.h>
 #include <stdbool.h> // Para usar true/false em C
 
@@ -151,7 +163,7 @@ Pense em procurar um nome numa lista telefônica ou dicionário. Você não lê 
 
 Nesta implementação em C, usamos duas variáveis de controle (`primeiro` e `ultimo`) para representar os "limites" de onde estamos procurando no array.
 
-```
+```c
 #include <stdio.h>
 #include <stdbool.h>
 
@@ -194,7 +206,7 @@ int main() {
 Podemos unir os dois temas deste capítulo: recursão e busca! A busca binária é um algoritmo clássico de recursão.
 A cada chamada, o "estado modificado" é a redução do intervalo de busca (`primeiro` a `ultimo`).
 
-```
+```c
 #include <stdio.h>
 #include <stdbool.h>
 
@@ -243,7 +255,7 @@ Para analisar a busca binária, precisamos ter em mente que cada comparação el
 | 3 | n/8 |
 | i | $n/2^i$ |
 
-Dado essa característica, o número máximo de comparações para encontrar (ou não) um elemento é $\log_2(n)$.
+Dado essa característica, o número máximo de comparações para encontrar (ou não) um elemento é $\lfloor \log_2 n \rfloor + 1$, ou seja, da ordem de $\log_2 n$.
 
 **Exemplo Prático (1.000.000 de registros):**
 
@@ -252,5 +264,5 @@ Dado essa característica, o número máximo de comparações para encontrar (ou
 
 ### Próximos Passos
 
-1. Modifique as funções de busca para retornar o **índice** do elemento encontrado em vez de Verdadeiro/Falso. Retorne `1` caso não encontre.
+1. Modifique as funções de busca para retornar o **índice** do elemento encontrado em vez de Verdadeiro/Falso. Retorne `-1` caso não encontre.
 2. Teste o que acontece se você passar um array não-ordenado para a Busca Binária (ele vai falhar sem dar erro de compilação!).

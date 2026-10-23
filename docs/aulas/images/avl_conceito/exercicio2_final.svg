@@ -1,27 +1,21 @@
-<svg width="620" height="360" viewBox="0 0 620 360" xmlns="http://www.w3.org/2000/svg">
-<rect width="620" height="360" fill="#ffffff" stroke="#d0d0d0" stroke-width="1" rx="6"/>
+<svg width="480" height="285" viewBox="0 0 480 285" xmlns="http://www.w3.org/2000/svg">
+<rect width="480" height="285" fill="#ffffff" stroke="#d0d0d0" stroke-width="1" rx="6"/>
 
-<line x1="345.0" y1="52.0" x2="135.0" y2="127.0" stroke="#666666" stroke-width="1.5" />
+<line x1="205.0" y1="52.0" x2="135.0" y2="127.0" stroke="#666666" stroke-width="1.5" />
 <line x1="135.0" y1="127.0" x2="65.0" y2="202.0" stroke="#666666" stroke-width="1.5" />
-<line x1="135.0" y1="127.0" x2="205.0" y2="202.0" stroke="#666666" stroke-width="1.5" />
-<line x1="205.0" y1="202.0" x2="275.0" y2="277.0" stroke="#666666" stroke-width="1.5" />
-<line x1="345.0" y1="52.0" x2="485.0" y2="127.0" stroke="#666666" stroke-width="1.5" />
-<line x1="485.0" y1="127.0" x2="415.0" y2="202.0" stroke="#666666" stroke-width="1.5" />
-<line x1="485.0" y1="127.0" x2="555.0" y2="202.0" stroke="#666666" stroke-width="1.5" />
-<circle cx="345.0" cy="52.0" r="22" fill="#ffffff" stroke="#1a1a1a" stroke-width="2" />
-<text x="345.0" y="52.0" text-anchor="middle" dominant-baseline="central" font-size="15" font-family="Helvetica,Arial,sans-serif" fill="#1a1a1a" font-weight="600">20</text>
-<circle cx="135.0" cy="127.0" r="22" fill="#ffffff" stroke="#1a1a1a" stroke-width="2" />
-<text x="135.0" y="127.0" text-anchor="middle" dominant-baseline="central" font-size="15" font-family="Helvetica,Arial,sans-serif" fill="#1a1a1a" font-weight="600">5</text>
+<line x1="205.0" y1="52.0" x2="345.0" y2="127.0" stroke="#666666" stroke-width="1.5" />
+<line x1="345.0" y1="127.0" x2="275.0" y2="202.0" stroke="#666666" stroke-width="1.5" />
+<line x1="345.0" y1="127.0" x2="415.0" y2="202.0" stroke="#666666" stroke-width="1.5" />
 <circle cx="65.0" cy="202.0" r="22" fill="#ffffff" stroke="#1a1a1a" stroke-width="2" />
 <text x="65.0" y="202.0" text-anchor="middle" dominant-baseline="central" font-size="15" font-family="Helvetica,Arial,sans-serif" fill="#1a1a1a" font-weight="600">3</text>
-<circle cx="205.0" cy="202.0" r="22" fill="#ffffff" stroke="#1a1a1a" stroke-width="2" />
-<text x="205.0" y="202.0" text-anchor="middle" dominant-baseline="central" font-size="15" font-family="Helvetica,Arial,sans-serif" fill="#1a1a1a" font-weight="600">10</text>
-<circle cx="275.0" cy="277.0" r="22" fill="#ffffff" stroke="#1a1a1a" stroke-width="2" />
-<text x="275.0" y="277.0" text-anchor="middle" dominant-baseline="central" font-size="15" font-family="Helvetica,Arial,sans-serif" fill="#1a1a1a" font-weight="600">15</text>
-<circle cx="485.0" cy="127.0" r="22" fill="#ffffff" stroke="#1a1a1a" stroke-width="2" />
-<text x="485.0" y="127.0" text-anchor="middle" dominant-baseline="central" font-size="15" font-family="Helvetica,Arial,sans-serif" fill="#1a1a1a" font-weight="600">30</text>
+<circle cx="135.0" cy="127.0" r="22" fill="#ffffff" stroke="#1a1a1a" stroke-width="2" />
+<text x="135.0" y="127.0" text-anchor="middle" dominant-baseline="central" font-size="15" font-family="Helvetica,Arial,sans-serif" fill="#1a1a1a" font-weight="600">5</text>
+<circle cx="205.0" cy="52.0" r="22" fill="#ffffff" stroke="#1a1a1a" stroke-width="2" />
+<text x="205.0" y="52.0" text-anchor="middle" dominant-baseline="central" font-size="15" font-family="Helvetica,Arial,sans-serif" fill="#1a1a1a" font-weight="600">10</text>
+<circle cx="275.0" cy="202.0" r="22" fill="#ffffff" stroke="#1a1a1a" stroke-width="2" />
+<text x="275.0" y="202.0" text-anchor="middle" dominant-baseline="central" font-size="15" font-family="Helvetica,Arial,sans-serif" fill="#1a1a1a" font-weight="600">15</text>
+<circle cx="345.0" cy="127.0" r="22" fill="#ffffff" stroke="#1a1a1a" stroke-width="2" />
+<text x="345.0" y="127.0" text-anchor="middle" dominant-baseline="central" font-size="15" font-family="Helvetica,Arial,sans-serif" fill="#1a1a1a" font-weight="600">20</text>
 <circle cx="415.0" cy="202.0" r="22" fill="#ffffff" stroke="#1a1a1a" stroke-width="2" />
-<text x="415.0" y="202.0" text-anchor="middle" dominant-baseline="central" font-size="15" font-family="Helvetica,Arial,sans-serif" fill="#1a1a1a" font-weight="600">25</text>
-<circle cx="555.0" cy="202.0" r="22" fill="#ffffff" stroke="#1a1a1a" stroke-width="2" />
-<text x="555.0" y="202.0" text-anchor="middle" dominant-baseline="central" font-size="15" font-family="Helvetica,Arial,sans-serif" fill="#1a1a1a" font-weight="600">35</text>
+<text x="415.0" y="202.0" text-anchor="middle" dominant-baseline="central" font-size="15" font-family="Helvetica,Arial,sans-serif" fill="#1a1a1a" font-weight="600">30</text>
 </svg>

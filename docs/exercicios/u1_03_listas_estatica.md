@@ -1,6 +1,9 @@
 # Lista Estática
 
-Usando como base essa implementação, crie as operações propostas a seguir:
+Usando como base essa implementação, crie as operações propostas a seguir.
+
+!!! note "Convenção desta lista"
+    Aqui `ultimo` guarda a **quantidade** de elementos (0 = lista vazia), e não o índice do último elemento como no capítulo de Listas Estáticas (onde -1 = vazia). As duas convenções são comuns; observe como cada função muda conforme a escolha.
 
 ```c
 #include <stdio.h>
@@ -15,6 +18,7 @@ typedef struct lista {
 
 Lista* cria_lista() {
     Lista* self = malloc(sizeof(Lista));
+    if (self == NULL) return NULL;
     self->ultimo = 0;
     return self;
 }
@@ -34,8 +38,12 @@ void inserir_final(Lista* l, int item) {
 }
 
 void inserir(Lista *l, int pos, int item) {
+    if (l->ultimo >= MAX || pos < 0) {
+        return;                       /* lista cheia ou posição inválida */
+    }
     if (pos > l->ultimo) {
-        return inserir_final(l, item);
+        inserir_final(l, item);
+        return;
     }
     for (int i = l->ultimo; i > pos; i--) {
         l->itens[i] = l->itens[i - 1];
@@ -65,6 +73,7 @@ void imprime(Lista *l) {
 }
 
 int elemento(Lista* l, int pos) {
+    if (pos < 0 || pos >= l->ultimo) return -1;   /* posição inválida */
     return l->itens[pos];
 }
 
@@ -100,6 +109,7 @@ int main() {
     - Exemplo de uso:
         
         ```c
+        // com a lista [10, 20, 30]:
         int pos = buscar(lista1, 20); // deve retornar 1
         
         ```
@@ -148,7 +158,7 @@ int main() {
 ### Nível 4 – Desafios opcionais
 
 1. **Função `intercalar(Lista* l1, Lista* l2, Lista* resultado)`**
-    - Intercale os elementos de `l1` e `l2` em uma nova lista.
+    - Supondo `l1` e `l2` ordenadas, combine seus elementos em `resultado`, também ordenada.
     - Exemplo:
         
         ```

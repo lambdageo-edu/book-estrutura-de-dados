@@ -175,21 +175,18 @@ k=3: copia 43        → [3,27,38,43] ✓
 ```
 Vetor: [10, 80, 30, 90, 40, 50, 70], pivô = 70 (último elemento)
 
-Particionamento:
-[10, 80, 30, 90, 40, 50, 70]
-  ↑                        ↑
-  i                        pivô
+Particionamento (i começa em -1; j percorre de 0 a 5):
 
-i=0: 10<70 → troca com posição i+1 → [10, 80, 30, 90, 40, 50, 70], i=1
-i=1: 80>70 → ignora
-i=2: 30<70 → troca com posição i+1 → [10, 30, 80, 90, 40, 50, 70], i=2
-i=3: 90>70 → ignora
-i=4: 40<70 → troca com posição i+1 → [10, 30, 40, 90, 80, 50, 70], i=3
-i=5: 50<70 → troca com posição i+1 → [10, 30, 40, 50, 80, 90, 70], i=4
+j=0: 10≤70 → i=0, troca v[0]↔v[0] → [10, 80, 30, 90, 40, 50, 70]
+j=1: 80>70 → ignora
+j=2: 30≤70 → i=1, troca v[1]↔v[2] → [10, 30, 80, 90, 40, 50, 70]
+j=3: 90>70 → ignora
+j=4: 40≤70 → i=2, troca v[2]↔v[4] → [10, 30, 40, 90, 80, 50, 70]
+j=5: 50≤70 → i=3, troca v[3]↔v[5] → [10, 30, 40, 50, 80, 90, 70]
 
-Final: troca pivô com posição i+1 → [10, 30, 40, 50, 70, 90, 80]
-                              ↑
-                           pivô na posição correta
+Final: troca pivô com v[i+1] = v[4] → [10, 30, 40, 50, 70, 90, 80]
+                                                   ↑
+                                  pivô (70) na posição correta (índice 4)
 
 Agora recursivamente: ordena [10,30,40,50] e [90,80]
 ```
@@ -199,12 +196,12 @@ Agora recursivamente: ordena [10,30,40,50] e [90,80]
 ```c
 // Particionamento de Lomuto: pivô é o último elemento
 int partition(int vetor[], int esq, int dir) {
-    int pivô = vetor[dir];  // Escolhe último elemento como pivô
+    int pivo = vetor[dir];  // Escolhe último elemento como pivô
     int i = esq - 1;        // Índice do menor elemento
 
     for (int j = esq; j < dir; j++) {
         // Se elemento atual é menor ou igual ao pivô
-        if (vetor[j] <= pivô) {
+        if (vetor[j] <= pivo) {
             i++;  // Incrementa índice do menor elemento
             // Troca vetor[i] e vetor[j]
             int temp = vetor[i];
@@ -241,39 +238,54 @@ void quickSortWrapper(int vetor[], int n) {
 ### 3.3 Otimizações Importantes
 
 ```c
+void trocar(int *a, int *b) { int t = *a; *a = *b; *b = t; }
+
 // 1. Escolha de pivô: Mediana de 3 (reduz chance de pior caso)
+// Ordena vetor[esq], vetor[mid], vetor[dir] e leva a mediana para vetor[dir],
+// que é onde o partition de Lomuto (Seção 3.2) espera encontrar o pivô.
 int medianaDe3(int vetor[], int esq, int dir) {
     int mid = esq + (dir - esq) / 2;
 
-    // Ordena vetor[esq], vetor[mid], vetor[dir]
-    if (vetor[esq] > vetor[mid]) { int t = vetor[esq]; vetor[esq] = vetor[mid]; vetor[mid] = t; }
-    if (vetor[esq] > vetor[dir]) { int t = vetor[esq]; vetor[esq] = vetor[dir]; vetor[dir] = t; }
-    if (vetor[mid] > vetor[dir]) { int t = vetor[mid]; vetor[mid] = vetor[dir]; vetor[dir] = t; }
+    if (vetor[esq] > vetor[mid]) trocar(&vetor[esq], &vetor[mid]);
+    if (vetor[esq] > vetor[dir]) trocar(&vetor[esq], &vetor[dir]);
+    if (vetor[mid] > vetor[dir]) trocar(&vetor[mid], &vetor[dir]);
+    // Agora vetor[esq] <= vetor[mid] <= vetor[dir]: a mediana está em mid
 
-    // Coloca mediana na posição dir-1 e retorna como pivô
-    int temp = vetor[mid]; vetor[mid] = vetor[dir-1]; vetor[dir-1] = temp;
-    return vetor[dir-1];
+    trocar(&vetor[mid], &vetor[dir]);
+    return vetor[dir];
 }
 
-// 2. Corte para Insertion Sort em subvetores pequenos
-void quickSortOtimizado(int vetor[], int esq, int dir) {
-    // Usa Insertion Sort para subvetores pequenos
-    if (dir - esq + 1 < 10) {
-        insertionSortRange(vetor, esq, dir);  // Implementação auxiliar
-        return;
+// Insertion Sort restrito ao intervalo vetor[esq..dir]
+void insertionSortRange(int vetor[], int esq, int dir) {
+    for (int i = esq + 1; i <= dir; i++) {
+        int chave = vetor[i];
+        int j = i - 1;
+        while (j >= esq && vetor[j] > chave) {
+            vetor[j + 1] = vetor[j];
+            j--;
+        }
+        vetor[j + 1] = chave;
     }
+}
 
-    if (esq < dir) {
+// 2. Quick Sort com mediana-de-3, corte para Insertion Sort e pilha limitada
+void quickSortOtimizado(int vetor[], int esq, int dir) {
+    while (dir - esq + 1 >= 10) {
+        medianaDe3(vetor, esq, dir);
         int pi = partition(vetor, esq, dir);
-        // Otimização: recursão primeiro no menor subvetor (reduz stack)
+
+        // Recursão só no MENOR lado; o maior é tratado pelo próprio laço.
+        // Assim a profundidade da pilha fica limitada a O(log n).
         if (pi - esq < dir - pi) {
             quickSortOtimizado(vetor, esq, pi - 1);
-            quickSortOtimizado(vetor, pi + 1, dir);
+            esq = pi + 1;
         } else {
             quickSortOtimizado(vetor, pi + 1, dir);
-            quickSortOtimizado(vetor, esq, pi - 1);
+            dir = pi - 1;
         }
     }
+    // Subvetores pequenos (< 10 elementos): Insertion Sort
+    insertionSortRange(vetor, esq, dir);
 }
 ```
 
@@ -362,9 +374,12 @@ void shellSort(int vetor[], int n) {
 | **Shell original** | n/2, n/4, ..., 1 | O(n²) | ❌ Evitar |
 | **Knuth** | (3ᵏ - 1)/2 | O(n³/²) | ✅ Boa escolha geral |
 | **Sedgewick** | Mistura de 4ᵏ e 6ᵏ | O(n⁴/³) | ✅ Excelente, mas complexa |
-| **Tokuda** | ⌈(9×(9/4)ᵏ - 4)/5⌉ | O(n log² n) | ✅ Teoricamente superior |
+| **Tokuda** | ⌈(9×(9/4)ᵏ - 4)/5⌉ | Desconhecida | ✅ Uma das melhores empiricamente |
+| **Pratt** | 2ᵖ·3ᵠ | O(n log² n) | ⚠️ Muitos gaps; lenta na prática |
 
 > 💡 **Recomendação prática:** Use a sequência de **Knuth** para implementação simples e eficiente. Para bibliotecas de produção, considere Sedgewick ou Tokuda.
+
+*(O exemplo da Seção 4.1 usa os gaps 4, 2, 1 da sequência original de Shell para facilitar a visualização; o código abaixo usa a sequência de Knuth, que para n = 8 gera os gaps 4 e 1.)*
 
 ### 4.4 Análise de Complexidade
 
@@ -566,9 +581,9 @@ void mergeSort(int vetor[], int n) { mergeSortRec(vetor, 0, n - 1); }
 
 // ===== Quick Sort (Lomuto) =====
 int partition(int vetor[], int esq, int dir) {
-    int pivô = vetor[dir], i = esq - 1;
+    int pivo = vetor[dir], i = esq - 1;
     for (int j = esq; j < dir; j++) {
-        if (vetor[j] <= pivô) {
+        if (vetor[j] <= pivo) {
             i++;
             int t = vetor[i]; vetor[i] = vetor[j]; vetor[j] = t;
         }
@@ -683,7 +698,7 @@ Heap Sort   :  0.421 ms | Ordenado? ✓
 
 ### Guia Prático de Seleção
 
-```c
+```text
 ✅ Use Merge Sort se:
    - Precisa de estabilidade (ex: ordenar por múltiplas chaves)
    - Dados estão em estrutura encadeada (listas)
@@ -694,7 +709,7 @@ Heap Sort   :  0.421 ms | Ordenado? ✓
    - Quer performance prática máxima em dados aleatórios
    - Memória é limitada (in-place)
    - Pode tolerar pior caso improvável (ou mitigá-lo)
-   - É a escolha padrão de bibliotecas (ex: qsort, std::sort)
+   - É a base do std::sort do C++ (introsort)
 
 ✅ Use Shell Sort se:
    - Quer algo simples, in-place e mais rápido que O(n²)
@@ -773,26 +788,36 @@ Meça o tempo e o número de comparações. Qual versão se sai melhor no vetor 
 <summary>💡 Esboço de solução</summary>
 
 ```c
-// Contador global para comparações
-int comparacoes = 0;
+// Contador de comparações (global apenas para simplificar o experimento)
+long comparacoes = 0;
 
-// Partition com mediana-de-3
+// Partition de Lomuto instrumentado: conta cada comparação com o pivô
+int partitionContando(int vetor[], int esq, int dir) {
+    int pivo = vetor[dir], i = esq - 1;
+    for (int j = esq; j < dir; j++) {
+        comparacoes++;
+        if (vetor[j] <= pivo) {
+            i++;
+            trocar(&vetor[i], &vetor[j]);
+        }
+    }
+    trocar(&vetor[i + 1], &vetor[dir]);
+    return i + 1;
+}
+
+// Versão 2: mediana-de-3 (Seção 3.3) leva a mediana para vetor[dir]
 int partitionMediana(int vetor[], int esq, int dir) {
-    int mid = esq + (dir - esq) / 2;
-
-    // Ordena triplet para encontrar mediana
-    if (vetor[esq] > vetor[mid]) { int t = vetor[esq]; vetor[esq] = vetor[mid]; vetor[mid] = t; comparacoes++; }
-    if (vetor[esq] > vetor[dir]) { int t = vetor[esq]; vetor[esq] = vetor[dir]; vetor[dir] = t; comparacoes++; }
-    if (vetor[mid] > vetor[dir]) { int t = vetor[mid]; vetor[mid] = vetor[dir]; vetor[dir] = t; comparacoes++; }
-
-    // Coloca mediana em dir-1 e usa como pivô
-    int temp = vetor[mid]; vetor[mid] = vetor[dir-1]; vetor[dir-1] = temp;
-    return partitionLomuto(vetor, esq, dir-1);  // Reusa Lomuto no intervalo ajustado
+    if (dir - esq >= 2) {
+        medianaDe3(vetor, esq, dir);
+        comparacoes += 3;   // as três comparações da mediana
+    }
+    return partitionContando(vetor, esq, dir);
 }
 
 // Resultado esperado:
 // - Vetor aleatório: desempenho similar
-// - Vetor ordenado: mediana-de-3 evita pior caso O(n²), mantendo O(n log n)
+// - Vetor ordenado: pivô fixo cai no pior caso (~n²/2 comparações);
+//   mediana-de-3 escolhe o elemento do meio e mantém ~n log n
 ```
 
 </details>
@@ -855,24 +880,22 @@ Justifique por que essa combinação pode ser mais eficiente que cada algoritmo 
 
 ```c
 void hybridSort(int vetor[], int esq, int dir) {
-    // Caso base: usa Insertion Sort para pequenos subvetores
-    if (dir - esq + 1 <= 32) {
-        insertionSortRange(vetor, esq, dir);
-        return;
-    }
+    while (dir - esq + 1 > 32) {
+        // Escolhe pivô com mediana-de-3 (fica em vetor[dir])
+        medianaDe3(vetor, esq, dir);
+        int pi = partition(vetor, esq, dir);
 
-    // Escolhe pivô com mediana-de-3
-    int pivô = medianaDe3(vetor, esq, dir);
-    int pi = partition(vetor, esq, dir);
-
-    // Recursão otimizada: processa menor partição primeiro
-    if (pi - esq < dir - pi) {
-        hybridSort(vetor, esq, pi - 1);
-        hybridSort(vetor, pi + 1, dir);
-    } else {
-        hybridSort(vetor, pi + 1, dir);
-        hybridSort(vetor, esq, pi - 1);
+        // Recursão no menor lado; o laço continua no maior
+        if (pi - esq < dir - pi) {
+            hybridSort(vetor, esq, pi - 1);
+            esq = pi + 1;
+        } else {
+            hybridSort(vetor, pi + 1, dir);
+            dir = pi - 1;
+        }
     }
+    // Caso base: Insertion Sort para subvetores pequenos
+    insertionSortRange(vetor, esq, dir);
 }
 
 // Justificativa:
@@ -892,24 +915,23 @@ void hybridSort(int vetor[], int esq, int dir) {
 
 | Afirmação | Veredito | Explicação |
 | --- | --- | --- |
-| "Quick Sort é sempre o mais rápido" | ❌ Mito | Depende da entrada; Merge Sort pode ser melhor em dados quase ordenados ou com restrições de estabilidade |
+| "Quick Sort é sempre o mais rápido" | ❌ Mito | Depende da entrada e dos requisitos; Merge Sort é preferível quando se exige estabilidade ou pior caso garantido, e variantes adaptativas (como o Timsort) vencem em dados quase ordenados |
 | "Heap Sort é útil só academicamente" | ❌ Mito | Usado em sistemas embarcados com memória limitada e em priority queues |
 | "Shell Sort é obsoleto" | ⚠️ Parcial | Para uso geral, bibliotecas padrão são melhores; mas é excelente para aprendizado e prototipagem |
 | "Merge Sort consome muita memória" | ✅ Verdade | Requer O(n) auxiliar, mas pode ser otimizado com alocação única prévia |
 
 ### 9.2 Como Bibliotecas Reais Implementam `sort()`?
 
-```c
-// Exemplo: glibc qsort() e C++ std::sort()
-
-// Estratégia típica (Introsort):
+```text
+Exemplo: std::sort() do C++ (libstdc++) — estratégia Introsort:
 1. Começa com Quick Sort (performance prática)
-2. Monitora profundidade de recursão
-3. Se profundidade > 2*log(n), muda para Heap Sort (garante O(n log n))
-4. Para partições pequenas (< 16-32), usa Insertion Sort
-5. Opcional: usa Merge Sort para dados quase ordenados (adaptativo)
+2. Monitora a profundidade de recursão
+3. Se a profundidade passa de ~2·log₂(n), muda para Heap Sort (garante O(n log n))
+4. Para partições pequenas (16 elementos), termina com Insertion Sort
 
-// Resultado: melhor dos mundos na prática!
+Outras bibliotecas fazem escolhas diferentes: std::stable_sort e o sort de
+Python/Java para objetos usam variações de Merge Sort (Timsort), e o qsort()
+da glibc usou Merge Sort durante muitos anos (a implementação varia entre versões).
 ```
 
 > 💡 **Lição:** Algoritmos de produção raramente usam uma única técnica pura. Combinações híbridas exploram os pontos fortes de cada abordagem.

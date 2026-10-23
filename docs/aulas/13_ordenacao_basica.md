@@ -7,7 +7,7 @@
 
 > **Definição:** Ordenação é o processo de rearranjar os elementos de uma coleção em uma sequência específica, geralmente **crescente** ou **decrescente**, com base em uma chave de comparação.
 
-```c
+```text
 // Exemplo: vetor não ordenado → ordenado (crescente)
 Entrada:  [64, 34, 25, 12, 22, 11, 90]
 Saída:    [11, 12, 22, 25, 34, 64, 90]
@@ -71,8 +71,8 @@ Qual usar para 1 milhão de elementos?
 Considere este trecho de código:
 
 ```c
-for (int i = 0; i < n; i++) {          // Executa n+1 vezes (incluindo teste final)
-    for (int j = 0; j < n; j++) {      // Executa n vezes para cada i
+for (int i = 0; i < n; i++) {          // Corpo executa n vezes
+    for (int j = 0; j < n - 1; j++) {  // Corpo executa n-1 vezes para cada i
         if (vetor[j] > vetor[j+1]) {   // Comparação: O(1)
             // Troca: O(1)
         }
@@ -83,9 +83,9 @@ for (int i = 0; i < n; i++) {          // Executa n+1 vezes (incluindo teste fin
 **Contagem simplificada:**
 
 - Laço externo: `n` iterações
-- Laço interno: `n` iterações por externa → total `n × n = n²`
+- Laço interno: `n − 1` iterações por externa → total `n × (n − 1) = n² − n`
 - Operações internas: O(1)
-- **Complexidade total: O(n²)**
+- **Complexidade total: O(n²)** (o termo `− n` e as constantes são desprezados)
 
 ---
 
@@ -93,7 +93,7 @@ for (int i = 0; i < n; i++) {          // Executa n+1 vezes (incluindo teste fin
 
 ### 3.1 Ideia Conceitual
 
-> **Analogia:** Imagine bolhas de ar em um líquido: as menores "sobem" mais rápido. No Bubble Sort, os maiores elementos "flutuam" para o final do vetor a cada passagem.
+> **Analogia:** Imagine bolhas de ar subindo num copo de refrigerante até a superfície. No Bubble Sort, a cada passada o maior elemento ainda fora do lugar "sobe" como uma bolha até o final do vetor.
 
 **Estratégia:**
 
@@ -197,7 +197,7 @@ void bubbleSortOtimizado(int vetor[], int n) {
 
 ### 4.1 Ideia Conceitual
 
-> **Analogia:** Organizar cartas na mão: procure a menor carta, coloque-a na primeira posição; depois procure a segunda menor, coloque na segunda posição; e assim por diante.
+> **Analogia:** Organizar uma fila de pessoas por altura: procure a mais baixa e troque-a de lugar com quem está na frente; depois procure a mais baixa entre as restantes e coloque-a na segunda posição; e assim por diante.
 
 **Estratégia:**
 
@@ -265,8 +265,11 @@ void selectionSort(int vetor[], int n) {
 | Cenário | Comparações | Trocas | Complexidade |
 | --- | --- | --- | --- |
 | **Melhor caso** (ordenado) | n(n-1)/2 ≈ n²/2 | 0 | **O(n²)** |
-| **Pior caso** (invertido) | n(n-1)/2 ≈ n²/2 | n-1 | **O(n²)** |
-| **Caso médio** (aleatório) | ~n²/2 | ~n/2 | **O(n²)** |
+| **Vetor invertido** | n(n-1)/2 ≈ n²/2 | ⌊n/2⌋ | **O(n²)** |
+| **Pior caso** (trocas) | n(n-1)/2 ≈ n²/2 | n-1 | **O(n²)** |
+| **Caso médio** (aleatório) | ~n²/2 | ≈ n − ln n | **O(n²)** |
+
+*(No vetor invertido, cada troca coloca dois elementos no lugar de uma vez, por isso são só n/2 trocas. O máximo de n−1 trocas ocorre, por exemplo, em `[2, 3, ..., n, 1]`.)*
 
 **Espaço:** O(1) — ordenação *in-place*.
 
@@ -449,7 +452,7 @@ void insertionSort(int vetor[], int n) {
     }
 }
 
-// ===== Medição de tempo (microssegundos) =====
+// ===== Medição de tempo (milissegundos) =====
 double medirTempo(void (*func)(int[], int), int vetor[], int n) {
     clock_t inicio = clock();
     func(vetor, n);
@@ -617,7 +620,7 @@ c) Insertion Sort: quantos deslocamentos ocorreram ao inserir o elemento `1`?
 
 ```
 a) Bubble Sort:
-   Passada 1: [3,5,1,8,9] → trocas: 8↔3, 8↔1
+   Passada 1: [3,5,1,8,9] → trocas: 8↔3, 8↔5, 8↔1
    Passada 2: [3,1,5,8,9] → trocas: 5↔1
    Passada 3: [1,3,5,8,9] → trocas: 3↔1
    Passada 4: [1,3,5,8,9] → sem trocas → parada antecipada
@@ -748,15 +751,16 @@ void insertionSortAlunos(Aluno alunos[], int n) {
 ```
 Comparação teórica para n = 10.000:
 
-Algoritmo   | Operações aproximadas | Tempo relativo*
-------------|----------------------|---------------
-Bubble      | 100.000.000          | 100x
-Selection   | 50.000.000           | 50x
-Insertion   | 25.000.000 (médio)   | 25x
-Merge Sort  | 130.000              | 1x (base)
-Quick Sort  | 140.000              | ~1x
+Algoritmo   | Comparações aproximadas | Relativo ao Merge*
+------------|-------------------------|-------------------
+Bubble      | 50.000.000  (n²/2)      | ~380x
+Selection   | 50.000.000  (n²/2)      | ~380x
+Insertion   | 25.000.000  (n²/4, médio)| ~190x
+Merge Sort  | 130.000     (n log₂ n)  | 1x (base)
+Quick Sort  | 180.000     (1,39 n log₂ n, médio) | ~1,4x
 
-* Supondo mesma constante por operação
+* Supondo o mesmo custo por comparação; na prática, constantes e
+  acesso à memória mudam esses números.
 ```
 
 ---
@@ -819,7 +823,7 @@ Quick Sort  | 140.000              | ~1x
 
 📚 **Leitura complementar:**
 
-- ZIVIANI, N. *Projeto de Algoritmos*. Capítulo 3: Ordenação.
+- ZIVIANI, N. *Projeto de Algoritmos*. Capítulo 4: Ordenação.
 - CORMEN et al. *Introduction to Algorithms*. Capítulo 2: Getting Started (análise de algoritmos).
 - USP-IME. *Pythonds em Português*: [https://panda.ime.usp.br/panda/static/pythonds_pt/05-OrdenacaoBusca/](https://panda.ime.usp.br/panda/static/pythonds_pt/05-OrdenacaoBusca/)
 

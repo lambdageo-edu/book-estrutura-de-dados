@@ -37,7 +37,7 @@ Uma **árvore enraizada** *T*, ou simplesmente árvore, é um conjunto finito de
 ```
 • T = Ø, quando a árvore é dita vazia, ou
 
-• T = {r} ∪ {T₁} ∪ {T₂} ∪ {T₃} ∪ ... ∪ {Tₙ}, com n ≥ 0
+• T = {r} ∪ T₁ ∪ T₂ ∪ T₃ ∪ ... ∪ Tₙ, com n ≥ 0
 ```
 
 **Nesta definição:**
@@ -106,14 +106,15 @@ D
 
 ```mermaid
 graph TD
-    D((D)) -->|E| E((E))
-    D -->|D| G((G))
+    D((D)) --> E((E))
+    D --> G((G))
     E --> F((F))
     G --> H((H))
     G --> J((J))
     G --> M((M))
-    J -->|E| K((K))
-    J -->|D| L((L))
+    H --> I((I))
+    J --> K((K))
+    J --> L((L))
 ```
 
 ---
@@ -171,13 +172,13 @@ Uma **árvore binária** *T* é um conjunto finito de elementos, denominados nó
 ```
 • T = Ø, quando a árvore é dita vazia, ou
 
-• T = {r} ∪ {Tₑ} ∪ {Tₑ}
+• T = {r} ∪ T_esq ∪ T_dir
 ```
 
 **Nesta definição:**
 
 - **r** é um nó especial chamado **raiz**
-- **Tₑ** e **Tₑ** são conjuntos disjuntos (podem ser vazios), chamados **subárvore à esquerda** e **subárvore à direita** de **r**, cada qual uma árvore binária
+- **T_esq** e **T_dir** são conjuntos disjuntos (podem ser vazios), chamados **subárvore à esquerda** e **subárvore à direita** de **r**, cada qual uma árvore binária
 
 > **Diferença crucial:** Em árvores binárias, a ordem das subárvores importa! Subárvore esquerda ≠ subárvore direita.
 
@@ -188,10 +189,10 @@ Uma **árvore binária** *T* é um conjunto finito de elementos, denominados nó
 ```mermaid
 graph TD
     R1((•)) --> A1((•))
-    R1 -->|E| A2((•))
-    R1 -->|D| A3((•))
-    A1 -->|E| B1((•))
-    A1 -->|D| B2((•))
+    R1 --> A2((•))
+    R1 --> A3((•))
+    A1 --> B1((•))
+    A1 --> B2((•))
 ```
 
 **Árvore Binária (máx. 2 filhos):** esquerda e direita são distintos, grau máximo = 2.
@@ -295,10 +296,11 @@ void liberarArvore(No* raiz) {
         liberarArvore(raiz->esquerda);
         liberarArvore(raiz->direita);
 
+        // Opcional: mensagem de debug (ANTES do free: depois dele, raiz não pode ser acessado)
+        // printf("Liberando nó: %c\n", raiz->valor);
+
         // Depois libera o nó atual
         free(raiz);
-        // Opcional: mensagem de debug
-        // printf("Nó liberado: %c\n", raiz->valor);
     }
 }
 ```
@@ -323,7 +325,7 @@ void liberarArvore(No* raiz) {
 
 ### 6.2 Árvore Binária Completa
 
-> **Definição:** Árvore estritamente binária na qual todo nó que apresente alguma subárvore vazia está localizado no **último ou penúltimo nível** da árvore.
+> **Definição:** Árvore binária na qual todo nó que apresente alguma subárvore vazia está localizado no **último ou penúltimo nível** da árvore.
 
 **a) Completa** — nós com subárvores vazias apenas nos últimos níveis ✓
 
@@ -333,9 +335,12 @@ void liberarArvore(No* raiz) {
 
 ![Árvore não completa: subárvore vazia em nível intermediário](images/arvores_conceitos/completa_b.svg)
 
-### 6.3 Árvore Binária Cheia (Full)
+### 6.3 Árvore Binária Cheia (Perfeita)
 
 > **Definição:** Todos os nós internos têm grau 2 e **todas as folhas estão no mesmo nível**.
+
+!!! warning "Cuidado com a terminologia em inglês"
+    O que chamamos aqui de árvore **cheia** corresponde, em inglês, a *perfect binary tree*. O termo *full binary tree* costuma designar a árvore **estritamente binária** (todo nó com 0 ou 2 filhos).
 
 ![Árvore binária cheia: todos os nós internos com 2 filhos, folhas no mesmo nível](images/arvores_conceitos/cheia_perfeita.svg)
 
@@ -684,10 +689,10 @@ Escreva uma função que verifique se uma árvore binária é **cheia**:
 
 ```c
 int ehCheia(No* raiz);
-// Dica: um nó é válido se:
+// Dica: uma árvore é cheia se:
 // - for NULL, ou
-// - for folha (ambos filhos NULL), ou
-// - tiver ambos os filhos não-NULL e ambos forem cheios
+// - suas duas subárvores forem cheias E tiverem a mesma altura
+// (Alternativa: compare contarNos(raiz) com 2^(altura+1) - 1)
 ```
 
 ### Exercício 5 — Impressão Formatada
@@ -706,30 +711,35 @@ A
 <details>
 <summary>Dica de implementação</summary>
 
+O segredo é passar adiante um **prefixo** com as barras verticais dos níveis de cima: quem ainda tem irmão abaixo deixa `│  `; quem é o último deixa espaços.
+
 ```c
-void imprimirArvore(No* raiz, int nivel) {
-    if (raiz == NULL) return;
+#include <stdio.h>
 
-    // Imprime espaços para identação
-    for (int i = 0; i < nivel; i++) printf("   ");
-    printf("%c\n", raiz->valor);
+void imprimirRec(No* no, const char* prefixo, int ehUltimo) {
+    printf("%s%s%c\n", prefixo, ehUltimo ? "└─ " : "├─ ", no->valor);
 
-    // Chama recursivamente para filhos
-    if (raiz->esquerda != NULL || raiz->direita != NULL) {
-        if (raiz->esquerda != NULL) {
-            for (int i = 0; i < nivel; i++) printf("   ");
-            printf("├─ ");
-            imprimirArvore(raiz->esquerda, nivel + 1);
-        }
-        if (raiz->direita != NULL) {
-            for (int i = 0; i < nivel; i++) printf("   ");
-            printf("└─ ");
-            imprimirArvore(raiz->direita, nivel + 1);
-        }
-    }
+    char novoPrefixo[256];
+    snprintf(novoPrefixo, sizeof novoPrefixo, "%s%s", prefixo, ehUltimo ? "   " : "│  ");
+
+    if (no->esquerda != NULL)
+        imprimirRec(no->esquerda, novoPrefixo, no->direita == NULL);
+    if (no->direita != NULL)
+        imprimirRec(no->direita, novoPrefixo, 1);
 }
-// Chamar com: imprimirArvore(raiz, 0);
+
+void imprimirArvore(No* raiz) {
+    if (raiz == NULL) return;
+    printf("%c\n", raiz->valor);
+    if (raiz->esquerda != NULL)
+        imprimirRec(raiz->esquerda, "", raiz->direita == NULL);
+    if (raiz->direita != NULL)
+        imprimirRec(raiz->direita, "", 1);
+}
+// Chamar com: imprimirArvore(raiz);
 ```
+
+Repare que, quando um nó tem um único filho, o desenho não mostra se ele é esquerdo ou direito. Como extensão, imprima `(E)` ou `(D)` ao lado de cada nó.
 
 </details>
 
@@ -739,13 +749,13 @@ void imprimirArvore(No* raiz, int nivel) {
 
 **Conceitos de árvores gerais**
 
-- Definição recursiva: `T = {r} ∪ {T₁} ∪ ... ∪ {Tₙ}`
+- Definição recursiva: `T = {r} ∪ T₁ ∪ ... ∪ Tₙ`
 - Representações: textual `{}`, identação, gráfica
 - Terminologia: raiz, filho, pai, grau, folha, ancestral, nível, altura
 
 **Árvores binárias: especificidades**
 
-- Definição: `T = {r} ∪ {Tₑ} ∪ {Tₑ}` (ordem importa!)
+- Definição: `T = {r} ∪ T_esq ∪ T_dir` (ordem importa!)
 - Implementação em C com `struct`, ponteiros e alocação dinâmica
 - Tipos: estritamente binária, completa, cheia
 - Propriedades matemáticas da árvore cheia
@@ -775,13 +785,13 @@ void imprimirArvore(No* raiz, int nivel) {
 **Tópicos abordados nos próximos capítulos:**
 
 - Árvores Binárias de Busca (ABB): inserção, busca e remoção com ordenação
-- Balanceamento de árvores (AVL, Rubro-Negra)
-- Aplicações práticas: expressões aritméticas, índices de banco de dados, compressão (Huffman)
+- Balanceamento de árvores (AVL)
+- Para pesquisa complementar (fora do escopo deste livro): árvores Rubro-Negras, expressões aritméticas, índices de banco de dados (árvores B), compressão (Huffman)
 
 **Leitura recomendada:**
 
-- ZIVIANI, N. *Projeto de Algoritmos*. Capítulo 5: Árvores.
-- GOODRICH, M. T. *Data Structures and Algorithms in C*. Seção 7: Trees.
+- ZIVIANI, N. *Projeto de Algoritmos*. Capítulo 5: Pesquisa em Memória Primária (árvores de pesquisa).
+- GOODRICH, M. T.; TAMASSIA, R.; MOUNT, D. *Data Structures and Algorithms in C++*. Capítulo 7: Trees.
 
 **Prática sugerida:**
 

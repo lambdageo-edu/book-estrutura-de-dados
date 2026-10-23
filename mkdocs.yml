@@ -1,7 +1,7 @@
 site_name: Estruturas de Dados
 site_description: >
   Livro didático de Estruturas de Dados:
-  Recursividade, TAD, Listas, Pilhas, Filas, Árvores (BST, AVL, Heaps) e Ordenação.
+  Recursividade, TAD, Listas, Pilhas, Filas, Árvores (ABB e AVL) e Ordenação (incluindo Heap Sort).
 site_author: "Sergio Souza Costa"
 
 docs_dir: docs
@@ -74,11 +74,11 @@ nav:
   - "Pré-requisito: C para Programadores Python e VisuAlg": https://lambdageo.github.io/introducao-c/
 
   - Parte I — Fundamentos e Estruturas Lineares:
-      - Capítulo 1 — Introdução e TAD: aulas/00_apresentacao.md
+      - Capítulo 1 — Introdução: aulas/00_apresentacao.md
       - Capítulo 2 — Pilhas:
           - "2.1 Pilha Estática I: Vetores Globais": aulas/01_pilha_estatica_1.md
           - "2.2 Pilha Estática II: Funções, Ponteiros e Structs": aulas/02_pilha_estatica_2.md
-          - "2.3 Pilha Estática III: Alocação Dinâmica": aulas/03_pilha_estatica_3.md
+          - "2.3 Pilha III: Alocação Dinâmica": aulas/03_pilha_estatica_3.md
       - Capítulo 3 — Listas:
           - "3.1 Listas Estáticas como TAD em C": aulas/04_lista_estatica.md
           - "3.2 Listas Encadeadas como TAD em C": aulas/05_lista_encadeada.md

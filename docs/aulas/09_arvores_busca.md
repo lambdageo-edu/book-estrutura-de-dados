@@ -98,7 +98,7 @@ Uma **Árvore Binária de Busca (ABB)** é uma árvore binária que satisfaz a s
 
 ### 2.2 Exemplos Visuais
 
-![image.png](images/arvores_busca/image.png)
+![Comparação entre uma ABB válida (raiz 20) e uma árvore que não é ABB, com 25 à esquerda de 20 e 15 à direita](images/arvores_busca/image.png)
 
 ### 2.3 Consequência Importante: Percurso Em-Ordem
 
@@ -222,7 +222,7 @@ No* buscarIterativo(No* raiz, int chave) {
 1. raiz=20 → 18 < 20 → vai para esquerda
 2. atual=10 → 18 > 10 → vai para direita
 3. atual=15 → 18 > 15 → vai para direita
-4. atual=NULL → ✗ Não encontrado (4 comparações)
+4. atual=NULL → ✗ Não encontrado (3 comparações com chaves)
 
 ### 3.4 Operação 2: Inserção
 
@@ -255,7 +255,7 @@ No* inserir(No* raiz, int valor) {
 
 #### Exemplo Visual de Inserções Sequenciais
 
-![image.png](images/arvores_busca/image_1.png)
+![Construção passo a passo da ABB inserindo 20, 10, 30, 5, 15, 25 e 35](images/arvores_busca/image_1.png)
 
 ### 3.5 Operação 3: Remoção (Caso Mais Complexo)
 
@@ -277,15 +277,17 @@ Implementação: simplesmente libera o nó e retorna `NULL`.
 
 #### Caso 2: Nó tem um único filho
 
-**Antes (remover o nó 10, marcado com ↑):**
+Partindo da árvore obtida no Caso 1:
 
-![Árvore antes de remover o nó 10, que tem um único filho](images/arvores_busca/remocao_umfilho_antes.svg)
+**Antes (remover o nó 10, destacado):**
+
+![Árvore antes de remover o nó 10, que tem um único filho, o 15](images/arvores_busca/remocao_umfilho_antes.svg)
 
 **Depois:**
 
 ![Árvore depois de remover o nó 10](images/arvores_busca/remocao_umfilho_depois.svg)
 
-Implementação: "puxa" o filho para o lugar do pai.
+Implementação: "puxa" o filho (15) para o lugar do pai, liberando o nó removido.
 
 #### Caso 3: Nó tem dois filhos (mais complexo)
 
@@ -478,6 +480,18 @@ void emOrdem(No* raiz) {
     }
 }
 
+int contarNos(No* raiz) {
+    if (!raiz) return 0;
+    return 1 + contarNos(raiz->esquerda) + contarNos(raiz->direita);
+}
+
+int altura(No* raiz) {
+    if (!raiz) return -1;
+    int hEsq = altura(raiz->esquerda);
+    int hDir = altura(raiz->direita);
+    return 1 + (hEsq > hDir ? hEsq : hDir);
+}
+
 void imprimirABB(No* raiz, int nivel) {
     if (!raiz) return;
     imprimirABB(raiz->direita, nivel + 1);
@@ -554,7 +568,6 @@ Percurso em-ordem (deve sair ordenado): 5 10 15 20 25 30 35
 Removendo 20 (nó com dois filhos)...
         35
     30
-        25
 25
         15
     10
@@ -564,7 +577,7 @@ Em-ordem após remoção: 5 10 15 25 30 35
 
 Estatísticas:
   Nós: 6
-  Altura: 3
+  Altura: 2
 ```
 
 ---
@@ -669,7 +682,11 @@ bool ehABB(No* raiz);
 <summary>Esboço de solução</summary>
 
 ```c
-bool ehABBAux(No* raiz, int min, int max) {
+#include <limits.h>   /* LONG_MIN, LONG_MAX */
+#include <stdbool.h>
+
+/* Limites em long para que chaves iguais a INT_MIN/INT_MAX também sejam aceitas */
+bool ehABBAux(No* raiz, long min, long max) {
     if (raiz == NULL) return true;
     if (raiz->valor <= min || raiz->valor >= max) return false;
     return ehABBAux(raiz->esquerda, min, raiz->valor) &&
@@ -677,9 +694,11 @@ bool ehABBAux(No* raiz, int min, int max) {
 }
 
 bool ehABB(No* raiz) {
-    return ehABBAux(raiz, INT_MIN, INT_MAX);
+    return ehABBAux(raiz, LONG_MIN, LONG_MAX);
 }
 ```
+
+(Se `long` tiver o mesmo tamanho de `int` na sua plataforma, use `long long`.)
 
 </details>
 
@@ -744,7 +763,7 @@ Considere inserir os valores **em ordem crescente**: `[1, 2, 3, 4, 5, 6, 7]`
 
 | Métrica | Árvore Balanceada | Árvore Degenerada |
 | --- | --- | --- |
-| Altura | ≈ log₂(7) = 2~3 | 6 |
+| Altura | 2 (mínima: ⌊log₂ 7⌋) | 6 |
 | Busca (pior caso) | 3 comparações | 7 comparações |
 | Inserção | O(log n) | O(n) |
 | Uso de memória (pilha recursiva) | O(log n) | O(n) — risco de estouro |
@@ -760,7 +779,6 @@ Considere inserir os valores **em ordem crescente**: `[1, 2, 3, 4, 5, 6, 7]`
 ```
 🔜 Próximo capítulo: Árvores Balanceadas
 • AVL: balanceamento por fator de altura
-• Rubro-Negra: balanceamento por cores e regras de rotação
 • Ideia central: realizar rotações durante inserção/remoção
   para manter a altura próxima de log₂(n)
 ```
@@ -777,7 +795,7 @@ Após rotação à esquerda:
 
 - A altura diminui de 2 para 1
 - A propriedade da ABB é preservada
-- Operações continuam em O(log n) garantido
+- Aplicadas sistematicamente a cada inserção, rotações como esta garantem altura O(log n)
 
 ---
 
@@ -815,7 +833,7 @@ Após rotação à esquerda:
 **Limitação importante**
 
 - ABB **não se auto-balanceia** → ordem de inserção impacta desempenho
-- Gancho para estudo de **árvores AVL e Rubro-Negras**
+- Gancho para o estudo de **árvores AVL** (próximo capítulo)
 
 ---
 
@@ -825,7 +843,7 @@ Após rotação à esquerda:
 
 - Fator de balanceamento e altura
 - Rotações simples e duplas (LL, RR, LR, RL)
-- Inserção e remoção em AVL com rebalanceamento
+- Inserção em AVL com rebalanceamento
 - Comparação prática: ABB vs. AVL em cenários reais
 
 **Leitura recomendada:**

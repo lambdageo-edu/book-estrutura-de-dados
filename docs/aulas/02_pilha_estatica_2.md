@@ -1,10 +1,10 @@
 # Pilha Estática II: Funções, Ponteiros e Structs
 
-Este capítulo dá continuidade à implementação de pilha em C, evoluindo a versão "nua" do capítulo anterior — baseada em variáveis globais — para uma versão organizada em torno de funções, `struct` e ponteiros. Ao final, teremos um TAD de pilha propriamente dito: com interface clara e estado interno protegido.
+Este capítulo dá continuidade à implementação de pilha em C, evoluindo a versão "nua" do capítulo anterior — baseada em variáveis globais — para uma versão organizada em torno de funções, `struct` e ponteiros. Ao final, teremos um TAD de pilha propriamente dito: com interface clara e com todo acesso ao estado interno feito por funções.
 
 Pré-requisitos: o conceito de pilha (LIFO), a implementação "nua" com variáveis globais vista no capítulo anterior, e sintaxe básica de C (variáveis, laços, condicionais).
 
-Ao final deste capítulo, você deve ser capaz de: compreender o comportamento de funções em C (passagem por valor vs. referência); usar `struct` para agrupar dados e criar um tipo composto (`Pilha`); entender por que ponteiros são necessários para modificar estruturas dentro de funções; refatorar o código para respeitar o conceito de TAD (encapsulamento lógico); e reconhecer as limitações da alocação estática, preparando o terreno para a alocação dinâmica do próximo capítulo.
+Ao final deste capítulo, você deve ser capaz de: compreender o comportamento de funções em C (passagem por valor e como simular passagem por referência com ponteiros); usar `struct` para agrupar dados e criar um tipo composto (`Pilha`); entender por que ponteiros são necessários para modificar estruturas dentro de funções; refatorar o código para respeitar o conceito de TAD (encapsulamento lógico); e reconhecer as limitações da alocação estática, preparando o terreno para a alocação dinâmica do próximo capítulo.
 
 ## 1. Funções em C
 
@@ -144,8 +144,8 @@ int main() {
     // Mesmo após empilha, p não foi alterado
     if (p.topo != -1) {
         printf("Valor no topo: %d\n", p.valores[p.topo]);
-        // IMPRIME ERRO ou PILHA VAZIA, pois topo continua -1
     } else {
+        // É este ramo que executa: topo continua -1
         printf("Pilha vazia!\n");
     }
 
@@ -181,6 +181,23 @@ void empilha(int x, Pilha *p) { // Recebe o ENDEREÇO da pilha
 ```
 
 Aqui `p` é um ponteiro para `Pilha`, e `p->topo` é equivalente a `(*p).topo`: primeiro desreferencia `p`, depois acessa o membro. Agora a função modifica o `Pilha` original apontado por `p`, não uma cópia.
+
+A mesma técnica corrige a troca de valores da seção 1. Rigorosamente, C continua passando tudo por valor: o que é copiado agora é o *endereço*, e por meio dele a função alcança as variáveis originais.
+
+```c
+void troca(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+int main() {
+    int x = 10, y = 20;
+    troca(&x, &y);
+    printf("x=%d y=%d\n", x, y); // Saída: x=20 y=10
+    return 0;
+}
+```
 
 ### 4.3 Código Completo do TAD
 
@@ -266,7 +283,9 @@ int main() {
 }
 ```
 
-Note que o `main` agora usa apenas as funções da interface — o estado interno (`valores`, `topo`) só é acessado por meio de ponteiro, dentro das próprias funções do TAD. Isso já se aproxima de um TAD "limpo": quem usa a pilha só precisa conhecer o tipo `Pilha` e o conjunto de funções disponíveis.
+Note que o `main` agora usa apenas as funções da interface — o estado interno (`valores`, `topo`) só é acessado por meio de ponteiro, dentro das próprias funções do TAD. Isso já se aproxima de um TAD "limpo": quem usa a pilha só precisa conhecer o tipo `Pilha` e o conjunto de funções disponíveis. Note, porém, que a proteção ainda é apenas uma convenção: como a `struct` está visível no mesmo arquivo, nada impede o `main` de escrever `p.topo = 1000`. O encapsulamento de fato, com arquivos `.h`/`.c` separados e tipo opaco, é apresentado no capítulo de Listas Estáticas.
+
+Observe também que `desempilha` e `topoPilha` usam `-1` como valor de erro, o que é ambíguo se `-1` for um valor legítimo na pilha. Por isso o `main` sempre testa `pilhaVazia` antes de desempilhar.
 
 ## 5. O Limite do Vetor Estático
 
