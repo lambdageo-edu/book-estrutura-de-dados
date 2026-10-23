@@ -109,6 +109,9 @@ int desenfileira(Fila* f);     /* Remove o da frente */
 #endif
 ```
 
+!!! note "Diferença em relação à pilha"
+    Aqui `desenfileira` apenas remove e devolve `1`/`0` (sucesso/falha); o valor é lido antes com `frente`. Na pilha, `desempilha` devolve o próprio valor. As duas convenções são comuns; o importante é saber qual o TAD adota. Note também que nomes como `vazia` e `cheia` coincidem com os de `lista.h`: um programa que use os dois TADs precisaria de prefixos (`filaVazia`, `listaVazia`).
+
 ---
 
 ## 4. Implementação Estática: O Problema do Deslocamento
@@ -142,12 +145,12 @@ Para evitar deslocamento, movemos o índice `inicio`:
 struct fila {
     int valores[MAX];
     int inicio;  /* Índice do primeiro elemento */
-    int fim;     /* Índice do último elemento */
+    int fim;     /* Índice da próxima posição livre (logo após o último) */
     int n;       /* Quantidade de elementos */
 };
 ```
 
-**Problema do Espaço Falso:** Conforme `inicio` e `fim` avançam, o espaço no início do vetor fica inutilizado, mesmo estando vazio. Eventualmente, `fim` chega em `MAX-1` e a fila diz "cheia", embora haja espaço livre no início.
+**Problema do Espaço Falso:** Conforme `inicio` e `fim` avançam, o espaço no início do vetor fica inutilizado, mesmo estando vazio. Eventualmente, `fim` chega em `MAX` e a fila diz "cheia", embora haja espaço livre no início.
 
 ---
 
@@ -157,7 +160,7 @@ struct fila {
 
 Para resolver o problema do espaço falso, tratamos o vetor como **circular**. 
 
-![image.png](images/fila_tad/image.png)
+![Fila circular com 6 posições: A, B, C e D nas posições 0 a 3, inicio na posição 0 e fim na posição 4, a próxima livre](images/fila_tad/image.png)
 
 Quando o índice chega ao fim, ele volta para o início usando o operador módulo (`%`).
 
@@ -168,15 +171,17 @@ Quando o índice chega ao fim, ele volta para o início usando o operador módul
 ### 5.2 Visualização
 
 ```
-Vetor de tamanho 5 (MAX=5)
+Vetor de tamanho 5 (MAX=5); fim = próxima posição livre
 
-Estado 1: [10, 20, 30, ?, ?]  (inicio=0, fim=2)
-Estado 2: Remove 10 → [?, 20, 30, ?, ?] (inicio=1, fim=2)
-Estado 3: Insere 40 → [?, 20, 30, 40, ?] (inicio=1, fim=3)
-Estado 4: Insere 50 → [?, 20, 30, 40, 50] (inicio=1, fim=4)
-Estado 5: Insere 60 → [60, 20, 30, 40, 50] (inicio=1, fim=0) ← Voltou ao início!
-          ↑
-          fim=(4+1)%5 = 0
+Estado 1: [10, 20, 30, ?, ?]  (inicio=0, fim=3, n=3)
+Estado 2: Remove 10 → [?, 20, 30, ?, ?] (inicio=1, fim=3, n=2)
+Estado 3: Insere 40 → [?, 20, 30, 40, ?] (inicio=1, fim=4, n=3)
+Estado 4: Insere 50 → [?, 20, 30, 40, 50] (inicio=1, fim=0, n=4) ← Voltou ao início!
+                                                    fim=(4+1)%5 = 0
+Estado 5: Insere 60 → [60, 20, 30, 40, 50] (inicio=1, fim=1, n=5) ← Cheia
+
+Repare que no Estado 5 vale inicio == fim, a mesma igualdade de uma fila vazia.
+É o contador n que distingue os dois casos.
 ```
 
 ### 5.3 Implementação (`fila_estatica.c`)
@@ -421,7 +426,7 @@ int tamanho(const Fila* f) {
 
 1. **Por que usar um contador `n` na fila circular?**
     
-    → Em implementações sem contador, é impossível distinguir entre "fila vazia" e "fila cheia" apenas com `inicio == fim`, pois ambas resultam nessa igualdade. O contador resolve essa ambiguidade.
+    → Sem contador, a condição `inicio == fim` vale tanto para "fila vazia" quanto para "fila cheia". O contador resolve essa ambiguidade. A alternativa, vista no primeiro exercício acima, é sacrificar uma posição do vetor.
     
 2. **Como implementar uma Fila de Prioridade?**
     
@@ -484,9 +489,9 @@ Neste módulo, cobrimos as três estruturas lineares fundamentais:
 2. **Filas (FIFO):** Acesso restrito às extremidades.
 3. **Listas:** Acesso livre a qualquer posição.
 
-### 10.2 Próximo Capítulo: Estruturas Não-Lineares
+### 10.2 Próximo Capítulo: Recursão e Busca
 
-> "Até agora, todos os dados estavam organizados em uma única dimensão (sequência). No próximo capítulo, sairemos da linearidade para explorar **Árvores**, onde cada elemento pode ter múltiplos sucessores, permitindo hierarquias e buscas mais eficientes (O(log n))."
+Até agora, todos os dados estavam organizados em uma única dimensão (sequência). O próximo capítulo apresenta a **recursão** e a **busca binária**, as duas ferramentas de que precisaremos para sair da linearidade e estudar **Árvores**, onde cada elemento pode ter múltiplos sucessores, permitindo hierarquias e buscas mais eficientes (O(log n)).
 
 ### 10.3 Exercício de Consolidação
 
@@ -500,8 +505,8 @@ Crie um programa que simule um caixa de supermercado:
 
 ## 🔗 Referências e Leitura Complementar
 
-1. **Queue (Abstract Data Type) – Wikipedia**: Definição formal e variações [[31]]
-2. **Circular Queue Implementation – GeeksforGeeks**: Detalhes sobre aritmética modular [[25]]
+1. **Queue (Abstract Data Type) – Wikipedia**: Definição formal e variações
+2. **Circular Queue Implementation – GeeksforGeeks**: Detalhes sobre aritmética modular
 3. **Celes, W. et al. – Introdução a Estruturas de Dados**: Capítulos sobre Filas em C
 4. [**Visualgo.net/queue**](http://visualgo.net/queue): Animações interativas de operações em filas
 5. **MIT OpenCourseWare – Queues**: Aula sobre implementação e complexidade

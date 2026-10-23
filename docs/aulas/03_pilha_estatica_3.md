@@ -1,6 +1,6 @@
-# Pilha Estática III: Alocação Dinâmica
+# Pilha III: Alocação Dinâmica
 
-Este capítulo mostra como modelar o TAD de pilha em C como se fosse um objeto referenciado por um ponteiro — semelhante ao que acontece em Java ou Python — e evolui a implementação para uma pilha completamente dinâmica, com tamanho configurável em tempo de execução. O caminho passa por: tratar a pilha sempre como ponteiro (`Pilha *p`); entender a diferença entre `stack` e `heap`; usar `malloc`, `calloc` e `free` na prática; explorar a relação entre vetores e ponteiros (`v[i]` é equivalente a `*(v + i)`); e, por fim, alocar tanto a `struct` quanto o vetor interno dinamicamente, a partir de um parâmetro `size`.
+Este capítulo mostra como modelar o TAD de pilha em C como se fosse um objeto referenciado por um ponteiro — semelhante ao que acontece em Java ou Python — e evolui a implementação para uma pilha completamente dinâmica, com tamanho configurável em tempo de execução. O caminho passa por: tratar a pilha sempre como ponteiro (`Pilha *p`); entender a diferença entre `stack` e `heap`; usar `malloc` e `free` na prática (e conhecer `calloc` e `realloc`); explorar a relação entre vetores e ponteiros (`v[i]` é equivalente a `*(v + i)`); e, por fim, alocar tanto a `struct` quanto o vetor interno dinamicamente, a partir de um parâmetro `size`.
 
 ## 1. Pilha como Ponteiro: a Analogia com Java e Python
 
@@ -26,7 +26,7 @@ As três funções centrais para trabalhar com a heap são:
 
 void *malloc(size_t tamanho_em_bytes);   // Aloca N bytes brutos (não inicializa)
 void *calloc(size_t n, size_t size);     // Aloca n elementos de size bytes (inicializa em 0)
-void free(void *ptr);                    // Liberta memória alocada
+void free(void *ptr);                    // Libera memória alocada
 ```
 
 A regra de ouro é simples: toda vez que se usa `malloc` ou `calloc` com sucesso, mais cedo ou mais tarde é preciso usar `free` sobre o mesmo ponteiro.
@@ -129,7 +129,7 @@ if (self == NULL) {
 self->topo = -1;     // Equivalente, mais simples
 ```
 
-Em `(*self).topo`, primeiro `self` é desreferenciado, e só depois o membro `topo` é acessado. Note que `self.topo` não seria equivalente: o operador `.` tem precedência maior que `*`, então a expressão seria interpretada como `*(self.topo)` — um erro, já que `self.topo` não existe antes de `self` ser desreferenciado. A regra geral é: para acessar um membro de uma struct por meio de um ponteiro, usa-se `(*p).membro` ou `p->membro`.
+Em `(*self).topo`, primeiro `self` é desreferenciado, e só depois o membro `topo` é acessado. Note que `*self.topo` não seria equivalente: o operador `.` tem precedência maior que `*`, então a expressão seria interpretada como `*(self.topo)` — um erro, já que `self` é um ponteiro e não tem membro `topo`; o `.` só pode ser aplicado depois de `self` ser desreferenciado. A regra geral é: para acessar um membro de uma struct por meio de um ponteiro, usa-se `(*p).membro` ou `p->membro`.
 
 De fato, `p->membro` é apenas uma sintaxe abreviada para `(*p).membro`:
 
@@ -369,4 +369,4 @@ int main() {
 
 Neste capítulo, a pilha deixou de ser uma coleção de variáveis globais e passou a ser tratada sempre como ponteiro (`Pilha *p`), no mesmo espírito de uma referência a objeto em Java ou Python. A `struct` e, em seguida, o vetor interno passaram a ser alocados na heap com `malloc`, com o tamanho definido em tempo de execução por um parâmetro `size` — e cada `malloc` bem-sucedido tem sua contraparte em `free`, na ordem correta.
 
-Uma pergunta natural fica em aberto: e se a pilha preencher todo o vetor e ainda precisar crescer? A função `realloc` permite aumentar `self->valores` em tempo de execução, criando uma pilha que "cresce sozinha" quando enche — um refinamento que fica como estudo adicional. O próximo capítulo aplica esses mesmos conceitos — `struct`, ponteiros, `malloc`/`free` — para construir uma **lista encadeada**, em que cada elemento é alocado individualmente na heap.
+Uma pergunta natural fica em aberto: e se a pilha preencher todo o vetor e ainda precisar crescer? A função `realloc` permite aumentar `self->valores` em tempo de execução, criando uma pilha que "cresce sozinha" quando enche — um refinamento que fica como estudo adicional. O próximo capítulo aplica esses mesmos conceitos — `struct`, ponteiros, `malloc`/`free` — ao TAD **lista**: primeiro com vetor e compilação separada (`.h`/`.c`), depois como **lista encadeada**, em que cada elemento é alocado individualmente na heap.

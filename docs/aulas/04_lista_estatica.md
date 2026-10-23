@@ -37,12 +37,12 @@ struct Ponto {
 
 ### 1.2 Tipo Abstrato de Dados (TAD) – Definição Formal
 
-> "Um Tipo Abstrato de Dados (ADT) é um modelo matemático definido por seu comportamento (semântica) do ponto de vista do usuário, especificando os valores possíveis e as operações sobre esses valores, independentemente de como são implementados."
+Um Tipo Abstrato de Dados (TAD, em inglês *ADT*) é um modelo matemático definido por seu comportamento (semântica) do ponto de vista de quem o usa: especifica os valores possíveis e as operações sobre esses valores, independentemente de como são implementados.
 
 Em notação matemática, um TAD pode ser visto como uma tupla **(V, O)**, onde:
 
 - **V** = conjunto de valores possíveis
-- **O** = conjunto de operações válidas sobre V [[3]]
+- **O** = conjunto de operações válidas sobre V
 
 ### 1.3 Definição Intuitiva
 
@@ -62,7 +62,7 @@ Em notação matemática, um TAD pode ser visto como uma tupla **(V, O)**, onde:
 
 ### 2.1 Relembrando a Pilha
 
-A **Pilha** é tradicionalmente usada na literatura para ilustrar o conceito de TAD, pois possui uma interface simples e comportamento bem definido [[2]][[9]].
+A **Pilha** é tradicionalmente usada na literatura para ilustrar o conceito de TAD, pois possui uma interface simples e comportamento bem definido.
 
 **TAD PILHA de inteiros (abstrato):**
 
@@ -76,11 +76,10 @@ A **Pilha** é tradicionalmente usada na literatura para ilustrar o conceito de 
 
 **Política de acesso:** **LIFO** (*Last In, First Out*) – o último elemento inserido é o primeiro a ser removido.
 
-### 2.2 Exemplo de Uso em Artigo Científico
+### 2.2 A Pilha na Literatura
 
 Em materiais acadêmicos sobre estruturas de dados, a pilha aparece como exemplo clássico de como separar "o que faz" (contrato das operações) do "como faz" (implementação com vetor vs. lista encadeada).
 
-> "Abstract data types are the basis of an emerging methodology of computer programming. The stack is one of the fundamental data structures used to illustrate ADT concepts."
 
 ### 2.3 Implementação Anterior (Tudo em Um Arquivo)
 
@@ -155,7 +154,7 @@ C não possui classes, mas podemos simular TADs usando:
     - `.h` (header): expõe apenas a interface (protótipos)
     - `.c` (implementação): contém o código real, escondido do cliente
 
-> "In C, abstract data types are implemented using two files: a .h file that contains the interface, and a .c file that contains the implementation."
+Em C, portanto, um TAD costuma ocupar dois arquivos: um `.h` com a interface e um `.c` com a implementação.
 
 ---
 
@@ -225,8 +224,6 @@ Para esta primeira versão, trabalhamos com:
 /* lista.h – Interface do TAD LISTA estática de inteiros */
 #ifndef LISTA_H
 #define LISTA_H
-
-#define MAX 100  /* Limite estático – pode ser alterado sem mudar o cliente */
 
 /* Tipo opaco: o cliente só vê o ponteiro, não a struct interna */
 typedef struct lista Lista;
@@ -302,7 +299,7 @@ projeto_lista/
 | **Encapsulamento** | Cliente não vê detalhes internos; erros de implementação ficam isolados |
 | **Colaboração** | Uma pessoa pode desenvolver a interface, outra a implementação, outra o cliente |
 
-> "The .h file documents the agreement between both parties: the ADT developer and the client programmer." [[3]]
+O `.h` funciona como um contrato entre as duas partes: quem desenvolve o TAD e quem o utiliza.
 
 ---
 
@@ -315,6 +312,8 @@ projeto_lista/
 #include <stdio.h>
 #include <stdlib.h>
 #include "lista.h"
+
+#define MAX 100  /* Limite estático – detalhe de implementação, fora do .h */
 
 /* Definição concreta – NÃO exposta no .h */
 struct lista {
@@ -542,7 +541,8 @@ int main(void) {
 ├─────────────────────────────────────┤
 │ ERROS COMUNS – CHECKLIST           │
 │ □ Validar ponteiro NULL antes de usar│
-│ □ Checar limites: 0 ≤ pos ≤ ultimo │
+│ □ Checar limites (inserePos aceita │
+│   pos = ultimo+1; demais, ≤ ultimo) │
 │ □ Atualizar 'ultimo' após modificar│
 │ □ Não acessar valores[i] sem validar│
 │ □ Lembrar: ultimo = -1 → vazia!    │
@@ -556,7 +556,7 @@ int main(void) {
 ### Exercícios Recomendados
 
 - [ ]  Reimplementar `inserePos` sem consultar o código
-- [ ]  Criar um teste que cause "posição inválida" e validar a mensagem de erro
+- [ ]  Criar um teste que cause "posição inválida" e verificar que a função retorna `0`
 - [ ]  Desenhar o estado da memória após esta sequência:
     
     ```
@@ -581,10 +581,12 @@ int main(void) {
 
 ### Desafio Opcional
 
-Implemente `inverte(Lista* l)` que inverte a ordem dos elementos **sem usar vetor auxiliar**.
+Implemente `inverte(Lista* l)` que inverte a ordem dos elementos **sem usar vetor auxiliar**. Dica: use dois índices (`inicio`, `fim`) e troque os valores.
+
+<details>
+<summary>Clique para ver uma solução</summary>
 
 ```c
-/* Dica: use dois índices (inicio, fim) e troque os valores */
 void inverte(Lista* l) {
     int inicio = 0;
     int fim = l->ultimo;
@@ -599,6 +601,8 @@ void inverte(Lista* l) {
     }
 }
 ```
+
+</details>
 
 ### Debug Challenge
 
@@ -659,11 +663,11 @@ typedef struct lista Lista;  /* Tipo opaco */
 
 ## 🔗 Referências e Leitura Complementar
 
-1. **Abstract Data Types – Wikipedia**: Definição formal e exemplos [[31]]
-2. **Array Implementation of List ADT – e-PG Pathshala**: Implementação detalhada com exemplos [[25]]
-3. **COMP2521 – Abstract Data Types (UNSW)**: Slides com exemplos de Stack, Queue, Set em C [[3]]
+1. **Abstract Data Types – Wikipedia**: Definição formal e exemplos
+2. **Array Implementation of List ADT – e-PG Pathshala**: Implementação detalhada com exemplos
+3. **COMP2521 – Abstract Data Types (UNSW)**: Slides com exemplos de Stack, Queue, Set em C
 4. **Celes, W. et al. – Introdução a Estruturas de Dados**: Capítulos sobre TADs e compilação separada em C
-5. **GeeksforGeeks – Implementation of Stack Using Array in C**: Exemplo prático de ADT estático [[23]]
+5. **GeeksforGeeks – Implementation of Stack Using Array in C**: Exemplo prático de ADT estático
 
 ---
 

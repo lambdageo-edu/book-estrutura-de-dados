@@ -60,24 +60,19 @@ Quando implementamos operações como `inserePos` ou `buscaValor`, queremos sabe
 
 > **Objetivo:** Entender a **ordem de crescimento** do tempo de execução, sem fórmulas complexas.
 
-### 2.2 Classes de Complexidade – Visualização Gráfica
+### 2.2 Classes de Complexidade
 
-```
-Tempo de execução (eixo Y) vs. Tamanho da entrada n (eixo X)
+Da mais lenta para a mais rápida em crescimento, as classes que aparecerão com frequência são:
 
-     ↑
-     │                              ●●●●●●●●●●●●●●●●  O(2ⁿ) Exponencial
-     │
-     │                    ●●●●●●●●  O(n²) Quadrática
-     │
-     │              ●●●●●  O(n) Linear ← Nossa inserção no meio
-     │
-     │         ●●●  O(log n) Logarítmica ← Busca binária (lista ordenada)
-     │
-     │    ●●●  O(1) Constante ← Acesso por posição em vetor
-     │
-     └────────────────────────────────────→ n
-```
+| Classe | Nome | Exemplo neste livro |
+| --- | --- | --- |
+| O(1) | Constante | Acesso por posição em vetor |
+| O(log n) | Logarítmica | Busca binária em vetor ordenado (Capítulo 5) |
+| O(n) | Linear | Inserção no meio de uma lista estática |
+| O(n²) | Quadrática | Ordenações básicas (Capítulo 9) |
+| O(2ⁿ) | Exponencial | Testar todos os subconjuntos de um conjunto |
+
+O Capítulo 8 apresenta um gráfico com as curvas de crescimento reais dessas classes.
 
 ### 2.3 Melhor Caso vs. Pior Caso – Exemplo Prático
 
@@ -110,7 +105,8 @@ int buscaValor(const Lista* l, int x) {
 | `buscaPos`, `insereFinal` | **O(1)** | Acesso direto por índice |
 | `buscaValor`, `removeValor` | **O(n)** | Pode precisar percorrer toda a lista |
 | `inserePos`, `removePos` (meio) | **O(n)** | Precisa deslocar até `n` elementos |
-| `imprime`, `conta` | **O(n)** | Percorre todos os elementos |
+| `conta` | **O(1)** | Calcula `ultimo + 1` |
+| `imprime` | **O(n)** | Percorre todos os elementos |
 
 ---
 
@@ -498,22 +494,21 @@ CFLAGS = -Wall -Wextra -std=c11
 # Escolha a implementação: "estatica" ou "encadeada"
 IMPLEMENTACAO = encadeada
 
-programa: main.o lista.o
-	$(CC) $(CFLAGS) main.o lista.o -o programa
+# Compila a implementação escolhida (lista_estatica.o ou lista_encadeada.o)
+programa: main.o lista_$(IMPLEMENTACAO).o
+	$(CC) $(CFLAGS) main.o lista_$(IMPLEMENTACAO).o -o programa
 
 main.o: main.c lista.h
 	$(CC) $(CFLAGS) -c main.c
 
-# Compila a implementação escolhida como "lista.o"
-lista.o:
-ifeq ($(IMPLEMENTACAO),estatica)
-	$(CC) $(CFLAGS) -c lista_estatica.c -o lista.o
-else
-	$(CC) $(CFLAGS) -c lista_encadeada.c -o lista.o
-endif
+lista_%.o: lista_%.c lista.h
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
 	rm -f *.o programa
+
+# 'programa' é sempre religado, para que trocar IMPLEMENTACAO tenha efeito
+.PHONY: programa clean
 
 # Exemplo de uso:
 # make IMPLEMENTACAO=estatica programa   # Compila com vetor
@@ -624,10 +619,12 @@ int main(void) {
 
 ### Desafio Opcional
 
-Implemente `inverte(Lista* l)` para lista encadeada **sem usar memória auxiliar** (apenas ajustando ponteiros).
+Implemente `inverte(Lista* l)` para lista encadeada **sem usar memória auxiliar** (apenas ajustando ponteiros). Dica: use três ponteiros (`anterior`, `atual`, `proximo`) e inverta as setas.
+
+<details>
+<summary>Clique para ver uma solução</summary>
 
 ```c
-/* Dica: use três ponteiros (anterior, atual, proximo) e inverta as setas */
 void inverte(Lista* l) {
     No* anterior = NULL;
     No* atual = l->inicio;
@@ -643,6 +640,8 @@ void inverte(Lista* l) {
 }
 ```
 
+</details>
+
 ### Debug Challenge
 
 O código abaixo tem um bug de vazamento de memória. Encontre e corrija:
@@ -657,18 +656,20 @@ int removePos(Lista* l, int pos) {
 }
 ```
 
-- Clique para ver a resposta
-    
-    É necessário salvar o nó a ser removido em uma variável temporária, atualizar os ponteiros, e só então chamar `free()` no nó removido:
-    
-    ```c
-    if (pos == 0) {
-        No* removido = l->inicio;
-        l->inicio = removido->prox;
-        free(removido);  /* Libera memória */
-    }
-    ```
-    
+<details>
+<summary>Clique para ver a resposta</summary>
+
+É necessário salvar o nó a ser removido em uma variável temporária, atualizar os ponteiros, e só então chamar `free()` no nó removido:
+
+```c
+if (pos == 0) {
+    No* removido = l->inicio;
+    l->inicio = removido->prox;
+    free(removido);  /* Libera memória */
+}
+```
+
+</details>
 
 ---
 
@@ -696,16 +697,16 @@ int removePos(Lista* l, int pos) {
    • Memória é limitada e quer evitar desperdício
 ```
 
-### 10.3 Próximo Capítulo: Filas e Pilhas com Listas
+### 10.3 Próximo Capítulo: Filas
 
-> "Agora que dominamos duas implementações do TAD LISTA, vamos aplicar esse conhecimento para implementar outros TADs: FILA e PILHA. Veremos como a escolha da estrutura subjacente (vetor vs. encadeada) impacta a eficiência de cada operação."
+Agora que dominamos duas implementações do TAD LISTA, vamos aplicar esse conhecimento ao TAD FILA, também em versão estática (vetor circular) e encadeada. Fica como exercício fazer o mesmo com a PILHA: uma pilha encadeada é uma lista em que inserções e remoções acontecem sempre no início.
 
 ---
 
 ## 🔗 Referências e Leitura Complementar
 
-1. **Linked List vs Array – GeeksforGeeks**: Comparação prática de desempenho [[25]]
-2. **Big O Cheat Sheet**: Visualização intuitiva de complexidades [[31]]
+1. **Linked List vs Array – GeeksforGeeks**: Comparação prática de desempenho
+2. **Big O Cheat Sheet**: Visualização intuitiva de complexidades
 3. **Celes, W. et al. – Introdução a Estruturas de Dados**: Capítulos sobre listas encadeadas em C
 4. **MIT OpenCourseWare – Data Structures**: Aulas sobre complexidade e escolha de estruturas
 5. [**Visualgo.net/list**](http://visualgo.net/list): Animações interativas de operações em listas estáticas e encadeadas
