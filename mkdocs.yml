@@ -71,7 +71,7 @@ extra_javascript:
 nav:
   - "⇦ Coleção LambdaGeo": https://lambdageo.github.io/ebooks/
   - Prefácio: index.md
-  - "Pré-requisito: C para Programadores Python e VisuAlg": https://lambdageo.github.io/introducao-c/
+  - "Pré-requisito: C para Programadores Python e VisuAlg": https://lambdageo-edu.github.io/book-introducao-a-programacao-c/
 
   - Parte I — Fundamentos e Estruturas Lineares:
       - Capítulo 1 — Introdução: aulas/00_apresentacao.md

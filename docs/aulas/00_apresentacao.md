@@ -61,7 +61,7 @@ Para aproveitar ao máximo os capítulos a seguir:
 
 1. Garanta que seu ambiente de desenvolvimento (compilador GCC e editor como VS Code ou Code::Blocks) esteja instalado e funcionando.
 2. Teste o ciclo de compilação e execução do código `hello.c`.
-3. Caso precise revisar a sintaxe básica da linguagem (variáveis, condicionais, laços, funções, vetores, *structs* e ponteiros), recomendamos o livro complementar **[C para Programadores Python e VisuAlg](https://lambdageo.github.io/introducao-c/)**.
+3. Caso precise revisar a sintaxe básica da linguagem (variáveis, condicionais, laços, funções, vetores, *structs* e ponteiros), recomendamos o livro complementar **[C para Programadores Python e VisuAlg](https://lambdageo-edu.github.io/book-introducao-a-programacao-c/)**.
 
 No próximo capítulo, iniciamos nossa jornada prática com o estudo das **Pilhas**, partindo de uma implementação com vetores globais até chegar à alocação dinâmica, onde exploramos a diferença entre *stack* e *heap*.
 
