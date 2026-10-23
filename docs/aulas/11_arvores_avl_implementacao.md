@@ -51,6 +51,8 @@ typedef struct No {
 
 ```c
 // Retorna a altura de um nó, ou 0 se for NULL
+// Atenção: aqui folha = 1 e NULL = 0 (no capítulo anterior, folha = 0 e vazio = -1).
+// O fator de balanceamento é o mesmo nas duas convenções.
 int altura(No *n) {
     if (n == NULL)
         return 0;           // Convenção: altura(NULL) = 0
@@ -127,6 +129,8 @@ int fatorBalanceamento(No *n) {
 **Depois:**
 
 ![Árvore após rotação simples à direita, caso LL resolvido](images/avl_implementacao/caso_ll_depois.svg)
+
+Nas figuras, `z` é o nó desbalanceado e `y` o filho que sobe. No código abaixo, o nó desbalanceado recebe o nome `y` e o filho que sobe, `x`; `T2` é a subárvore que muda de pai (a `T3` da figura).
 
 **Implementação:**
 
@@ -315,9 +319,9 @@ void imprimirArvore(No *raiz, int nivel) {
 ```
 Inserindo [10, 20, 30]:
 
-[30:h1,FB0]
-    [20:h2,FB0]
-        [10:h1,FB0]
+    [30:h1,FB0]
+[20:h2,FB0]
+    [10:h1,FB0]
 
 Interpretação:
 - Raiz é 20 (altura 2, balanceada)
@@ -504,9 +508,9 @@ int main() {
 
 ### Inserção 20
 
-![Árvore com 20 na raiz e 10 como filho esquerdo](images/avl_implementacao/insercao20.svg)
+![Árvore com 10 na raiz e 20 como filho direito](images/avl_implementacao/insercao20.svg)
 
-→ FB(20) = 0-1 = -1 ✓ (dentro de [-1,1])
+→ FB(10) = 0-1 = -1 ✓ (dentro de [-1,1])
 
 ### Inserção 30 → **Desbalanceamento RR!**
 
@@ -532,6 +536,8 @@ int main() {
 
 ![Árvore antes: 20 na raiz, com 30 desbalanceado à direita devido à cadeia 30→40→50](images/avl_implementacao/insercao50_antes.svg)
 
+Na volta da recursão, o primeiro ancestral desbalanceado é 30, e ele é rotacionado antes que a altura de 20 seja recalculada (por isso 20 aparece sem rótulo).
+
 **Rotação esquerda em 30:**
 
 ![Árvore balanceada após a rotação em 30, com 40 assumindo a posição](images/avl_implementacao/insercao50_depois.svg)
@@ -542,17 +548,19 @@ int main() {
 
 **Antes:**
 
-![Árvore antes: 40 na raiz, 20 desbalanceado à esquerda devido à inserção de 25](images/avl_implementacao/insercao25_antes.svg)
+![Árvore antes: 20 na raiz, desbalanceada à direita; 25 inserido como filho esquerdo de 30, que é filho esquerdo de 40](images/avl_implementacao/insercao25_antes.svg)
 
-Caminho: 20 → Dir(30) → Esq(25) → Caso RL
+O 25 desce por 20 → 40 → 30 e entra como filho esquerdo de 30. Os nós 30 e 40 continuam com |FB| ≤ 1, mas FB(20) = 1-3 = -2.
 
-**Passo 1: Rotação direita em 30:**
+Caminho: 20 → Dir(40) → Esq(30) → Caso RL (no código: `fb < -1` e `25 < no->dir->chave`, que é 40)
 
-![Passo intermediário: 25 sobe no lugar de 30](images/avl_implementacao/insercao25_passo1.svg)
+**Passo 1: Rotação direita em 40:**
+
+![Passo intermediário: 30 sobe no lugar de 40](images/avl_implementacao/insercao25_passo1.svg)
 
 **Passo 2: Rotação esquerda em 20:**
 
-![Árvore final balanceada, com 25 assumindo a posição de 20](images/avl_implementacao/insercao25_passo2.svg)
+![Árvore final balanceada, com 30 na raiz, 20 (filhos 10 e 25) à esquerda e 40 (filho 50) à direita](images/avl_implementacao/insercao25_passo2.svg)
 
 → Balanceada! ✓
 
@@ -587,8 +595,9 @@ c) Qual a altura final da árvore?
 
 ```
 a) Saída em-ordem: 1 3 4 5 6 7 8 ✓
-b) Sim, todos os FB ∈ {-1, 0, 1}
-c) Altura = 2 (árvore cheia com 7 nós)
+b) Sim, todos os FB ∈ {-1, 0, 1} (nenhuma rotação é necessária)
+c) altura(raiz) = 3 na convenção deste código (folha = 1);
+   equivale a altura 2 na convenção do capítulo anterior (árvore cheia com 7 nós)
 ```
 
 </details>
@@ -607,16 +616,17 @@ c) Compare com a altura que uma ABB comum teria com a mesma sequência.
 <summary>Resposta</summary>
 
 ```
-a) Rotações:
-   - Após inserir 3: rotação esquerda em 1
-   - Após inserir 5: rotação esquerda em 2 (ou similar)
-   - Após inserir 7: rotação esquerda em 4
-   Total: 3 rotações simples
+a) Rotações (todas simples à esquerda, caso RR):
+   - Após inserir 3: rotação em 1
+   - Após inserir 5: rotação em 3
+   - Após inserir 6: rotação em 2 (a raiz)
+   - Após inserir 7: rotação em 5
+   Total: 4 rotações simples. Árvore final: 4(2(1,3), 6(5,7))
 
-b) Altura final da AVL: 2
+b) altura(raiz) = 3 neste código (folha = 1), ou seja, 2 na convenção folha = 0
 
-c) ABB comum degenerada: altura = 6
-   Diferença: 6 vs 2 → busca em AVL é até 3x mais rápida!
+c) ABB comum degenerada: altura 6 (folha = 0)
+   Busca no pior caso: 7 comparações na ABB vs 3 na AVL
 ```
 
 </details>
@@ -748,11 +758,11 @@ A altura só pode ser calculada APÓS as subárvores estarem prontas!
 
 ## 12. Próximos Passos & Ferramentas
 
-**Tópicos para próximos capítulos:**
+**Para estudo complementar (fora do escopo deste livro):**
 
-- Remoção em AVL (mais complexa que inserção)
-- Balanceamento em remoção: casos adicionais
-- Comparação de desempenho: AVL vs. ABB vs. Hash Table
+- Remoção em AVL (mais complexa que inserção: pode exigir rotações em vários ancestrais)
+- Árvores Rubro-Negras
+- Comparação de desempenho: AVL vs. ABB vs. tabela hash
 
 **Prática sugerida:**
 
@@ -768,7 +778,7 @@ A altura só pode ser calculada APÓS as subárvores estarem prontas!
 
 **Leitura complementar:**
 
-- ZIVIANI, N. *Projeto de Algoritmos*. Seção 5.4: Implementação de AVL.
+- SZWARCFITER, J. L.; MARKENZON, L. *Estruturas de Dados e Seus Algoritmos*. Capítulo 5: Árvores Balanceadas.
 - CORMEN et al. *Introduction to Algorithms*. Capítulo 13: Red-Black Trees (próximo nível de balanceamento).
 
 ---
