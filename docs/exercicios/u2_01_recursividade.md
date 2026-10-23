@@ -18,7 +18,7 @@ Retorne a soma dos números inteiros de `1` até `n` usando recursão.
 
 `int somatorio(int n);`
 
-*Dica:* Caso base: `n == 1` retorna `1`. Passo recursivo: `n + somatorio(n - 1)`.
+*Dica:* Caso base: `n == 0` retorna `0` (assim a função também funciona para `n = 0`). Passo recursivo: `n + somatorio(n - 1)`.
 
 **3. Contagem de dígitos**
 
@@ -87,6 +87,8 @@ Calcule `S = 1 + 1/2! + 1/3! + ... + 1/n!` recursivamente.
 Retorne o `n`-ésimo termo da sequência de Fibonacci (`F(0)=0, F(1)=1`).
 
 `long long fibonacci(int n);`
+
+*Desafio:* conte quantas chamadas a versão recursiva direta faz para `n = 30`. Por que cresce tanto? Como evitar recalcular os mesmos termos?
 
 **11. Soma de elementos de um vetor**
 

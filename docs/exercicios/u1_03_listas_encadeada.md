@@ -17,12 +17,17 @@ typedef struct lista {
 
 Lista* cria_lista() {
     Lista* self = malloc(sizeof(Lista));
+    if (self == NULL) return NULL;
     self->inicio = NULL;
     return self;
 }
 
 No* cria_no(int valor, No* proximo) {
     No* self = malloc(sizeof(No));
+    if (self == NULL) {
+        fprintf(stderr, "Erro de alocação\n");
+        exit(EXIT_FAILURE);
+    }
     self->valor = valor;
     self->proximo = proximo;
     return self;
@@ -157,7 +162,8 @@ int main() {
 4. **Função `destruir_lista(Lista* l)`**
     - Libere a memória de **todos os nós** e também da estrutura `Lista`.
 5. **Função `intercalar(Lista* l1, Lista* l2)`**
-    - Crie uma nova lista intercalando os elementos de `l1` e `l2`.
+    - Crie uma nova lista alternando os elementos de `l1` e `l2` (um de cada, começando por `l1`; sobras vão para o final). Ex.: `[1,3,5]` e `[2,4]` → `[1,2,3,4,5]`.
+    - Compare com o `intercalar` da lista estática, que combina listas ordenadas.
 
 ---
 

@@ -136,7 +136,7 @@ int main() {
 - Todas as funções devem ser **recursivas**, salvo indicação contrária.
 - Árvores vazias são representadas por `NULL`.
 - Use `int` para valores e retornos lógicos (`1` = verdadeiro, `0` = falso).
-- Libere a memória com `liberar_arvore()` ao final dos programas de teste.
+- Libere a memória com `destruir_arvore()` (fornecida no código inicial) ao final dos programas de teste.
 
 ---
 
@@ -144,7 +144,7 @@ int main() {
 
 ### Exercício 1 — Da Notação Textual para o Desenho
 
-Dada a representação textual:
+Dada a representação textual (`NULL` indica subárvore vazia; a ordem é raiz, esquerda, direita):
 
 ```
 T = {10, {20, {30, NULL, NULL}, {40, NULL, NULL}}, {50, NULL, {60, {70, NULL, NULL}, NULL}}}
@@ -344,6 +344,7 @@ Imprime a árvore com indentação visual, ex.:
 │  └─ 40
 └─ 50
    └─ 60
+      └─ 70
 ```
 
 > Chame inicialmente com `imprimir_formatado(raiz, 0);`
@@ -360,7 +361,7 @@ Implemente:
 void liberar_arvore(Arvore* raiz);
 ```
 
-Libera recursivamente toda a memória alocada. Use percurso **pós-ordem** para garantir que filhos sejam liberados antes dos pais.
+Sem consultar a `destruir_arvore()` do código inicial, reescreva-a com este nome. Libera recursivamente toda a memória alocada. Use percurso **pós-ordem** para garantir que filhos sejam liberados antes dos pais, e explique o que daria errado em pré-ordem.
 
 ### Exercício B2 — Busca de Valor (Sem Ordenação)
 

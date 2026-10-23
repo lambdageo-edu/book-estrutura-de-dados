@@ -42,8 +42,8 @@ int main () {
 O código base já traz o arquivo de cabeçalho do interpretador:
 
 ```c
-#ifndef interprete_h
-#define interprete_h
+#ifndef INTERPRET_H
+#define INTERPRET_H
 
 void interpret (const char *source) ;
 
@@ -58,14 +58,16 @@ E também já está disponível a implementação da extração do comando e do 
 #include <stdio.h>
 
 #include "interpret.h"
-#include "stack"
+#include "stack.h"
 
 void interpret (const char *source) {
 
-    char op[10];
-    char arg[10];
+    char op[10] = "";
+    char arg[10] = "";
 
-    sscanf (source, "%s%s", op, arg);
+    /* %9s limita a leitura ao tamanho dos vetores; o retorno diz quantos campos foram lidos */
+    int lidos = sscanf (source, "%9s %9s", op, arg);
+    if (lidos < 1) return;   /* linha vazia */
     printf("operação: %s\n", op);
     printf("argumento: %s\n",  arg);
 }
@@ -73,7 +75,7 @@ void interpret (const char *source) {
 
 Assim, quando o usuário digitar:
 
-```c
+```text
 > push 10
 ```
 
@@ -91,10 +93,11 @@ Implementem um interpretador que funcione no formato REPL, aceitando comandos di
       - Exemplo: `push 20`
 2. `add` — desempilha dois valores, soma, e empilha o resultado.
       - Exemplo: `push 5`, `push 3`, `add` → resultado na pilha: `8`
-3. `sub` — desempilha dois valores, subtrai o segundo do primeiro, e empilha o resultado.
+3. `sub` — desempilha dois valores e empilha `(penúltimo − topo)`. Exemplo: `push 9`, `push 4`, `sub` → `5`.
 4. `mul` — desempilha dois valores, multiplica, e empilha o resultado.
-5. `div` — desempilha dois valores, divide o primeiro pelo segundo (divisão inteira), e empilha o resultado.
+5. `div` — desempilha dois valores e empilha `(penúltimo / topo)` (divisão inteira). Exemplo: `push 8`, `push 2`, `div` → `4`.
 6. `print` — desempilha um valor e imprime imediatamente no console.
+7. `exit` — encerra o REPL.
 
 ### Regras e observações
 
@@ -157,7 +160,7 @@ Ampliem a funcionalidade do interpretador, implementando uma **memória de vari�
       - Se encontrada, empilha o valor.
       - Se não encontrada, exibe erro: `Variável não encontrada`.
 
-```c
+```text
 push a
 ```
 
@@ -167,7 +170,7 @@ push a
 - Se a variável existir na lista, **atualiza o valor**.
 - Se não existir, **cria um novo nó** com o nome e o valor.
 
-```c
+```text
 pop resultado
 ```
 
