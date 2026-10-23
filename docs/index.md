@@ -48,7 +48,7 @@ Bem-vindos ao universo das Estruturas de Dados! Este livro foi desenhado para gu
 ### Apêndice A: Exercícios de Fixação
 
 !!! info "Pré-requisito: fundamentos de C"
-    Estes exercícios assumem que você já sabe a sintaxe básica de C (expressões, condicionais, laços, funções, vetores, strings, structs e ponteiros). Se precisar revisar, comece por **[C para Programadores Python e VisuAlg](https://lambdageo.github.io/introducao-c/)** — cada capítulo tem sua própria lista de exercícios.
+    Estes exercícios assumem que você já sabe a sintaxe básica de C (expressões, condicionais, laços, funções, vetores, strings, structs e ponteiros). Se precisar revisar, comece por **[C para Programadores Python e VisuAlg](https://lambdageo-edu.github.io/book-introducao-a-programacao-c/)** — cada capítulo tem sua própria lista de exercícios.
 
 * [Pilhas](exercicios/u1_02_pilhas.md)
 * [Exercícios de implementação com listas](exercicios/u1_03_listas_index.md)
