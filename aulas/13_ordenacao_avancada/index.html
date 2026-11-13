@@ -3077,7 +3077,7 @@
 <li><strong>Número de níveis:</strong> o vetor é dividido ao meio até chegar a tamanho 1, o que acontece em <code>log₂ n</code> passos (a mesma lógica do laço <code>while (n &gt; 1) n = n / 2</code> do capítulo anterior).</li>
 <li><strong>Custo total:</strong> <code>n × log₂ n</code>.</li>
 </ul>
-<p><img alt="Níveis da recursão do Merge Sort para n = 16: cada nível intercala 16 elementos e há 4 níveis de intercalação" src="images/analise_complexidade/merge_niveis_recursao.svg" /></p>
+<p><img alt="Níveis da recursão do Merge Sort para n = 16: cada nível intercala 16 elementos e há 4 níveis de intercalação" src="../images/analise_complexidade/merge_niveis_recursao.svg" /></p>
 <table>
 <thead>
 <tr>
@@ -3251,7 +3251,7 @@
 </code></pre></div>
 <h3 id="34-analise-de-complexidade-o-pivo-decide-a-profundidade">3.4 Análise de Complexidade: o Pivô Decide a Profundidade<a class="headerlink" href="#34-analise-de-complexidade-o-pivo-decide-a-profundidade" title="Permanent link">&para;</a></h3>
 <p>Como no Merge Sort, cada nível da recursão faz um particionamento que percorre os elementos uma vez (custo ≈ <code>n</code>). A diferença é que <strong>a profundidade da recursão não é garantida</strong>: depende de quão bem o pivô divide o vetor.</p>
-<p><img alt="Quick Sort para n = 64: com pivô no meio o maior subproblema cai pela metade a cada nível (6 níveis); com pivô extremo cai de 1 em 1 (63 níveis)" src="images/analise_complexidade/quick_profundidade_pivo.svg" /></p>
+<p><img alt="Quick Sort para n = 64: com pivô no meio o maior subproblema cai pela metade a cada nível (6 níveis); com pivô extremo cai de 1 em 1 (63 níveis)" src="../images/analise_complexidade/quick_profundidade_pivo.svg" /></p>
 <ul>
 <li><strong>Pivô no meio (melhor caso):</strong> o problema cai pela metade a cada nível. São <code>log₂ n</code> níveis × <code>n</code> por nível = <strong>O(n log n)</strong>.</li>
 <li><strong>Pivô extremo (pior caso):</strong> a partição separa <code>n-1</code> elementos de <code>0</code>. O problema cai de 1 em 1, são <code>n</code> níveis, e o custo total é <code>(n-1) + (n-2) + ... + 1 = n(n-1)/2</code>, o <strong>mesmo triângulo</strong> do Bubble Sort (Seção 2.8 do capítulo anterior). Resultado: <strong>O(n²)</strong>.</li>
