@@ -95,10 +95,10 @@ nav:
           - "7.2 Árvores AVL: Implementação": aulas/11_arvores_avl_implementacao.md
 
   - Parte III — Análise de Desempenho e Ordenação:
-      - Capítulo 8 — Complexidade de Algoritmos: aulas/12_analise_complexidade.md
-      - Capítulo 9 — Algoritmos de Ordenação:
-          - "9.1 Algoritmos de Ordenação Básicos": aulas/13_ordenacao_basica.md
-          - "9.2 Algoritmos de Ordenação Avançados": aulas/14_ordenacao_avancada.md
+      - Capítulo 8 — Algoritmos de Ordenação:
+          - "8.1 Algoritmos de Ordenação Básicos": aulas/12_ordenacao_basica.md
+          - "8.2 Algoritmos de Ordenação Avançados": aulas/13_ordenacao_avancada.md
+      - Capítulo 9 — Complexidade de Algoritmos: aulas/14_analise_experimental.md
 
   - Apêndices e Prática:
       - Apêndice A — Exercícios de Fixação:
