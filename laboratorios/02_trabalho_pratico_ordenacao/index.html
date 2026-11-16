@@ -1789,10 +1789,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#organizacao-do-grupo" class="md-nav__link">
+  <a href="#organizacao-da-dupla" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Organização do Grupo
+        Organização da Dupla
       
     </span>
   </a>
@@ -2143,10 +2143,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#organizacao-do-grupo" class="md-nav__link">
+  <a href="#organizacao-da-dupla" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Organização do Grupo
+        Organização da Dupla
       
     </span>
   </a>
@@ -2453,8 +2453,8 @@
 
 
 <h1 id="trabalho-pratico-algoritmos-de-ordenacao-em-c">Trabalho Prático: Algoritmos de Ordenação em C<a class="headerlink" href="#trabalho-pratico-algoritmos-de-ordenacao-em-c" title="Permanent link">&para;</a></h1>
-<p><strong>Formato:</strong> grupos de até 3 alunos · <strong>Linguagem:</strong> C11 (<code>-std=c11</code>) · <strong>Duração sugerida:</strong> 4 semanas · <strong>Prazo de entrega:</strong> <strong>[PREENCHER: data e hora limite]</strong></p>
-<p>Este trabalho é a avaliação prática da disciplina e tem duas entregas indissociáveis: o <strong>código</strong> (repositório GitHub) e um <strong>vídeo de defesa obrigatório</strong>, no qual o grupo demonstra e explica o que implementou. O vídeo não é um extra — é a etapa final do trabalho e substitui a avaliação escrita da Terceira Unidade.</p>
+<p><strong>Formato:</strong> em dupla · <strong>Linguagem:</strong> C11 (<code>-std=c11</code>) · <strong>Duração sugerida:</strong> 2 semanas · </p>
+<p>Este trabalho é a avaliação prática da disciplina e tem duas entregas indissociáveis: o <strong>código</strong> (repositório GitHub) e um <strong>vídeo de defesa obrigatório</strong>, no qual a dupla demonstra e explica o que implementou. O vídeo não é um extra — é a etapa final do trabalho e substitui a avaliação escrita da Terceira Unidade.</p>
 <h2 id="objetivos-de-aprendizagem">Objetivos de Aprendizagem<a class="headerlink" href="#objetivos-de-aprendizagem" title="Permanent link">&para;</a></h2>
 <ol>
 <li>Implementar <strong>3 algoritmos básicos</strong> e <strong>3 algoritmos avançados</strong> de ordenação em C.</li>
@@ -2464,14 +2464,13 @@
 <li>Desenvolver <strong>transparência acadêmica</strong> no uso de IA, validando e explicando todo o código entregue.</li>
 <li>Defender oralmente as escolhas de implementação e os resultados obtidos.</li>
 </ol>
-<h2 id="organizacao-do-grupo">Organização do Grupo<a class="headerlink" href="#organizacao-do-grupo" title="Permanent link">&para;</a></h2>
-<p>Cada grupo define sua própria divisão de tarefas. Sugestão inicial (opcional):</p>
-<ul>
-<li><strong>Membro 1:</strong> algoritmos básicos + testes iniciais</li>
-<li><strong>Membro 2:</strong> algoritmos avançados + benchmark</li>
-<li><strong>Membro 3:</strong> qualidade (<code>gcov</code>, <code>gprof</code>, <code>cppcheck</code>), <code>Makefile</code> e documentação</li>
-</ul>
-<p><strong>Regra única:</strong> todos devem conseguir compilar, executar e explicar qualquer parte do código — isso será cobrado diretamente no vídeo. O histórico Git deve refletir <strong>contribuição ativa de todos os integrantes</strong> (pelo menos alguns commits de cada um, com conteúdo relevante).</p>
+<h2 id="organizacao-da-dupla">Organização da Dupla<a class="headerlink" href="#organizacao-da-dupla" title="Permanent link">&para;</a></h2>
+<p>O trabalho deve ser realizado <strong>em dupla</strong>, e existem <strong>duas formas aceitas</strong> de organizar o desenvolvimento e a entrega:</p>
+<ol>
+<li><strong>Formato Ideal (Desenvolvimento e Apresentação Equilibrados):</strong> ambos os integrantes contribuem ativamente no código, com commits frequentes e relevantes no repositório, e ambos participam da gravação do vídeo dividindo a explicação.</li>
+<li><strong>Formato Assimétrico (Desenvolvimento vs. Apresentação):</strong> caso um dos integrantes não tenha participação equilibrada nos commits (por exemplo, registrar apenas um ou dois commits triviais, como editar somente o <code>README.md</code>), <strong>esse integrante assumirá integralmente a apresentação do vídeo</strong>, explicando todo o código, as ferramentas e os resultados sozinho.</li>
+</ol>
+<p><strong>Regra única:</strong> independentemente do formato escolhido, ambos devem conseguir compilar, executar e explicar qualquer parte do código — a avaliação do vídeo verificará o domínio real sobre o que foi entregue.</p>
 <hr />
 <h2 id="parte-1-implementacao">Parte 1 — Implementação<a class="headerlink" href="#parte-1-implementacao" title="Permanent link">&para;</a></h2>
 <h3 id="algoritmos-obrigatorios">Algoritmos Obrigatórios<a class="headerlink" href="#algoritmos-obrigatorios" title="Permanent link">&para;</a></h3>
@@ -2498,7 +2497,7 @@
 </table>
 <p>Cada algoritmo deve estar em <strong>arquivo <code>.c</code> separado</strong>, com nomes de função <code>bubbleSort</code>, <code>selectionSort</code>, <code>insertionSort</code>, <code>mergeSort</code>, <code>quickSort</code> e <code>heapSort</code>.</p>
 <h3 id="contagem-de-comparacoes-e-trocas">Contagem de Comparações e Trocas<a class="headerlink" href="#contagem-de-comparacoes-e-trocas" title="Permanent link">&para;</a></h3>
-<p>Todos os algoritmos recebem um ponteiro para a estrutura abaixo, que o grupo coloca em <code>src/metricas.h</code>. O ponteiro <code>m</code> <strong>nunca é <code>NULL</code></strong>: quem chama (testes, <code>main</code>, <code>bench</code>) sempre passa uma estrutura zerada.</p>
+<p>Todos os algoritmos recebem um ponteiro para a estrutura abaixo, que a dupla coloca em <code>src/metricas.h</code>. O ponteiro <code>m</code> <strong>nunca é <code>NULL</code></strong>: quem chama (testes, <code>main</code>, <code>bench</code>) sempre passa uma estrutura zerada.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="cm">/* src/metricas.h */</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="cp">#ifndef METRICAS_H</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="cp">#define METRICAS_H</span>
@@ -2540,7 +2539,7 @@
 <ul>
 <li><strong>Commits frequentes:</strong> mínimo 1 a cada 2-3 dias de trabalho.</li>
 <li><strong>Mensagens descritivas</strong>, seguindo o padrão <code>tipo: descrição</code> (ex.: <code>feat: adiciona heap sort</code>, <code>fix: corrige índice no partition do quicksort</code>, <code>docs: atualiza benchmark e uso de IA</code>). Evite mensagens como <code>update</code>, <code>fix</code>, <code>salva tudo</code>.</li>
-<li><strong>Participação visível:</strong> <code>git log</code> deve mostrar commits de <strong>todos</strong> os integrantes (configure <code>git config user.name</code> e <code>user.email</code> em cada máquina).</li>
+<li><strong>Participação visível:</strong> o <code>git log</code> definirá o formato de defesa da dupla (configure <code>git config user.name</code> e <code>git config user.email</code> em cada máquina). Se apenas um integrante concentrar os commits relevantes de código, o outro assumirá a apresentação completa do vídeo.</li>
 <li><strong>Branches &amp; PRs:</strong> opcionais. Podem trabalhar direto na <code>main</code> ou criar branches por funcionalidade. Se usarem PRs, basta uma descrição breve.</li>
 </ul>
 <div class="admonition tip">
@@ -2606,7 +2605,7 @@
 <h3 id="analise-estatica-cppcheck">Análise Estática (<code>cppcheck</code>)<a class="headerlink" href="#analise-estatica-cppcheck" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>make<span class="w"> </span>cppcheck
 </code></pre></div>
-<p>O comando grava a saída bruta em <code>docs/cppcheck_bruto.txt</code>. Em <code>docs/cppcheck.md</code>, liste o que foi apontado, o que o grupo corrigiu e o que decidiu manter (com justificativa). O repositório entregue deve estar <strong>sem erros</strong> (<code>error</code>) apontados pelo <code>cppcheck</code>.</p>
+<p>O comando grava a saída bruta em <code>docs/cppcheck_bruto.txt</code>. Em <code>docs/cppcheck.md</code>, liste o que foi apontado, o que a dupla corrigiu e o que decidiu manter (com justificativa). O repositório entregue deve estar <strong>sem erros</strong> (<code>error</code>) apontados pelo <code>cppcheck</code>.</p>
 <h3 id="cobertura-de-codigo-gcov">Cobertura de Código (<code>gcov</code>)<a class="headerlink" href="#cobertura-de-codigo-gcov" title="Permanent link">&para;</a></h3>
 <p>O <code>gcov</code> mede quais linhas do programa foram de fato executadas pelos testes. O alvo <code>make coverage</code> do Makefile já faz todo o fluxo abaixo; os passos manuais servem para entender o que ele faz.</p>
 <ol>
@@ -2722,14 +2721,14 @@
 <a id="__codelineno-15-19" name="__codelineno-15-19" href="#__codelineno-15-19"></a><span class="k">- [ ]</span> Não submetemos blocos inteiros sem revisão linha a linha
 <a id="__codelineno-15-20" name="__codelineno-15-20" href="#__codelineno-15-20"></a>
 <a id="__codelineno-15-21" name="__codelineno-15-21" href="#__codelineno-15-21"></a><span class="gu">## Reflexão Final (3-5 linhas)</span>
-<a id="__codelineno-15-22" name="__codelineno-15-22" href="#__codelineno-15-22"></a>(Descreva onde a IA ajudou, onde atrapalhou, e o que o grupo aprendeu ao questionar as respostas.)
+<a id="__codelineno-15-22" name="__codelineno-15-22" href="#__codelineno-15-22"></a>(Descreva onde a IA ajudou, onde atrapalhou, e o que a dupla aprendeu ao questionar as respostas.)
 </code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Avaliação</p>
-<p>O uso de IA <strong>não penaliza</strong>. Falta de transparência, código não testado ou grupo incapaz de explicar a entrega <strong>penaliza</strong>.</p>
+<p>O uso de IA <strong>não penaliza</strong>. Falta de transparência, código não testado ou dupla incapaz de explicar a entrega <strong>penaliza</strong>.</p>
 </div>
 <h3 id="estrutura-obrigatoria-do-repositorio">Estrutura Obrigatória do Repositório<a class="headerlink" href="#estrutura-obrigatoria-do-repositorio" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>ordenacao-&lt;grupo&gt;/
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>ordenacao-&lt;dupla&gt;/
 <a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>├── README.md                  # Instruções de build, membros, links
 <a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>├── Makefile                   # Modelo fornecido
 <a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>├── .gitignore
@@ -2798,12 +2797,14 @@
 </table>
 <hr />
 <h2 id="parte-2-defesa-em-video-obrigatoria">Parte 2 — Defesa em Vídeo (obrigatória)<a class="headerlink" href="#parte-2-defesa-em-video-obrigatoria" title="Permanent link">&para;</a></h2>
-<p>O vídeo é a defesa oral do trabalho: demonstra que o grupo domina o código desenvolvido e as ferramentas utilizadas, e substitui a avaliação escrita da Terceira Unidade (<strong>4,0 pontos</strong>).</p>
+<p>O vídeo é a defesa oral do trabalho: demonstra que a dupla domina o código desenvolvido e as ferramentas utilizadas, e substitui a avaliação escrita da Terceira Unidade (<strong>4,0 pontos</strong>).</p>
 <ul>
-<li><strong>Formato:</strong> gravação de <strong>8 a 15 minutos</strong>, publicada no YouTube (público ou não listado).</li>
+<li><strong>Formato:</strong> gravação de <strong>até 20 minutos</strong>, publicada no YouTube (público ou não listado).</li>
 <li><strong>Envio:</strong> o link do vídeo é enviado no SIGAA junto com a entrega do repositório.</li>
 <li>Não serão aceitas apresentações compostas apenas de slides — é obrigatório alternar para a tela do terminal e do editor, mostrando código e execução real.</li>
-<li>Os grupos devem ser exatamente os mesmos do trabalho prático, e todos os integrantes devem falar e demonstrar autoria do código.</li>
+<li><strong>Dinâmica dos apresentadores:</strong></li>
+<li>Se ambos tiverem histórico equilibrado de commits relevantes no GitHub, <strong>os dois devem apresentar o vídeo</strong> e demonstrar autoria do código.</li>
+<li>Se um dos membros tiver participação mínima ou apenas superficial nos commits (ex.: apenas ajustes no <code>README</code>), <strong>esse membro deverá apresentar o vídeo completo sozinho</strong>, demonstrando que compreende e domina todo o código produzido pelo colega.</li>
 </ul>
 <h3 id="estrutura-obrigatoria-do-video">Estrutura Obrigatória do Vídeo<a class="headerlink" href="#estrutura-obrigatoria-do-video" title="Permanent link">&para;</a></h3>
 <table>
@@ -2873,7 +2874,7 @@
 </tr>
 <tr>
 <td><strong>Histórico Git</strong></td>
-<td>Commits regulares, mensagens claras, participação de todos, evolução visível</td>
+<td>Commits regulares, mensagens claras, evolução visível (e definição do formato de defesa da dupla)</td>
 <td>20</td>
 </tr>
 <tr>
@@ -2888,14 +2889,14 @@
 </tr>
 <tr>
 <td><strong>Colaboração &amp; IA</strong></td>
-<td>Divisão equilibrada, <code>docs/uso-ia.md</code> preenchido, código explicável</td>
+<td>Divisão equilibrada (ou compensação na apresentação), <code>docs/uso-ia.md</code> preenchido, código explicável</td>
 <td>15</td>
 </tr>
 </tbody>
 </table>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>Repositórios com 1-2 commits no dia da entrega, mensagens vazias ou código que o grupo não consegue modificar serão penalizados na categoria Git/Colaboração.</p>
+<p>Repositórios com 1-2 commits no dia da entrega, mensagens vazias ou código que a dupla não consegue modificar serão penalizados na categoria Git/Colaboração.</p>
 </div>
 <h3 id="rubrica-do-video-40-pts-substitui-a-avaliacao-escrita-da-unidade-3">Rubrica do Vídeo (4,0 pts — substitui a avaliação escrita da Unidade 3)<a class="headerlink" href="#rubrica-do-video-40-pts-substitui-a-avaliacao-escrita-da-unidade-3" title="Permanent link">&para;</a></h3>
 <table>
@@ -2924,7 +2925,7 @@
 </tr>
 <tr>
 <td><strong>Domínio e Participação</strong></td>
-<td>Todos os integrantes falam e demonstram autoria do código</td>
+<td>Apresentação conforme o histórico Git (ambos falam se os commits forem equilibrados; ou apresentação integral pelo membro com menos commits), demonstrando domínio total do código</td>
 <td>1.0</td>
 </tr>
 </tbody>
@@ -2935,7 +2936,7 @@
 <ul>
 <li><strong>Vídeo:</strong> 4,0 pontos, na Terceira Unidade.</li>
 <li><strong>Código:</strong> a pontuação de 0 a 100 é convertida para <strong>[PREENCHER: escala/peso conforme o plano de ensino]</strong>.</li>
-<li><strong>Individualização:</strong> a nota é do grupo, mas pode ser <strong>ajustada individualmente</strong> quando o histórico Git, a participação no vídeo ou a arguição indicarem contribuição desigual.</li>
+<li><strong>Individualização:</strong> a nota é da dupla, mas pode ser <strong>ajustada individualmente</strong> quando o histórico Git, a participação no vídeo ou a arguição indicarem contribuição desigual.</li>
 <li><strong>Atraso:</strong> <strong>[PREENCHER: política, ex.: −10% da nota por dia de atraso]</strong>.</li>
 </ul>
 </div>
@@ -2950,7 +2951,7 @@
 </code></pre></div>
 </li>
 <li>
-<p><strong>Envio via SIGAA</strong>, em um único comentário por grupo, contendo:</p>
+<p><strong>Envio via SIGAA</strong>, em um único comentário por dupla, contendo:</p>
 <ul>
 <li>nomes completos dos integrantes;</li>
 <li>link do repositório GitHub;</li>
