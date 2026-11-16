@@ -61,4 +61,4 @@ Bem-vindos ao universo das Estruturas de Dados! Este livro foi desenhado para gu
 ### Apêndice B: Projetos e Laboratórios Práticos
 
 * [Laboratório: um REPL para uma máquina baseada em pilha](laboratorios/01_repl_pilha.md)
-* [Trabalho Prático: Algoritmos de Ordenação em C](laboratorios/02_trabalho_pratico.md)
+* [Trabalho Prático: Algoritmos de Ordenação em C](laboratorios/02_trabalho_pratico_ordenacao.md)

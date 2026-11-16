@@ -113,4 +113,4 @@ nav:
           - "Árvores AVL": exercicios/u2_04_arvores_avl.md
       - Apêndice B — Projetos e Laboratórios:
           - "Laboratório: REPL Baseado em Pilha": laboratorios/01_repl_pilha.md
-          - "Trabalho Prático: Algoritmos de Ordenação": laboratorios/02_trabalho_pratico.md
+          - "Trabalho Prático: Algoritmos de Ordenação": laboratorios/02_trabalho_pratico_ordenacao.md

@@ -1,8 +1,8 @@
 # Trabalho Prático: Algoritmos de Ordenação em C
 
-**Formato:** grupos de até 3 alunos · **Linguagem:** C11 (`-std=c11`) · **Duração sugerida:** 4 semanas · **Prazo de entrega:** **[PREENCHER: data e hora limite]**
+**Formato:** em dupla · **Linguagem:** C11 (`-std=c11`) · **Duração sugerida:** 2 semanas · 
 
-Este trabalho é a avaliação prática da disciplina e tem duas entregas indissociáveis: o **código** (repositório GitHub) e um **vídeo de defesa obrigatório**, no qual o grupo demonstra e explica o que implementou. O vídeo não é um extra — é a etapa final do trabalho e substitui a avaliação escrita da Terceira Unidade.
+Este trabalho é a avaliação prática da disciplina e tem duas entregas indissociáveis: o **código** (repositório GitHub) e um **vídeo de defesa obrigatório**, no qual a dupla demonstra e explica o que implementou. O vídeo não é um extra — é a etapa final do trabalho e substitui a avaliação escrita da Terceira Unidade.
 
 ## Objetivos de Aprendizagem
 
@@ -13,15 +13,14 @@ Este trabalho é a avaliação prática da disciplina e tem duas entregas indiss
 5. Desenvolver **transparência acadêmica** no uso de IA, validando e explicando todo o código entregue.
 6. Defender oralmente as escolhas de implementação e os resultados obtidos.
 
-## Organização do Grupo
+## Organização da Dupla
 
-Cada grupo define sua própria divisão de tarefas. Sugestão inicial (opcional):
+O trabalho deve ser realizado **em dupla**, e existem **duas formas aceitas** de organizar o desenvolvimento e a entrega:
 
-- **Membro 1:** algoritmos básicos + testes iniciais
-- **Membro 2:** algoritmos avançados + benchmark
-- **Membro 3:** qualidade (`gcov`, `gprof`, `cppcheck`), `Makefile` e documentação
+1. **Formato Ideal (Desenvolvimento e Apresentação Equilibrados):** ambos os integrantes contribuem ativamente no código, com commits frequentes e relevantes no repositório, e ambos participam da gravação do vídeo dividindo a explicação.
+2. **Formato Assimétrico (Desenvolvimento vs. Apresentação):** caso um dos integrantes não tenha participação equilibrada nos commits (por exemplo, registrar apenas um ou dois commits triviais, como editar somente o `README.md`), **esse integrante assumirá integralmente a apresentação do vídeo**, explicando todo o código, as ferramentas e os resultados sozinho.
 
-**Regra única:** todos devem conseguir compilar, executar e explicar qualquer parte do código — isso será cobrado diretamente no vídeo. O histórico Git deve refletir **contribuição ativa de todos os integrantes** (pelo menos alguns commits de cada um, com conteúdo relevante).
+**Regra única:** independentemente do formato escolhido, ambos devem conseguir compilar, executar e explicar qualquer parte do código — a avaliação do vídeo verificará o domínio real sobre o que foi entregue.
 
 ---
 
@@ -38,7 +37,7 @@ Cada algoritmo deve estar em **arquivo `.c` separado**, com nomes de função `b
 
 ### Contagem de Comparações e Trocas
 
-Todos os algoritmos recebem um ponteiro para a estrutura abaixo, que o grupo coloca em `src/metricas.h`. O ponteiro `m` **nunca é `NULL`**: quem chama (testes, `main`, `bench`) sempre passa uma estrutura zerada.
+Todos os algoritmos recebem um ponteiro para a estrutura abaixo, que a dupla coloca em `src/metricas.h`. O ponteiro `m` **nunca é `NULL`**: quem chama (testes, `main`, `bench`) sempre passa uma estrutura zerada.
 
 ```c
 /* src/metricas.h */
@@ -90,7 +89,7 @@ Esperado no histórico:
 
 - **Commits frequentes:** mínimo 1 a cada 2-3 dias de trabalho.
 - **Mensagens descritivas**, seguindo o padrão `tipo: descrição` (ex.: `feat: adiciona heap sort`, `fix: corrige índice no partition do quicksort`, `docs: atualiza benchmark e uso de IA`). Evite mensagens como `update`, `fix`, `salva tudo`.
-- **Participação visível:** `git log` deve mostrar commits de **todos** os integrantes (configure `git config user.name` e `user.email` em cada máquina).
+- **Participação visível:** o `git log` definirá o formato de defesa da dupla (configure `git config user.name` e `git config user.email` em cada máquina). Se apenas um integrante concentrar os commits relevantes de código, o outro assumirá a apresentação completa do vídeo.
 - **Branches & PRs:** opcionais. Podem trabalhar direto na `main` ou criar branches por funcionalidade. Se usarem PRs, basta uma descrição breve.
 
 !!! tip
@@ -137,7 +136,7 @@ Comando: `make bench` (grava `docs/resultados.csv`). Em seguida, escreva `docs/a
 make cppcheck
 ```
 
-O comando grava a saída bruta em `docs/cppcheck_bruto.txt`. Em `docs/cppcheck.md`, liste o que foi apontado, o que o grupo corrigiu e o que decidiu manter (com justificativa). O repositório entregue deve estar **sem erros** (`error`) apontados pelo `cppcheck`.
+O comando grava a saída bruta em `docs/cppcheck_bruto.txt`. Em `docs/cppcheck.md`, liste o que foi apontado, o que a dupla corrigiu e o que decidiu manter (com justificativa). O repositório entregue deve estar **sem erros** (`error`) apontados pelo `cppcheck`.
 
 ### Cobertura de Código (`gcov`)
 
@@ -274,16 +273,16 @@ Crie `docs/uso-ia.md` seguindo este modelo:
 - [ ] Não submetemos blocos inteiros sem revisão linha a linha
 
 ## Reflexão Final (3-5 linhas)
-(Descreva onde a IA ajudou, onde atrapalhou, e o que o grupo aprendeu ao questionar as respostas.)
+(Descreva onde a IA ajudou, onde atrapalhou, e o que a dupla aprendeu ao questionar as respostas.)
 ```
 
 !!! note "Avaliação"
-    O uso de IA **não penaliza**. Falta de transparência, código não testado ou grupo incapaz de explicar a entrega **penaliza**.
+    O uso de IA **não penaliza**. Falta de transparência, código não testado ou dupla incapaz de explicar a entrega **penaliza**.
 
 ### Estrutura Obrigatória do Repositório
 
 ```text
-ordenacao-<grupo>/
+ordenacao-<dupla>/
 ├── README.md                  # Instruções de build, membros, links
 ├── Makefile                   # Modelo fornecido
 ├── .gitignore
@@ -335,12 +334,14 @@ gmon.out
 
 ## Parte 2 — Defesa em Vídeo (obrigatória)
 
-O vídeo é a defesa oral do trabalho: demonstra que o grupo domina o código desenvolvido e as ferramentas utilizadas, e substitui a avaliação escrita da Terceira Unidade (**4,0 pontos**).
+O vídeo é a defesa oral do trabalho: demonstra que a dupla domina o código desenvolvido e as ferramentas utilizadas, e substitui a avaliação escrita da Terceira Unidade (**4,0 pontos**).
 
-- **Formato:** gravação de **8 a 15 minutos**, publicada no YouTube (público ou não listado).
+- **Formato:** gravação de **até 20 minutos**, publicada no YouTube (público ou não listado).
 - **Envio:** o link do vídeo é enviado no SIGAA junto com a entrega do repositório.
 - Não serão aceitas apresentações compostas apenas de slides — é obrigatório alternar para a tela do terminal e do editor, mostrando código e execução real.
-- Os grupos devem ser exatamente os mesmos do trabalho prático, e todos os integrantes devem falar e demonstrar autoria do código.
+- **Dinâmica dos apresentadores:**
+  - Se ambos tiverem histórico equilibrado de commits relevantes no GitHub, **os dois devem apresentar o vídeo** e demonstrar autoria do código.
+  - Se um dos membros tiver participação mínima ou apenas superficial nos commits (ex.: apenas ajustes no `README`), **esse membro deverá apresentar o vídeo completo sozinho**, demonstrando que compreende e domina todo o código produzido pelo colega.
 
 ### Estrutura Obrigatória do Vídeo
 
@@ -362,13 +363,13 @@ O vídeo é a defesa oral do trabalho: demonstra que o grupo domina o código de
 | Critério | O que será observado | Peso |
 | --- | --- | --- |
 | **Funcionalidade** | 6 algoritmos compilam, executam e ordenam corretamente, com contagem de comparações e trocas | 25 |
-| **Histórico Git** | Commits regulares, mensagens claras, participação de todos, evolução visível | 20 |
+| **Histórico Git** | Commits regulares, mensagens claras, evolução visível (e definição do formato de defesa da dupla) | 20 |
 | **Qualidade & Testes** | Testes passam, `gcov` ≥ 70% de linhas nos 6 arquivos de algoritmos, `cppcheck` sem erros | 20 |
 | **Documentação & Análise** | `analise.md`, `cobertura.md`, `perfil.md`, `cppcheck.md`, `resultados.csv` e `README` funcional | 20 |
-| **Colaboração & IA** | Divisão equilibrada, `docs/uso-ia.md` preenchido, código explicável | 15 |
+| **Colaboração & IA** | Divisão equilibrada (ou compensação na apresentação), `docs/uso-ia.md` preenchido, código explicável | 15 |
 
 !!! warning
-    Repositórios com 1-2 commits no dia da entrega, mensagens vazias ou código que o grupo não consegue modificar serão penalizados na categoria Git/Colaboração.
+    Repositórios com 1-2 commits no dia da entrega, mensagens vazias ou código que a dupla não consegue modificar serão penalizados na categoria Git/Colaboração.
 
 ### Rubrica do Vídeo (4,0 pts — substitui a avaliação escrita da Unidade 3)
 
@@ -377,14 +378,14 @@ O vídeo é a defesa oral do trabalho: demonstra que o grupo domina o código de
 | **Organização e Clareza** | Apresentação didática, áudio nítido, divisão do tempo e boa estrutura | 1.0 |
 | **Demonstração do Código** | Explicação concisa da implementação e compilação/execução correta | 1.0 |
 | **Análise de Resultados** | Discussão fundamentada nas medições empíricas comparando os algoritmos | 1.0 |
-| **Domínio e Participação** | Todos os integrantes falam e demonstram autoria do código | 1.0 |
+| **Domínio e Participação** | Apresentação conforme o histórico Git (ambos falam se os commits forem equilibrados; ou apresentação integral pelo membro com menos commits), demonstrando domínio total do código | 1.0 |
 
 ### Composição da Nota
 
 !!! note "Nota final"
     - **Vídeo:** 4,0 pontos, na Terceira Unidade.
     - **Código:** a pontuação de 0 a 100 é convertida para **[PREENCHER: escala/peso conforme o plano de ensino]**.
-    - **Individualização:** a nota é do grupo, mas pode ser **ajustada individualmente** quando o histórico Git, a participação no vídeo ou a arguição indicarem contribuição desigual.
+    - **Individualização:** a nota é da dupla, mas pode ser **ajustada individualmente** quando o histórico Git, a participação no vídeo ou a arguição indicarem contribuição desigual.
     - **Atraso:** **[PREENCHER: política, ex.: −10% da nota por dia de atraso]**.
 
 ---
@@ -399,7 +400,7 @@ O vídeo é a defesa oral do trabalho: demonstra que o grupo domina o código de
     git push origin main --tags
     ```
 
-3. **Envio via SIGAA**, em um único comentário por grupo, contendo:
+3. **Envio via SIGAA**, em um único comentário por dupla, contendo:
       - nomes completos dos integrantes;
       - link do repositório GitHub;
       - link do vídeo de apresentação no YouTube.
