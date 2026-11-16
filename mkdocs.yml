@@ -1,4 +1,5 @@
 site_name: Estruturas de Dados
+site_url: https://lambdageo-edu.github.io/book-estrutura-de-dados/
 site_description: >
   Livro didático de Estruturas de Dados:
   Recursividade, TAD, Listas, Pilhas, Filas, Árvores (ABB e AVL) e Ordenação (incluindo Heap Sort).
