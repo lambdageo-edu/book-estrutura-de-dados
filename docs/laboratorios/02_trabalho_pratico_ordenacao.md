@@ -1,43 +1,377 @@
-# Trabalho Prático: Algoritmos de Ordenação em C
+# Laboratório: Algoritmos de Ordenação em C — Passo a Passo
 
-**Formato:** em dupla · **Linguagem:** C11 (`-std=c11`) · **Duração sugerida:** 2 semanas · 
+Este tutorial é o **caminho** para chegar ao Trabalho Prático de ordenação. A especificação (o que entregar, rubrica, prazos) está no final do capítulo, em [Trabalho Prático](#trabalho-pratico). Aqui você aprende **como construir** cada peça, em etapas pequenas, cada uma com um **checkpoint** (um comando e o resultado esperado) e um **commit sugerido**.
 
-Este trabalho é a avaliação prática da disciplina e tem duas entregas indissociáveis: o **código** (repositório GitHub) e um **vídeo de defesa obrigatório**, no qual a dupla demonstra e explica o que implementou. O vídeo não é um extra — é a etapa final do trabalho e substitui a avaliação escrita da Terceira Unidade.
+!!! info "Como usar este tutorial"
+    - Nunca usou Git ou GitHub? Comece pela **Etapa 0**: ela explica conta, criação do repositório, commits e trabalho em dupla.
+    - Siga as etapas **na ordem**. Só avance quando o checkpoint passar.
+    - Faça **um commit ao fim de cada etapa**. É isso que cria o histórico que será avaliado.
+    - A etapa 2 (Bubble Sort) é um exemplo **completo** do ciclo: código, teste, métricas. As demais etapas dão o contrato, dicas e os casos de teste; **o código é seu**.
+    - Blocos recolhidos (`???`) contêm dicas. Tente primeiro sem abri-los.
 
-## Objetivos de Aprendizagem
-
-1. Implementar **3 algoritmos básicos** e **3 algoritmos avançados** de ordenação em C.
-2. Vivenciar o **controle de versão** com Git em equipe, com fluxo flexível e focado no histórico.
-3. Aplicar noções básicas de **qualidade e medição**: testes, cobertura (`gcov`), análise estática (`cppcheck`) e profiling de desempenho (`gprof`).
-4. Produzir **documentação técnica** e **análise empírica** dos resultados, confrontando as medições com a teoria de complexidade.
-5. Desenvolver **transparência acadêmica** no uso de IA, validando e explicando todo o código entregue.
-6. Defender oralmente as escolhas de implementação e os resultados obtidos.
-
-## Organização da Dupla
-
-O trabalho deve ser realizado **em dupla**, e existem **duas formas aceitas** de organizar o desenvolvimento e a entrega:
-
-1. **Formato Ideal (Desenvolvimento e Apresentação Equilibrados):** ambos os integrantes contribuem ativamente no código, com commits frequentes e relevantes no repositório, e ambos participam da gravação do vídeo dividindo a explicação.
-2. **Formato Assimétrico (Desenvolvimento vs. Apresentação):** caso um dos integrantes não tenha participação equilibrada nos commits (por exemplo, registrar apenas um ou dois commits triviais, como editar somente o `README.md`), **esse integrante assumirá integralmente a apresentação do vídeo**, explicando todo o código, as ferramentas e os resultados sozinho.
-
-**Regra única:** independentemente do formato escolhido, ambos devem conseguir compilar, executar e explicar qualquer parte do código — a avaliação do vídeo verificará o domínio real sobre o que foi entregue.
+| Etapa | Foco | Semana sugerida |
+| --- | --- | --- |
+| 0 | Git e GitHub: conta, repositório, commits, trabalho em dupla | antes da semana 1 |
+| 1 | Setup do projeto: Makefile, `metricas.h`, esqueletos | 1 |
+| 2 | Bubble Sort completo (código + teste + métricas) | 1 |
+| 3 | Selection e Insertion Sort | 1–2 |
+| 4 | Merge, Quick e Heap Sort | 2–3 |
+| 5 | Ferramentas: `cppcheck`, `gcov`, `gprof` | 3 |
+| 6 | Benchmark e análise experimental | 3–4 |
+| 7 | Documentação, vídeo e entrega | 4 |
 
 ---
 
-## Parte 1 — Implementação
+## Etapa 0 — Git e GitHub: o essencial
 
-### Algoritmos Obrigatórios
+Seu histórico no Git **faz parte da nota** (20 pontos da rubrica de código, mais a definição de quem apresenta o vídeo). Por isso esta etapa vem antes de qualquer código. Se você já usa Git no dia a dia, leia só as seções 0.6 a 0.8 e faça o **Checkpoint 0**.
 
-| Categoria | Algoritmos | Assinatura Padrão |
+!!! info "Sistema operacional"
+    O laboratório usa `gcc`, `make`, `gcov` e `gprof`, que funcionam nativamente em Linux. No Windows, use o **WSL** (Ubuntu); no macOS, o `gcc` do Xcode/Homebrew serve, mas o `gprof` pode se comportar diferente. Todos os comandos deste tutorial assumem um terminal Linux.
+
+### 0.1 Os conceitos em 1 minuto
+
+- **Git** guarda o histórico do seu projeto no seu computador. Cada ponto salvo do histórico é um **commit**: uma "fotografia" dos arquivos, com autor, data e uma mensagem.
+- **GitHub** é um servidor onde fica uma cópia do repositório na internet (o **remoto**, chamado `origin`). É por ele que a dupla troca código e que o professor corrige.
+- Um arquivo passa por **três áreas** até virar histórico:
+
+| Área | O que é | Como entra | Como ver |
+| --- | --- | --- | --- |
+| **Diretório de trabalho** | Os arquivos que você edita | Você edita no editor | `git status` |
+| **Área de preparação** (*staging*) | O que irá no próximo commit | `git add arquivo` | `git status`, `git diff --staged` |
+| **Histórico** (commits) | Fotografias salvas | `git commit -m "..."` | `git log` |
+
+O **remoto** só recebe o histórico quando você faz `git push`, e só traz o histórico dos outros quando você faz `git pull`.
+
+### 0.2 Instalar o Git
+
+```bash
+sudo apt install git        # Ubuntu / WSL
+git --version               # deve imprimir algo como: git version 2.43.0
+```
+
+### 0.3 Conta no GitHub e autenticação
+
+1. Crie uma conta em [github.com](https://github.com) (se ainda não tiver). Use um e-mail que você consulta e **lembre-se de qual**: ele será importante no passo 0.4.
+2. O GitHub não aceita mais a **senha da conta** no terminal. Escolha **uma** das duas formas de autenticar:
+
+=== "Opção A: chave SSH (recomendada)"
+
+    Você configura uma vez e nunca mais digita senha.
+
+    ```bash
+    ssh-keygen -t ed25519 -C "seu-email@exemplo.com"   # aperte Enter em todas as perguntas
+    cat ~/.ssh/id_ed25519.pub                          # copie a saída inteira
+    ```
+
+    No GitHub: foto de perfil → **Settings** → **SSH and GPG keys** → **New SSH key** → cole a chave e salve. Teste:
+
+    ```bash
+    ssh -T git@github.com
+    ```
+
+    Resposta esperada: `Hi <seu-usuario>! You've successfully authenticated, but GitHub does not provide shell access.` (isso é sucesso, apesar do "does not provide").
+
+=== "Opção B: HTTPS com token"
+
+    No GitHub: **Settings** → **Developer settings** → **Personal access tokens** → gere um token com permissão de escrita em repositórios (`repo`). No `git push`, quando o terminal pedir a senha, **cole o token** no lugar dela. Para não digitar sempre, instale o GitHub CLI e rode `gh auth login`.
+
+!!! note
+    Os nomes dos menus do GitHub mudam de vez em quando. Se não achar um item, procure por "SSH keys" ou "personal access token" na ajuda do GitHub.
+
+!!! tip "Usou `===` e viu texto estranho?"
+    As abas acima (`=== "..."`) exigem a extensão `pymdownx.tabbed` no `mkdocs.yml`. Sem ela, o conteúdo aparece em sequência, o que também funciona.
+
+### 0.4 Identidade: nome e e-mail (cada integrante, uma vez)
+
+O Git marca cada commit com um nome e um e-mail. O GitHub **só associa o commit à sua conta se o e-mail for o mesmo da conta**:
+
+```bash
+git config --global user.name  "Seu Nome Completo"
+git config --global user.email "mesmo-email-da-conta-github@exemplo.com"
+git config --global init.defaultBranch main
+git config --global pull.rebase false      # evita um erro chato no git pull (veja 0.8)
+git config --global --list                 # confira o resultado
+```
+
+!!! warning "E-mail errado = commits que \"não existem\""
+    Se o e-mail do `git config` não bater com o da conta, seus commits aparecem sem o seu perfil, e na contagem de participação você parece não ter contribuído. Se preferir não expor seu e-mail, o GitHub oferece um e-mail privado (`...@users.noreply.github.com`) em **Settings → Emails**; use esse no `git config`. **Configure antes do primeiro commit**: corrigir depois é trabalhoso.
+
+Se mexer em dois computadores (casa e laboratório), repita 0.3 e 0.4 em cada um. No computador de laboratório compartilhado, use `git config` **sem** `--global` dentro da pasta do projeto, para não deixar sua identidade para o próximo usuário.
+
+### 0.5 Criar o repositório e colocar a dupla para trabalhar
+
+**Só um** integrante faz isto:
+
+1. No GitHub: botão **New repository** (ou o `+` no canto superior).
+2. Nome: `ordenacao-<dupla>` (por exemplo, `ordenacao-ana-beto`).
+3. Visibilidade: **Public**, ou **Private** (nesse caso, é obrigatório dar acesso ao professor, veja o passo 5).
+4. Marque **Add a README file**. Isso já cria o repositório com o primeiro commit e a branch `main`. Deixe `.gitignore` e licença em "None" (você usará o `.gitignore` da Etapa 1).
+5. Depois de criado: **Settings** → **Collaborators** → **Add people**. Adicione o colega **e**, se o repositório for privado, o usuário do professor (**[PREENCHER: usuário GitHub do professor]**).
+6. O colega recebe um convite (por e-mail e em github.com/notifications) e precisa **aceitá-lo**. Sem isso, o `git push` dele será recusado.
+
+**Cada um** (inclusive quem criou) clona o repositório para o seu computador. Na página do repositório, o botão verde **Code** mostra a URL; use a aba **SSH** se escolheu a Opção A, ou **HTTPS** se escolheu a B:
+
+```bash
+git clone git@github.com:<usuario>/ordenacao-<dupla>.git     # SSH
+# ou: git clone https://github.com/<usuario>/ordenacao-<dupla>.git
+cd ordenacao-<dupla>
+git log --oneline          # mostra o commit inicial criado pelo GitHub
+```
+
+!!! danger "Não crie o repositório duas vezes"
+    Um erro comum é cada integrante criar o **seu** repositório e depois tentar juntá-los. Só um cria; o outro **clona**.
+
+### 0.6 O ciclo de trabalho (repita sempre)
+
+```bash
+git pull                       # 1. traz o que o colega fez (SEMPRE antes de começar)
+# ... edite, compile, teste ...
+git status                     # 2. o que mudou?
+git diff                       # 3. (opcional) ver as linhas alteradas
+git add src/basicos/bubble.c   # 4. escolhe o que vai no commit
+git commit -m "feat: implementa bubble sort com contagem de métricas"   # 5. salva no histórico local
+git push                       # 6. envia para o GitHub
+```
+
+O `git status` é seu melhor amigo. Exemplo de saída:
+
+```text
+On branch main
+Changes not staged for commit:
+        modified:   src/basicos/bubble.c
+
+Untracked files:
+        tests/test_basic.c
+```
+
+- **modified** = arquivo que o Git já conhece e que você alterou.
+- **Untracked** = arquivo novo que o Git ainda não acompanha: precisa de `git add`.
+- Se aparecer `.o`, `sort_main` ou `gmon.out` na lista, o `.gitignore` da Etapa 1 não está funcionando ou ainda não foi criado.
+
+Outros comandos úteis:
+
+```bash
+git log --oneline              # histórico resumido (q para sair)
+git log --oneline --graph      # mostra também ramificações e junções
+git shortlog -sn               # quantos commits por autor (é o que a avaliação olha!)
+git show                       # o que mudou no último commit
+```
+
+!!! warning "Dois erros muito comuns"
+    - **`git commit` sem `-m`** abre um editor de texto (geralmente o `vim`). Para sair salvando: `Esc`, depois `:wq` e Enter. Para desistir: `Esc`, depois `:q!` e Enter.
+    - **Esquecer o `git add`**: o `git commit` diz `no changes added to commit` e mostra os arquivos em vermelho. Faça o `add` e tente de novo.
+
+### 0.7 Boas mensagens de commit
+
+O padrão exigido é `tipo: descrição`, em uma linha, dizendo **o que o commit faz**:
+
+| Tipo | Quando usar | Exemplo |
 | --- | --- | --- |
-| **Básicos** | Bubble Sort, Selection Sort, Insertion Sort | `void algoritmoSort(int v[], int n, Metricas *m);` |
-| **Avançados** | Merge Sort, Quick Sort, Heap Sort | `void algoritmoSort(int v[], int n, Metricas *m);` |
+| `feat` | Funcionalidade nova | `feat: adiciona heap sort` |
+| `fix` | Correção de erro | `fix: corrige índice no partition do quicksort` |
+| `test` | Testes | `test: adiciona casos n=0 e n=1` |
+| `docs` | Documentação e relatórios | `docs: atualiza benchmark e uso de IA` |
+| `refactor` | Reorganizar sem mudar o comportamento | `refactor: extrai função troca` |
+| `style` | Formatação, sem mudar lógica | `style: corrige warnings do -Wextra` |
+| `chore` | Makefile, `.gitignore`, manutenção | `chore: adiciona alvo profile ao Makefile` |
 
-Cada algoritmo deve estar em **arquivo `.c` separado**, com nomes de função `bubbleSort`, `selectionSort`, `insertionSort`, `mergeSort`, `quickSort` e `heapSort`.
+**Ruins:** `update`, `fix`, `salva tudo`, `ajustes`, `asdf`. **Boas:** descrevem a mudança e permitem entender o projeto só lendo o `git log`.
 
-### Contagem de Comparações e Trocas
+Regras práticas:
 
-Todos os algoritmos recebem um ponteiro para a estrutura abaixo, que a dupla coloca em `src/metricas.h`. O ponteiro `m` **nunca é `NULL`**: quem chama (testes, `main`, `bench`) sempre passa uma estrutura zerada.
+- **Um commit = uma ideia.** Implementou o Selection Sort e consertou o Makefile? São dois commits.
+- **Commit pequeno e frequente** vale mais que um commit gigante na véspera. O mínimo exigido é um a cada 2-3 dias, mas o ritmo ideal é **um por etapa deste tutorial** (cada etapa traz a mensagem sugerida).
+- **Só commite o que compila e passa em `make test`.** Código quebrado no `main` atrapalha o colega.
+- **Nunca commite binários** (`.o`, executáveis, `gmon.out`). Eles ficam fora pelo `.gitignore`.
+
+### 0.8 Trabalhando em dupla sem brigar com o Git
+
+**A regra de ouro:** `git pull` **antes** de começar e `git push` **depois** de testar. Quanto menos tempo seu código fica só no seu computador, menos conflitos.
+
+**Divida o trabalho por arquivo.** Como cada algoritmo fica em um `.c` separado, uma divisão natural é, por exemplo:
+
+| Integrante A | Integrante B |
+| --- | --- |
+| Bubble, Selection, Merge | Insertion, Quick, Heap |
+
+Os arquivos compartilhados (`tests/test_basic.c`, `Makefile`, `src/bench.c`) são onde os conflitos acontecem: **commite e envie mudanças pequenas neles, com frequência**.
+
+!!! warning "Divisão equilibrada importa"
+    Se só um integrante concentrar os commits relevantes de código, o outro grava o vídeo inteiro sozinho. Combinem a divisão desde o início e cada um commite com **a própria identidade**, no próprio computador.
+
+#### Situação 1: o `push` é recusado
+
+Você tenta enviar, mas o colega já enviou algo antes:
+
+```text
+ ! [rejected]        main -> main (fetch first)
+error: failed to push some refs to 'github.com:...'
+hint: Updates were rejected because the remote contains work that you do not
+hint: have locally. ...
+```
+
+Isso **não é erro seu**: o remoto tem commits que você ainda não tem. A solução é trazê-los e tentar de novo:
+
+```bash
+git pull
+git push
+```
+
+Se o `pull` reclamar `You have divergent branches and need to specify how to reconcile them`, você não fez o `git config --global pull.rebase false` do passo 0.4. Faça-o e rode o `git pull` de novo.
+
+#### Situação 2: conflito de merge
+
+Acontece quando os dois editaram **o mesmo trecho** (por exemplo, os dois acrescentaram uma linha no `main` do `test_basic.c`, no mesmo ponto). O `git pull` avisa:
+
+```text
+Auto-merging tests/test_basic.c
+CONFLICT (content): Merge conflict in tests/test_basic.c
+Automatic merge failed; fix conflicts and then commit the result.
+```
+
+Não entre em pânico: o Git pausou e está pedindo sua ajuda. Passo a passo:
+
+1. `git status` lista o arquivo em **both modified** (ambos modificaram).
+2. Abra o arquivo e procure `<<<<<<<`. Você verá:
+
+    ```text
+    <<<<<<< HEAD
+        testaAlgoritmo("selection", selectionSort);
+    =======
+        testaAlgoritmo("insertion", insertionSort);
+    >>>>>>> e48fb78...
+    ```
+
+    Entre `<<<<<<<` e `=======` está a **sua** versão; entre `=======` e `>>>>>>>`, a **do colega**.
+3. Decida o resultado final e **apague as três linhas de marcação** (`<<<<<<<`, `=======`, `>>>>>>>`). Aqui, o certo é manter **as duas** chamadas:
+
+    ```c
+        testaAlgoritmo("selection", selectionSort);
+        testaAlgoritmo("insertion", insertionSort);
+    ```
+
+4. **Compile e teste** (`make test`) para garantir que o resultado funciona.
+5. Conclua a junção e envie:
+
+    ```bash
+    git add tests/test_basic.c
+    git commit -m "merge: integra testes de selection e insertion"
+    git push
+    ```
+
+Se quiser desistir e voltar ao estado anterior ao `pull`: `git merge --abort`.
+
+Depois da junção, o `git log --oneline --graph` mostra o desvio e o encontro das duas linhas de trabalho:
+
+```text
+*   9cdf59e merge: integra testes de selection e insertion
+|\
+| * e48fb78 feat: implementa insertion sort
+* | 6012f38 feat: implementa selection sort
+|/
+* c0e807e chore: estrutura inicial
+```
+
+!!! tip "Como evitar a maioria dos conflitos"
+    `git pull` ao sentar para trabalhar; commits pequenos; `git push` logo após `make test` passar; avisar o colega por mensagem quando for mexer em arquivo compartilhado (Makefile, `test_basic.c`).
+
+### 0.9 Desfazendo coisas com segurança
+
+| Situação | Comando |
+| --- | --- |
+| Joguei fora minhas edições de um arquivo (**irreversível**) | `git restore arquivo.c` |
+| Fiz `git add` de um arquivo por engano | `git restore --staged arquivo.c` |
+| Commitei um `.o` ou `gmon.out` sem querer | `git rm --cached arquivo.o` e adicione o padrão ao `.gitignore`; depois commite |
+| Um commit já enviado estava errado | `git revert <hash>` (cria um novo commit que desfaz o anterior) |
+
+!!! danger "Evite estes comandos"
+    `git push --force` e `git reset --hard` podem **apagar o trabalho do colega** ou o seu. Se alguém sugerir um deles para "resolver" um erro, peça ajuda ao professor antes.
+
+### 0.10 Erros frequentes
+
+| Mensagem | O que significa | O que fazer |
+| --- | --- | --- |
+| `Author identity unknown` / `Please tell me who you are` | Falta `user.name`/`user.email` | Passo 0.4 |
+| `Permission denied (publickey)` | A chave SSH não está no GitHub | Passo 0.3, opção A |
+| `Authentication failed` / pede senha e recusa | Usou a senha da conta em vez do token | Passo 0.3, opção B |
+| `Permission to ... denied to <usuario>` / `403` | Convite de colaborador não aceito, ou repositório de outra pessoa | Aceite o convite (0.5) |
+| `nothing to commit, working tree clean` | Não há mudanças a salvar | Normal: você já commitou tudo |
+| `no changes added to commit` | Esqueceu o `git add` | `git add arquivo` e commite |
+| `rejected ... (fetch first)` | O remoto tem commits que você não tem | `git pull`, depois `git push` |
+| `fatal: not a git repository` | Está fora da pasta do projeto | `cd ordenacao-<dupla>` |
+
+### Checkpoint 0
+
+Faça este teste **com o colega**, antes de qualquer código. Ele valida tudo: convite, identidade, autenticação, `pull` e `push`.
+
+1. **Integrante A**: edite o `README.md` incluindo os nomes completos da dupla e rode:
+
+    ```bash
+    git add README.md
+    git commit -m "docs: adiciona integrantes ao README"
+    git push
+    ```
+
+2. **Integrante B**: `git pull`, abra o `README.md` e confira que a edição do A chegou. Acrescente uma linha com o link do repositório e:
+
+    ```bash
+    git add README.md
+    git commit -m "docs: adiciona link do repositório ao README"
+    git push
+    ```
+
+3. **Integrante A**: `git pull` e confira a linha do B.
+4. **Os dois** rodam:
+
+    ```bash
+    git shortlog -sn
+    ```
+
+    O resultado deve listar os **dois nomes**, cada um com pelo menos 1 commit:
+
+    ```text
+         2  Seu Nome
+         1  Nome do Colega
+    ```
+
+    Quem criou o repositório pode aparecer com **um commit a mais** (o commit inicial gerado pelo próprio GitHub, que usa o nome do perfil). Isso é normal. Mas se o **nome ou e-mail de alguém** não aparecer, ou aparecer com um nome inesperado, revise o passo 0.4 **agora**, antes de commitar código.
+
+!!! note "Esses commits de README não contam como contribuição relevante"
+    Servem só para validar o ambiente. Para a avaliação, o que conta são commits de **código** (algoritmos, testes, benchmark). Por isso, combinem desde já quem implementa o quê.
+
+---
+
+## Etapa 1 — Setup
+
+**Objetivo:** ter um repositório com a estrutura obrigatória, onde `make` compila e `./sort_main` roda, mesmo que os algoritmos ainda não façam nada.
+
+### 1.1 Repositório clonado
+
+Se você fez a **Etapa 0**, o repositório já está criado, clonado e com a identidade configurada nos dois computadores. Confirme, dentro da pasta do projeto:
+
+```bash
+git status                 # deve dizer: nothing to commit, working tree clean
+git log --oneline          # deve listar os commits do Checkpoint 0
+git config user.email      # deve ser o e-mail da sua conta GitHub
+```
+
+Se algum desses comandos falhar, volte à Etapa 0 antes de seguir.
+
+### 1.2 Estrutura de diretórios
+
+```bash
+mkdir -p src/basicos src/avancados tests docs/gcov
+touch docs/.gitkeep
+```
+
+O Git não versiona diretórios vazios; o `.gitkeep` garante que `docs/` exista para os alvos `make bench`, `make cppcheck` e `make profile`, que gravam arquivos lá dentro.
+
+### 1.3 Makefile e `.gitignore`
+
+Copie o Makefile do [apêndice](#apendice-makefile-base) para a raiz (lembre: as linhas de comando começam com **TAB**). Copie também o `.gitignore` sugerido na especificação.
+
+### 1.4 `src/metricas.h`
 
 ```c
 /* src/metricas.h */
@@ -52,458 +386,47 @@ typedef struct {
 #endif
 ```
 
-- **Comparação:** apenas comparações entre valores do vetor (não conte `i < n` dos laços).
-- **Trocas:** Bubble, Selection, Quick e Heap contam trocas de dois elementos; Insertion e Merge contam **movimentações** (deslocamentos e cópias de um elemento). Registre esse critério em `docs/analise.md`.
+### 1.5 `src/algoritmos.h` (protótipos)
 
-Exemplo de uso:
+O `main`, os testes e o benchmark precisam conhecer as seis funções. Em vez de repetir os protótipos em cada arquivo, centralize-os em um cabeçalho:
 
 ```c
-Metricas m = {0, 0};
-bubbleSort(v, n, &m);
-printf("comparações=%lu trocas=%lu\n", m.comparacoes, m.trocas);
+/* src/algoritmos.h */
+#ifndef ALGORITMOS_H
+#define ALGORITMOS_H
+
+#include "metricas.h"
+
+void bubbleSort(int v[], int n, Metricas *m);
+void selectionSort(int v[], int n, Metricas *m);
+void insertionSort(int v[], int n, Metricas *m);
+void mergeSort(int v[], int n, Metricas *m);
+void quickSort(int v[], int n, Metricas *m);
+void heapSort(int v[], int n, Metricas *m);
+
+#endif
 ```
 
-### Requisitos Específicos por Algoritmo
+!!! note
+    Este arquivo é um complemento à estrutura obrigatória. Pode ser incluído sem problema.
 
-- **Merge Sort:** o vetor auxiliar deve ser alocado **dentro** da função (`malloc`), com verificação do retorno e `free` antes de retornar.
-- **Quick Sort:** o pivô **não pode ser sempre o primeiro ou o último elemento**. Use o elemento do meio ou a mediana de três, e comente a escolha no código. Com pivô fixo e entrada já ordenada o algoritmo degenera para O(n²) e pode estourar a pilha nos tamanhos do benchmark.
+### 1.6 Esqueletos (*stubs*) dos seis algoritmos
 
-### Ponto de Entrada (`src/main.c`)
-
-O `main` deve aceitar argumentos de linha de comando, pois o profiling depende deles:
-
-```text
-./sort_main <n> [bubble|selection|insertion|merge|quick|heap]
-```
-
-- Gera um vetor aleatório de `n` elementos (semente fixa, `srand(42)`).
-- Sem o segundo argumento, executa os seis algoritmos, cada um sobre uma **cópia** do mesmo vetor.
-- Com o segundo argumento, executa apenas o algoritmo indicado.
-- Imprime o tempo (usando `clock()` de `<time.h>`), as comparações e as trocas de cada execução.
-
-### Fluxo Git/GitHub
-
-Não há exigência de *branch protection*, revisão obrigatória ou bloqueio de `push` direto na `main`. O foco é **criar o hábito de versionar incrementalmente**.
-
-Esperado no histórico:
-
-- **Commits frequentes:** mínimo 1 a cada 2-3 dias de trabalho.
-- **Mensagens descritivas**, seguindo o padrão `tipo: descrição` (ex.: `feat: adiciona heap sort`, `fix: corrige índice no partition do quicksort`, `docs: atualiza benchmark e uso de IA`). Evite mensagens como `update`, `fix`, `salva tudo`.
-- **Participação visível:** o `git log` definirá o formato de defesa da dupla (configure `git config user.name` e `git config user.email` em cada máquina). Se apenas um integrante concentrar os commits relevantes de código, o outro assumirá a apresentação completa do vídeo.
-- **Branches & PRs:** opcionais. Podem trabalhar direto na `main` ou criar branches por funcionalidade. Se usarem PRs, basta uma descrição breve.
-
-!!! tip
-    Rode `git pull` antes de começar e `git push` depois de testar uma nova funcionalidade. Isso evita conflitos e gera histórico natural.
-
-### Compilação
-
-- Compilação via `make` (modelo no [apêndice](#apendice-makefile-base)), com `-std=c11`.
-- Zero erros de compilação. Warnings de `-Wall -Wextra` devem ser corrigidos (ou, se inevitáveis, justificados no `README`).
-
-### Testes
-
-- Arquivo `tests/test_basic.c` com **no mínimo 2 casos por algoritmo** (ex.: vetor aleatório, já ordenado, invertido), verificando se o vetor final está de fato ordenado.
-- Cada teste deve imprimir `PASSOU` ou `FALHOU`, e o programa deve **terminar com código de saída diferente de zero** se algum teste falhar.
-- Comando: `make test`.
-
-### Benchmark e Análise Experimental
-
-O vídeo cobra uma análise empírica, então ela precisa ser gerada de forma padronizada. Crie `src/bench.c` (com seu próprio `main`) que executa a matriz de experimentos abaixo e imprime **CSV** na saída padrão:
-
-```text
-algoritmo,tipo,n,tempo_ms,comparacoes,trocas
-```
-
-| Parâmetro | Especificação |
-| --- | --- |
-| **Tamanhos (`n`)** | 1.000 · 5.000 · 10.000 · 50.000 (todos os algoritmos). Os avançados também com 500.000. Não rode os básicos com 500.000. |
-| **Tipos de entrada** | aleatório · crescente · decrescente |
-| **Repetições** | 5 execuções por combinação; registre a **média** dos tempos |
-| **Sementes** | `srand(42)` fixa, para reprodutibilidade |
-| **Cronômetro** | `clock()` de `<time.h>`, medindo **apenas a ordenação** (não a geração nem a cópia do vetor) |
-| **Compilação** | `-O2` (o benchmark mede desempenho real; só o `gprof` usa `-O0`) |
-
-Comando: `make bench` (grava `docs/resultados.csv`). Em seguida, escreva `docs/analise.md` com:
-
-1. Uma tabela-resumo (pode ser gerada do CSV) e, se desejarem, gráficos.
-2. O critério adotado para contar "trocas" em cada algoritmo.
-3. A comparação com a teoria: por que Bubble/Selection/Insertion crescem como O(n²) e Merge/Quick/Heap como O(n log n)? O que acontece com o Insertion Sort em entrada já ordenada? O que muda no Bubble Sort e no Quick Sort entre os três tipos de entrada?
-4. Os resultados que **não** bateram com a teoria, com uma hipótese para a diferença.
-
-### Análise Estática (`cppcheck`)
+O Makefile compila os seis arquivos de uma vez. Para que `make` funcione desde já, crie **esqueletos vazios** com este script (rode uma vez, na raiz do repositório):
 
 ```bash
-make cppcheck
+for par in basicos/bubble:bubbleSort basicos/selection:selectionSort \
+           basicos/insertion:insertionSort avancados/merge:mergeSort \
+           avancados/quick:quickSort avancados/heap:heapSort; do
+  arq=${par%%:*}; fn=${par##*:}
+  cat > src/$arq.c <<EOF
+#include "../algoritmos.h"
+
+void $fn(int v[], int n, Metricas *m) {
+    (void)v; (void)n; (void)m;  /* TODO */
+}
+EOF
+done
 ```
 
-O comando grava a saída bruta em `docs/cppcheck_bruto.txt`. Em `docs/cppcheck.md`, liste o que foi apontado, o que a dupla corrigiu e o que decidiu manter (com justificativa). O repositório entregue deve estar **sem erros** (`error`) apontados pelo `cppcheck`.
-
-### Cobertura de Código (`gcov`)
-
-O `gcov` mede quais linhas do programa foram de fato executadas pelos testes. O alvo `make coverage` do Makefile já faz todo o fluxo abaixo; os passos manuais servem para entender o que ele faz.
-
-1. **Compile com suporte a cobertura:**
-
-    ```bash
-    gcc --coverage -g -O0 -c main.c
-    gcc --coverage main.o -o main
-    ```
-
-    Compile e ligue em duas etapas: a partir do GCC 11, um único comando `gcc --coverage main.c -o main` nomeia os arquivos de dados como `main-main.gcda`, e o `gcov main.c` do passo 3 não os encontra. As flags equivalentes `-fprofile-arcs -ftest-coverage` fazem o GCC gerar os arquivos (`.gcno`) necessários para o `gcov`.
-
-2. **Execute o programa ou a suíte de testes** (`./main` ou `make test`). Isso gera um arquivo `.gcda` com as estatísticas de execução.
-
-3. **Gere o relatório:**
-
-    ```bash
-    gcov main.c
-    ```
-
-    O resultado é um arquivo `main.c.gcov` e um resumo no terminal, por exemplo, para um programa com 7 linhas executáveis:
-
-    ```text
-    File 'main.c'
-    Lines executed:85.71% of 7
-    Creating 'main.c.gcov'
-    ```
-
-4. **Interprete o resultado.** No arquivo `.gcov`, cada linha é prefixada pelo número de vezes que foi executada, por `-` se não é executável, ou por `#####` se é executável mas nunca foi executada:
-
-    ```text
-            -:    1:#include <stdio.h>
-            1:    2:int main() {
-            1:    3:    int x = 10;
-            1:    4:    if (x > 5)
-            1:    5:        printf("Maior\n");
-            -:    6:    else
-        #####:    7:        printf("Menor\n");
-            1:    8:    return 0;
-            1:    9:}
-    ```
-
-5. **Cobertura de branches (opcional).** Para ver quais desvios (`if`, `while`, ...) foram de fato tomados:
-
-    ```bash
-    gcov -b main.c
-    ```
-
-Para um relatório HTML mais legível, use [`gcovr`](https://github.com/gcovr/gcovr) ou `lcov`:
-
-```bash
-gcovr -r . --html --html-details -o coverage.html
-```
-
-!!! note "Critério de cobertura"
-    A meta de **70%** refere-se à **cobertura de linhas** dos **seis arquivos de algoritmos** (`src/basicos/*.c` e `src/avancados/*.c`), medida com `make coverage` a partir dos testes. `main.c`, `bench.c` e os testes não entram na conta. Registre o percentual de cada arquivo em `docs/cobertura.md`.
-
-### Profiling de Desempenho (`gprof`)
-
-Enquanto o `gcov` responde "quais linhas foram executadas?", o `gprof` responde "onde o programa gastou mais tempo?".
-
-1. **Compile com suporte a profiling** (flag `-pg`, sem otimização):
-
-    ```bash
-    gcc -pg -O0 -g bubble.c -o bubble
-    ```
-
-2. **Execute o programa** (`./bubble`). Isso gera o arquivo `gmon.out` com os dados coletados.
-
-3. **Gere o relatório:**
-
-    ```bash
-    gprof bubble gmon.out > perfil.txt
-    ```
-
-    A saída inclui um **flat profile** (tempo gasto por função):
-
-    ```text
-    Flat profile:
-
-    Each sample counts as 0.01 seconds.
-
-     %   cumulative   self
-    time   seconds   seconds   calls  ms/call  ms/call  name
-    85.0      0.17     0.17        1   170.00   170.00  bubbleSort
-    10.0      0.19     0.02        1    20.00    20.00  imprimirVetor
-     5.0      0.20     0.01        1    10.00    10.00  main
-    ```
-
-    e um **call graph**, mostrando quem chamou quem, quantas vezes e quanto tempo cada chamada consumiu — útil para identificar gargalos que não aparecem no flat profile.
-
-No projeto, use o alvo do Makefile, que já compila com `-O0` e executa o `main` com os parâmetros desejados:
-
-```bash
-make profile                          # n = 50000, todos os algoritmos
-make profile N=2000000 ALG=quick      # só o Quick Sort, com n grande
-```
-
-!!! warning
-    - **Não faça profiling com `-O2`.** O otimizador distorce as medições — sempre `-O0` (o alvo `make profile` já cuida disso).
-    - O `gprof` amostra a cada **10 ms**. Se o programa roda mais rápido que isso, o *flat profile* sai vazio ou com zeros. Por isso o padrão é `n = 50000`; para analisar os avançados individualmente, aumente `N` e escolha o algoritmo com `ALG`.
-
-Outras ferramentas relacionadas, caso queiram ir além: `valgrind --tool=massif` (uso de memória), `valgrind --tool=callgrind` (perfil detalhado de chamadas) e `perf` (profiling de sistema no Linux).
-
-### Política de Uso de IA & Transparência
-
-**Permitido e incentivado:** gerar trechos para estudo, pedir explicação de erros, revisar formatação, sugerir nomes de variáveis, usar como tutor.
-
-**Não permitido:** entregar código completo sem entender, testar ou adaptar; ocultar prompts ou ferramentas utilizadas.
-
-Crie `docs/uso-ia.md` seguindo este modelo:
-
-```markdown
-# Uso de Ferramentas de IA no Projeto
-
-## Ferramentas Utilizadas
-- [ ] ChatGPT
-- [ ] GitHub Copilot
-- [ ] Claude
-- [ ] Gemini
-- [ ] Outra: _______________
-
-## Como Usamos (exemplos reais)
-| Prompt / Solicitação | O que a IA gerou | O que adaptamos/validamos |
-|----------------------|------------------|---------------------------|
-| "Explique como o heapify restaura o max-heap" | Texto + pseudocódigo | Reescrevemos em C, ajustamos índices 2i+1 e adicionamos testes |
-| "Corrija warning unused variable em merge.c" | Sugeriu remover var | Mantivemos, renomeamos e usamos no laço |
-
-## Validação & Domínio
-- [ ] Compilamos e rodamos todo código gerado ou sugerido
-- [ ] Todos conseguem explicar o funcionamento de cada algoritmo em 2 minutos
-- [ ] Não submetemos blocos inteiros sem revisão linha a linha
-
-## Reflexão Final (3-5 linhas)
-(Descreva onde a IA ajudou, onde atrapalhou, e o que a dupla aprendeu ao questionar as respostas.)
-```
-
-!!! note "Avaliação"
-    O uso de IA **não penaliza**. Falta de transparência, código não testado ou dupla incapaz de explicar a entrega **penaliza**.
-
-### Estrutura Obrigatória do Repositório
-
-```text
-ordenacao-<dupla>/
-├── README.md                  # Instruções de build, membros, links
-├── Makefile                   # Modelo fornecido
-├── .gitignore
-├── src/
-│   ├── basicos/               # bubble.c, selection.c, insertion.c
-│   ├── avancados/             # merge.c, quick.c, heap.c
-│   ├── metricas.h             # struct Metricas
-│   ├── main.c                 # Ponto de entrada (aceita n e algoritmo)
-│   └── bench.c                # Benchmark que gera o CSV
-├── tests/
-│   └── test_basic.c           # Testes automatizados
-└── docs/
-    ├── resultados.csv         # Saída do make bench
-    ├── analise.md             # Análise experimental x teoria
-    ├── cobertura.md           # Relatório gcov + análise
-    ├── gcov/                  # Saída do make coverage (resumo.txt e .gcov)
-    ├── perfil_bruto.txt       # Saída do gprof (gerada pelo make profile)
-    ├── perfil.md              # Interpretação do profiling
-    ├── cppcheck_bruto.txt     # Saída do make cppcheck
-    ├── cppcheck.md            # O que foi apontado, corrigido e mantido
-    └── uso-ia.md              # Transparência de prompts e validação
-```
-
-Sugestão de `.gitignore` (binários e arquivos intermediários ficam de fora; os relatórios em `docs/` **devem** ser versionados):
-
-```text
-*.o
-*.d
-*.gcda
-*.gcno
-/*.gcov
-gmon.out
-/sort_main
-/sort_profile
-/test_basic
-/bench_sort
-```
-
-### Cronograma Sugerido
-
-| Semana | Foco | Meta Git |
-| --- | --- | --- |
-| **1** | Setup, `Makefile`, `metricas.h`, 2 básicos, 1 teste cada | Commits iniciais + estrutura |
-| **2** | 3º básico, 2 avançados, testes rodando, esqueleto do `bench.c` | Histórico crescente (≥ 5 commits) |
-| **3** | Completar avançados, rodar `make coverage`, `make cppcheck` e `make profile`; `make bench` completo | Commits de refino + relatórios brutos em `docs/` |
-| **4** | Escrever `analise.md`, `cobertura.md`, `perfil.md`, `cppcheck.md`; gravar o vídeo; tag `v1.0` | Entrega + link no SIGAA |
-
----
-
-## Parte 2 — Defesa em Vídeo (obrigatória)
-
-O vídeo é a defesa oral do trabalho: demonstra que a dupla domina o código desenvolvido e as ferramentas utilizadas, e substitui a avaliação escrita da Terceira Unidade (**4,0 pontos**).
-
-- **Formato:** gravação de **até 20 minutos**, publicada no YouTube (público ou não listado).
-- **Envio:** o link do vídeo é enviado no SIGAA junto com a entrega do repositório.
-- Não serão aceitas apresentações compostas apenas de slides — é obrigatório alternar para a tela do terminal e do editor, mostrando código e execução real.
-- **Dinâmica dos apresentadores:**
-  - Se ambos tiverem histórico equilibrado de commits relevantes no GitHub, **os dois devem apresentar o vídeo** e demonstrar autoria do código.
-  - Se um dos membros tiver participação mínima ou apenas superficial nos commits (ex.: apenas ajustes no `README`), **esse membro deverá apresentar o vídeo completo sozinho**, demonstrando que compreende e domina todo o código produzido pelo colega.
-
-### Estrutura Obrigatória do Vídeo
-
-| # | Seção | Conteúdo | Tempo sugerido |
-| --- | --- | --- | --- |
-| 1 | **Apresentação da equipe** | Integrantes, turma e objetivos gerais | ~1 min |
-| 2 | **Implementação dos algoritmos** | Organização do código-fonte (arquivos e estrutura) e explicação das partes relevantes | ~3 min |
-| 3 | **Demonstração da execução** | Compilar e executar o programa ao vivo, mostrando entrada de dados, saída dos testes e coleta das métricas | ~2 min |
-| 4 | **Análise experimental** | Discutir a tabela de tempos de execução, comparações e trocas, confrontando o desempenho medido com a teoria de complexidade | ~3 min |
-| 5 | **Uso de ferramentas** | Demonstrar o `gcov` (cobertura obtida), o `gprof` (funções mais pesadas) e o `cppcheck` (correções feitas) | ~3 min |
-| 6 | **Conclusões** | Qual algoritmo performou melhor, se as medições batem com a teoria e quais dificuldades a equipe encontrou | ~1 min |
-
----
-
-## Avaliação
-
-### Rubrica do Código (100 pts)
-
-| Critério | O que será observado | Peso |
-| --- | --- | --- |
-| **Funcionalidade** | 6 algoritmos compilam, executam e ordenam corretamente, com contagem de comparações e trocas | 25 |
-| **Histórico Git** | Commits regulares, mensagens claras, evolução visível (e definição do formato de defesa da dupla) | 20 |
-| **Qualidade & Testes** | Testes passam, `gcov` ≥ 70% de linhas nos 6 arquivos de algoritmos, `cppcheck` sem erros | 20 |
-| **Documentação & Análise** | `analise.md`, `cobertura.md`, `perfil.md`, `cppcheck.md`, `resultados.csv` e `README` funcional | 20 |
-| **Colaboração & IA** | Divisão equilibrada (ou compensação na apresentação), `docs/uso-ia.md` preenchido, código explicável | 15 |
-
-!!! warning
-    Repositórios com 1-2 commits no dia da entrega, mensagens vazias ou código que a dupla não consegue modificar serão penalizados na categoria Git/Colaboração.
-
-### Rubrica do Vídeo (4,0 pts — substitui a avaliação escrita da Unidade 3)
-
-| Critério | O que será observado | Pontos |
-| --- | --- | --- |
-| **Organização e Clareza** | Apresentação didática, áudio nítido, divisão do tempo e boa estrutura | 1.0 |
-| **Demonstração do Código** | Explicação concisa da implementação e compilação/execução correta | 1.0 |
-| **Análise de Resultados** | Discussão fundamentada nas medições empíricas comparando os algoritmos | 1.0 |
-| **Domínio e Participação** | Apresentação conforme o histórico Git (ambos falam se os commits forem equilibrados; ou apresentação integral pelo membro com menos commits), demonstrando domínio total do código | 1.0 |
-
-### Composição da Nota
-
-!!! note "Nota final"
-    - **Vídeo:** 4,0 pontos, na Terceira Unidade.
-    - **Código:** a pontuação de 0 a 100 é convertida para **[PREENCHER: escala/peso conforme o plano de ensino]**.
-    - **Individualização:** a nota é da dupla, mas pode ser **ajustada individualmente** quando o histórico Git, a participação no vídeo ou a arguição indicarem contribuição desigual.
-    - **Atraso:** **[PREENCHER: política, ex.: −10% da nota por dia de atraso]**.
-
----
-
-## Entrega do Projeto
-
-1. **Repositório GitHub** atualizado (público, ou privado com acesso liberado ao professor: usuário **[PREENCHER: usuário GitHub do professor]**).
-2. **Tag de versão** da entrega final:
-
-    ```bash
-    git tag -a v1.0 -m "Entrega final do trabalho de ordenação"
-    git push origin main --tags
-    ```
-
-3. **Envio via SIGAA**, em um único comentário por dupla, contendo:
-      - nomes completos dos integrantes;
-      - link do repositório GitHub;
-      - link do vídeo de apresentação no YouTube.
-
----
-
-## Apêndice: Makefile Base {#apendice-makefile-base}
-
-Copie este arquivo para a raiz do repositório. Ele inclui alvos para compilação, testes, benchmark, `gcov`, `gprof` e `cppcheck`.
-
-```makefile
-CC = gcc
-WARN = -Wall -Wextra -std=c11
-CFLAGS = $(WARN) -O2
-DEPFLAGS = -MMD -MP
-GCOV_FLAGS = --coverage -g -O0
-PROFILE_FLAGS = -pg -g -O0
-
-# Parâmetros do profiling: make profile N=50000 ALG=bubble
-N ?= 50000
-ALG ?=
-
-ALG_SRCS = src/basicos/bubble.c src/basicos/selection.c src/basicos/insertion.c \
-           src/avancados/merge.c src/avancados/quick.c src/avancados/heap.c
-SRCS = src/main.c $(ALG_SRCS)
-TEST_SRCS = tests/test_basic.c $(ALG_SRCS)
-BENCH_SRCS = src/bench.c $(ALG_SRCS)
-
-OBJS = $(SRCS:.c=.o)
-TEST_OBJS = $(TEST_SRCS:.c=.o)
-BENCH_OBJS = $(BENCH_SRCS:.c=.o)
-ALL_OBJS = $(sort $(OBJS) $(TEST_OBJS) $(BENCH_OBJS))
-
-TARGET = sort_main
-TEST_TARGET = test_basic
-BENCH_TARGET = bench_sort
-
-all: $(TARGET)
-
-$(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) -o $@ $^
-
-$(TEST_TARGET): $(TEST_OBJS)
-	$(CC) $(CFLAGS) -o $@ $^
-
-$(BENCH_TARGET): $(BENCH_OBJS)
-	$(CC) $(CFLAGS) -o $@ $^
-
-%.o: %.c
-	$(CC) $(CFLAGS) $(DEPFLAGS) -c $< -o $@
-
-test: $(TEST_TARGET)
-	./$(TEST_TARGET)
-
-# Benchmark: gera a tabela de tempos, comparações e trocas em CSV
-bench: $(BENCH_TARGET)
-	./$(BENCH_TARGET) > docs/resultados.csv
-	@echo "Resultados gravados em docs/resultados.csv"
-
-# Cobertura: recompila tudo sem otimização e com instrumentação (CFLAGS substituído).
-# Ao final, remove os objetos instrumentados para não contaminar o próximo 'make'.
-coverage: CFLAGS = $(WARN) $(GCOV_FLAGS)
-coverage: clean test
-	@mkdir -p docs/gcov
-	( gcov -o src/basicos src/basicos/*.c; gcov -o src/avancados src/avancados/*.c ) | tee docs/gcov/resumo.txt
-	mv *.gcov docs/gcov/
-	rm -f $(ALL_OBJS) $(ALL_OBJS:.o=.d) $(TEST_TARGET)
-	find . \( -name '*.gcda' -o -name '*.gcno' \) -delete
-	@echo "Relatórios .gcov e resumo em docs/gcov/"
-
-# Profiling: compila direto das fontes, só com -O0 (sem o -O2 de CFLAGS)
-profile:
-	$(CC) $(WARN) $(PROFILE_FLAGS) -o sort_profile $(SRCS)
-	./sort_profile $(N) $(ALG)
-	gprof sort_profile gmon.out > docs/perfil_bruto.txt
-	@echo "Profiling gerado em docs/perfil_bruto.txt (veja a seção 'Flat profile')"
-
-# Análise estática
-cppcheck:
-	cppcheck --enable=warning,style,performance,portability --std=c11 \
-	    --inline-suppr --suppress=missingIncludeSystem src tests 2> docs/cppcheck_bruto.txt
-	@echo "Resultado em docs/cppcheck_bruto.txt"
-
-clean:
-	rm -f $(TARGET) $(TEST_TARGET) $(BENCH_TARGET) sort_profile $(ALL_OBJS) $(ALL_OBJS:.o=.d) *.gcov gmon.out
-	find . \( -name '*.gcda' -o -name '*.gcno' \) -delete
-
-.PHONY: all test bench coverage profile cppcheck clean
-
--include $(ALL_OBJS:.o=.d)
-```
-
-!!! warning "Makefile exige TAB"
-    As linhas de comando das regras precisam começar com o caractere **TAB**, não com espaços. Se copiar o arquivo e aparecer `missing separator`, é isso.
-
-## Dicas Rápidas
-
-| Ferramenta | Dica |
-| --- | --- |
-| `gcov` | Se a cobertura ficar abaixo de 70%, adicione testes com `n=0`, `n=1`, vetores com duplicatas e invertidos. |
-| `gprof` | O amostrador tem resolução de 10 ms: com `n` pequeno o relatório sai vazio. Aumente `N` no `make profile`. |
-| `cppcheck` | Instale com `sudo apt install cppcheck`. Avisos de estilo podem ser mantidos se justificados em `docs/cppcheck.md`. |
-| `make` | O Makefile acompanha as dependências dos `.h` (`-MMD`), mas se algo estranho acontecer após mudar `metricas.h`, rode `make clean`. |
-| `git` | Uma mensagem como `fix: ajusta condição de parada no quicksort` vale mais que 10 commits `update`. |
-| IA | Peça explicação, não código pronto. Valide linha a linha — a IA é copiloto, não piloto. |
-| Entrega | Teste `make clean && make all && make test && make coverage && make bench && make profile && make cppcheck` antes de dar `push` (o `make bench` pode levar alguns minutos). |
+Os `(void)` evitam o warning de parâmetro não usado (`-Wextra`) enquanto a função está vazia. **Apague-os** quando implementar o 
