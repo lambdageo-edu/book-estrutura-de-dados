@@ -2,6 +2,19 @@
 
 Este tutorial é o **caminho** para chegar ao Trabalho Prático de ordenação. A especificação (o que entregar, rubrica e forma de envio) está no final do capítulo, em [Trabalho Prático](#trabalho-pratico). Aqui você aprende **como construir** cada peça, em etapas pequenas, cada uma com um **checkpoint** (um comando e o resultado esperado) e um **commit sugerido**.
 
+!!! warning "Ambiente obrigatório: Linux (nativo, WSL ou VirtualBox)"
+    Este tutorial e todo o fluxo de compilação, testes e análise foram elaborados para rodar em **Linux**. 
+    
+    Tentar executar este laboratório diretamente no **Windows** exigirá diversas adaptações manuais nos comandos e no `Makefile`, além de **algumas ferramentas simplesmente não funcionarem** (como o `gprof`, o `AddressSanitizer` e scripts de terminal), obrigando você a buscar substitutos por conta própria — ou impedindo que realize parte dos experimentos exigidos.
+
+    **Não tem Linux instalado?** Você tem duas alternativas gratuitas e práticas:
+    
+    - **WSL (Windows Subsystem for Linux) — Recomendado:** mais leve, rápido e integrado ao Windows e ao VS Code (veja o passo a passo de instalação na **Etapa 0.2**).
+    - **Máquina Virtual (VirtualBox):** instale uma distribuição como **Ubuntu** ou **Linux Mint** para ter um ambiente completo e isolado.
+
+    **Por que aprender isso agora?** A grande maioria dos servidores, aplicações em nuvem e sistemas web roda sobre **Linux**. Dominar o terminal e as ferramentas desse ecossistema não é apenas um requisito desta disciplina, mas um investimento essencial para a sua formação e carreira na computação.
+
+
 !!! info "Como usar este tutorial"
     - Nunca usou Git ou GitHub? Comece pela **Etapa 0**: ela explica conta, criação do repositório, commits e trabalho em dupla.
     - Siga as etapas **na ordem**. Só avance quando o checkpoint passar.
@@ -34,7 +47,11 @@ As etapas deste tutorial são:
 
 ## Etapa 0 — Git e GitHub: o essencial
 
+
 Seu histórico no Git **faz parte da nota** (20 pontos da rubrica de código, mais a definição de quem apresenta o vídeo). Por isso esta etapa vem antes de qualquer código. Se você já usa Git no dia a dia, leia só as seções 0.6 a 0.8 e faça o **Checkpoint 0**.
+
+!!! info "Terminal e ferramentas"
+    Todos os comandos deste tutorial assumem um terminal Linux (nativo, via **WSL** no Windows ou via máquina virtual). No macOS, o `gcc` do Xcode/Homebrew funciona para compilar, mas ferramentas como o `gprof` podem se comportar de forma diferente.
 
 !!! info "Sistema operacional"
     O laboratório usa `gcc`, `make`, `gcov` e `gprof`, que funcionam nativamente em Linux. No Windows, use o **WSL** (Ubuntu); no macOS, o `gcc` do Xcode/Homebrew serve, mas o `gprof` pode se comportar diferente. Todos os comandos deste tutorial assumem um terminal Linux.
