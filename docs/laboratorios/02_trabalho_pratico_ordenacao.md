@@ -1,3 +1,4 @@
+
 # Laboratório: Algoritmos de Ordenação em C — Passo a Passo
 
 Este tutorial é o **caminho** para chegar ao Trabalho Prático de ordenação. A especificação (o que entregar, rubrica, prazos) está no final do capítulo, em [Trabalho Prático](#trabalho-pratico). Aqui você aprende **como construir** cada peça, em etapas pequenas, cada uma com um **checkpoint** (um comando e o resultado esperado) e um **commit sugerido**.
@@ -429,4 +430,770 @@ EOF
 done
 ```
 
-Os `(void)` evitam o warning de parâmetro não usado (`-Wextra`) enquanto a função está vazia. **Apague-os** quando implementar o 
+Os `(void)` evitam o warning de parâmetro não usado (`-Wextra`) enquanto a função está vazia. **Apague-os** quando implementar o algoritmo.
+
+### 1.7 `src/main.c` (completo)
+
+O `main` é infraestrutura, não é o foco do trabalho: use esta versão e estude-a, pois você vai precisar explicá-la no vídeo.
+
+```c
+/* src/main.c */
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+#include "algoritmos.h"
+
+typedef struct {
+    const char *nome;
+    void (*fn)(int[], int, Metricas *);
+} Algoritmo;
+
+static const Algoritmo ALGS[] = {
+    {"bubble",    bubbleSort},
+    {"selection", selectionSort},
+    {"insertion", insertionSort},
+    {"merge",     mergeSort},
+    {"quick",     quickSort},
+    {"heap",      heapSort},
+};
+#define NUM_ALGS (sizeof ALGS / sizeof ALGS[0])
+
+int main(int argc, char *argv[]) {
+    if (argc < 2) {
+        fprintf(stderr, "uso: %s <n> [bubble|selection|insertion|merge|quick|heap]\n", argv[0]);
+        return 1;
+    }
+    int n = atoi(argv[1]);
+    if (n <= 0) {
+        fprintf(stderr, "n deve ser um inteiro positivo\n");
+        return 1;
+    }
+    const char *alvo = (argc >= 3) ? argv[2] : NULL;
+
+    int *orig = malloc((size_t)n * sizeof(int));
+    int *v    = malloc((size_t)n * sizeof(int));
+    if (orig == NULL || v == NULL) {
+        fprintf(stderr, "falta de memória\n");
+        free(orig);
+        free(v);
+        return 1;
+    }
+
+    srand(42);                         /* semente fixa: execuções reprodutíveis */
+    for (int i = 0; i < n; i++)
+        orig[i] = rand() % 1000000;
+
+    int encontrou = 0;
+    for (size_t k = 0; k < NUM_ALGS; k++) {
+        if (alvo != NULL && strcmp(alvo, ALGS[k].nome) != 0)
+            continue;
+        encontrou = 1;
+
+        memcpy(v, orig, (size_t)n * sizeof(int));   /* cada algoritmo ordena uma cópia */
+        Metricas m = {0, 0};
+
+        clock_t ini = clock();                       /* cronometra só a ordenação */
+        ALGS[k].fn(v, n, &m);
+        clock_t fim = clock();
+
+        double ms = 1000.0 * (double)(fim - ini) / CLOCKS_PER_SEC;
+        printf("%-10s n=%d  tempo=%.3f ms  comparações=%lu  trocas=%lu\n",
+               ALGS[k].nome, n, ms, m.comparacoes, m.trocas);
+    }
+
+    if (!encontrou)
+        fprintf(stderr, "algoritmo desconhecido: %s\n", alvo);
+
+    free(orig);
+    free(v);
+    return encontrou ? 0 : 1;
+}
+```
+
+### Checkpoint 1
+
+```bash
+make
+./sort_main 10
+```
+
+Saída esperada (os tempos podem variar; as métricas são zero porque os algoritmos ainda estão vazios):
+
+```text
+bubble     n=10  tempo=0.001 ms  comparações=0  trocas=0
+selection  n=10  tempo=0.000 ms  comparações=0  trocas=0
+insertion  n=10  tempo=0.000 ms  comparações=0  trocas=0
+merge      n=10  tempo=0.000 ms  comparações=0  trocas=0
+quick      n=10  tempo=0.000 ms  comparações=0  trocas=0
+heap       n=10  tempo=0.000 ms  comparações=0  trocas=0
+```
+
+Verifique também: `./sort_main 10 quick` imprime só uma linha, e `./sort_main 10 xyz` informa algoritmo desconhecido.
+
+!!! success "Commit sugerido"
+    ```bash
+    git add .
+    git commit -m "feat: estrutura inicial, Makefile, metricas.h e esqueletos dos algoritmos"
+    git push
+    ```
+
+---
+
+## Etapa 2 — Bubble Sort completo (o ciclo inteiro)
+
+**Objetivo:** implementar um algoritmo, testá-lo e entender as métricas. Tudo o que você fizer aqui se repete nas outras etapas.
+
+### 2.1 A ideia
+
+Percorra o vetor comparando vizinhos; se estiverem fora de ordem, troque. Após a 1ª passada, o maior elemento está no final; após a 2ª, o segundo maior está na penúltima posição, e assim por diante. Por isso cada passada pode parar um pouco antes.
+
+Se uma passada inteira **não trocar nada**, o vetor já está ordenado e podemos parar. Essa otimização muda o comportamento em entrada ordenada, e você vai discutir isso na análise.
+
+### 2.2 Código
+
+```c
+/* src/basicos/bubble.c */
+#include "../algoritmos.h"
+
+void bubbleSort(int v[], int n, Metricas *m) {
+    for (int i = 0; i < n - 1; i++) {
+        int trocou = 0;
+        /* a cada passada, os i últimos elementos já estão no lugar */
+        for (int j = 0; j < n - 1 - i; j++) {
+            m->comparacoes++;                 /* compara dois valores do vetor */
+            if (v[j] > v[j + 1]) {
+                int aux = v[j];
+                v[j] = v[j + 1];
+                v[j + 1] = aux;
+                m->trocas++;                  /* troca de dois elementos */
+                trocou = 1;
+            }
+        }
+        if (!trocou)                          /* passada sem trocas: já ordenado */
+            break;
+    }
+}
+```
+
+Observe o que **é** e o que **não é** contado: só a comparação `v[j] > v[j+1]` entre valores do vetor. O `j < n - 1 - i` é controle de laço e **não** conta.
+
+### 2.3 Teste automatizado
+
+Crie `tests/test_basic.c`. Ele já traz a infraestrutura que servirá para os seis algoritmos:
+
+```c
+/* tests/test_basic.c */
+#include <stdio.h>
+#include <stdlib.h>
+#include "../src/algoritmos.h"
+
+typedef void (*SortFn)(int[], int, Metricas *);
+
+static int falhas = 0;
+
+static int estaOrdenado(const int v[], int n) {
+    for (int i = 1; i < n; i++)
+        if (v[i - 1] > v[i]) return 0;
+    return 1;
+}
+
+static long soma(const int v[], int n) {
+    long s = 0;
+    for (int i = 0; i < n; i++) s += v[i];
+    return s;
+}
+
+/* Ordena uma cópia de 'orig' e confere: (1) está ordenado e (2) não perdeu elementos */
+static void verifica(const char *alg, const char *caso, SortFn fn, const int orig[], int n) {
+    int *v = malloc((size_t)(n > 0 ? n : 1) * sizeof(int));
+    if (v == NULL) { fprintf(stderr, "falta de memória\n"); exit(2); }
+    for (int i = 0; i < n; i++) v[i] = orig[i];
+
+    long antes = soma(v, n);
+    Metricas m = {0, 0};
+    fn(v, n, &m);
+
+    int ok = estaOrdenado(v, n) && soma(v, n) == antes;
+    printf("%-7s  %-10s %s\n", ok ? "PASSOU" : "FALHOU", alg, caso);
+    if (!ok) falhas++;
+    free(v);
+}
+
+static void testaAlgoritmo(const char *nome, SortFn fn) {
+    int aleatorio[]   = {5, 1, 4, 2, 8};
+    int ordenado[]    = {1, 2, 3, 4, 5, 6};
+    int invertido[]   = {6, 5, 4, 3, 2, 1};
+    int duplicatas[]  = {3, 1, 3, 2, 1, 3, 2};
+    int negativos[]   = {0, -5, 7, -1, 3};
+    int unico[]       = {42};
+    int vazio[1]      = {0};
+
+    verifica(nome, "aleatório",  fn, aleatorio,  5);
+    verifica(nome, "ordenado",   fn, ordenado,   6);
+    verifica(nome, "invertido",  fn, invertido,  6);
+    verifica(nome, "duplicatas", fn, duplicatas, 7);
+    verifica(nome, "negativos",  fn, negativos,  5);
+    verifica(nome, "n=1",        fn, unico,      1);
+    verifica(nome, "n=0",        fn, vazio,      0);
+}
+
+/* Confere as métricas do Bubble no vetor {5,1,4,2,8}: 9 comparações e 4 trocas */
+static void testaMetricasBubble(void) {
+    int v[] = {5, 1, 4, 2, 8};
+    Metricas m = {0, 0};
+    bubbleSort(v, 5, &m);
+    int ok = (m.comparacoes == 9 && m.trocas == 4);
+    printf("%-7s  %-10s métricas {5,1,4,2,8}\n", ok ? "PASSOU" : "FALHOU", "bubble");
+    if (!ok) {
+        printf("         esperado comp=9 trocas=4, obtido comp=%lu trocas=%lu\n",
+               m.comparacoes, m.trocas);
+        falhas++;
+    }
+}
+
+int main(void) {
+    testaAlgoritmo("bubble", bubbleSort);
+    testaMetricasBubble();
+    /* TODO: adicione aqui as chamadas dos demais algoritmos, à medida que os implementar */
+
+    if (falhas > 0) {
+        printf("\n%d teste(s) falharam\n", falhas);
+        return 1;               /* código de saída != 0: o make test também falha */
+    }
+    printf("\nTodos os testes passaram\n");
+    return 0;
+}
+```
+
+!!! tip "Por que conferir a soma?"
+    Um algoritmo com bug pode devolver um vetor "ordenado" que **perdeu ou duplicou elementos** (por exemplo, `{1,1,1,1,1}`). A soma é um teste barato que pega esse tipo de erro. Um teste forte confere ordem **e** preservação dos elementos.
+
+### 2.4 Entendendo as métricas à mão
+
+Vamos simular `{5, 1, 4, 2, 8}`:
+
+| Passada | Comparações | Trocas | Vetor ao fim |
+| --- | --- | --- | --- |
+| 1 | 4 | 3 | `1 4 2 5 8` |
+| 2 | 3 | 1 | `1 2 4 5 8` |
+| 3 | 2 | 0 | `1 2 4 5 8` → sem trocas, **para** |
+| **Total** | **9** | **4** | |
+
+O total de **4 trocas** é exatamente o número de **inversões** do vetor: pares fora de ordem, `(5,1) (5,4) (5,2) (4,2)`. Cada troca de vizinhos desfaz **uma** inversão. Guarde essa ideia: ela explica por que o Bubble faz tantas trocas em entrada invertida, e vai reaparecer no Insertion Sort.
+
+### Checkpoint 2
+
+```bash
+make test
+```
+
+```text
+PASSOU   bubble      aleatório
+PASSOU   bubble      ordenado
+PASSOU   bubble      invertido
+PASSOU   bubble      duplicatas
+PASSOU   bubble      negativos
+PASSOU   bubble      n=1
+PASSOU   bubble      n=0
+PASSOU   bubble      métricas {5,1,4,2,8}
+
+Todos os testes passaram
+```
+
+```bash
+make                        # o make test NÃO religa o sort_main: sem este passo, as métricas saem zeradas
+./sort_main 5000 bubble
+```
+
+!!! warning "Métricas zeradas?"
+    Se `./sort_main` mostrar `comparações=0`, você esqueceu o `make`. O `make test` recompila os objetos, mas só religa o `test_basic`; o `sort_main` continua sendo o binário antigo, com o esqueleto vazio. Vale para todas as etapas: **depois de mudar um algoritmo, rode `make` antes de usar `./sort_main`**.
+
+Você deve ver milhões de comparações (na ordem de n²/2 ≈ 12,5 milhões). Teste também `./sort_main 10000 bubble`: o número de comparações deve ficar **cerca de 4 vezes maior**. Anote isso; é a sua primeira evidência de O(n²).
+
+!!! example "Experimento rápido (2 minutos)"
+    Dobre o `n` (2000 → 4000 → 8000) e anote o tempo. Se o algoritmo é O(n²), dobrar `n` deve multiplicar o tempo por aproximadamente quanto?
+
+!!! success "Commit sugerido"
+    ```bash
+    git add src/basicos/bubble.c tests/test_basic.c
+    git commit -m "feat: implementa bubble sort com contagem de métricas e testes"
+    git push
+    ```
+
+---
+
+## Etapa 3 — Selection e Insertion Sort
+
+**Objetivo:** repetir o ciclo da Etapa 2 sozinho(a): implementar, testar, conferir métricas. Cada algoritmo em seu `.c`, **substituindo o esqueleto**.
+
+### 3.1 Selection Sort
+
+**Contrato:** `void selectionSort(int v[], int n, Metricas *m);` em `src/basicos/selection.c`.
+
+**Ideia:** para cada posição `i`, encontre o **menor** elemento do trecho `v[i..n-1]` e coloque-o em `i`.
+
+**O que contar:**
+
+- *Comparação:* cada `v[j] < v[menor]` (entre valores do vetor).
+- *Troca:* cada troca de dois elementos. Troque **só se** `menor != i`; trocar um elemento com ele mesmo é trabalho inútil e infla a métrica.
+
+??? tip "Dica 1 — estrutura"
+    Dois laços aninhados. O externo escolhe a posição `i` (de `0` a `n-2`). O interno percorre `j` de `i+1` até `n-1` guardando o **índice** do menor visto até agora. Só depois de terminar o laço interno ocorre a troca.
+
+??? tip "Dica 2 — o que esperar das métricas"
+    O número de comparações **não depende da entrada**: é sempre `n(n-1)/2`. Já o número de trocas é **no máximo `n-1`**. Isso torna o Selection atraente quando trocar é caro.
+
+**Testes:** acrescente `testaAlgoritmo("selection", selectionSort);` ao `main` de teste, e um teste de métricas.
+
+!!! success "Checkpoint 3a — métricas para conferir"
+    Para `{5, 1, 4, 2, 8}`, com a regra "troca só se `menor != i`", o resultado esperado é **10 comparações e 2 trocas**. Adapte `testaMetricasBubble` para um teste análogo do Selection.
+
+### 3.2 Insertion Sort
+
+**Contrato:** `void insertionSort(int v[], int n, Metricas *m);` em `src/basicos/insertion.c`.
+
+**Ideia:** mantenha o prefixo `v[0..i-1]` ordenado. Pegue `v[i]` (a "chave"), **desloque** para a direita os elementos maiores que ela e insira a chave na lacuna.
+
+**O que contar:**
+
+- *Comparação:* cada comparação entre a chave e um elemento do vetor.
+- *Movimentação:* Insertion e Merge contam **movimentações** (deslocamentos/cópias), não trocas de dois elementos. Escolha um critério e **registre-o** em `docs/analise.md`. Recomendação para começar: **contar cada deslocamento** (`v[j+1] = v[j]`) como 1 movimentação.
+
+??? tip "Dica 1 — cuidado com a condição do laço"
+    Uma forma comum é `while (j >= 0 && v[j] > chave)`. O problema: a comparação `v[j] > chave` **só acontece quando `j >= 0`**, e é preciso contá-la **toda vez que ela é avaliada**, inclusive na que falha e encerra o laço. Pense em como contar sem perder essa última comparação (por exemplo, reescrevendo o laço com `break`).
+
+??? tip "Dica 2 — relação com Bubble"
+    Contando só deslocamentos, o número de movimentações é igual ao número de **inversões** do vetor, o mesmo valor que as trocas do Bubble. Use isso para validar seu código.
+
+!!! success "Checkpoint 3b — métricas para conferir"
+    Para `{5, 1, 4, 2, 8}`, contando apenas deslocamentos: **7 comparações e 4 movimentações**. Se você contar também a cópia final da chave, o número de movimentações muda: **documente o critério** que usou.
+
+!!! question "Pergunta para a análise"
+    Quantas comparações o Insertion Sort faz em um vetor **já ordenado** de tamanho `n`? E o Bubble com a otimização de parada antecipada? Confira com `./sort_main` (você precisará adaptar a entrada) ou no `bench`.
+
+!!! success "Commit sugerido (um por algoritmo)"
+    ```bash
+    git commit -m "feat: implementa selection sort com testes"
+    git commit -m "feat: implementa insertion sort com testes"
+    ```
+
+---
+
+## Etapa 4 — Merge, Quick e Heap Sort
+
+**Objetivo:** os três algoritmos O(n log n). São os mais fáceis de errar nos índices; por isso **teste cada um assim que escrevê-lo**, antes de passar ao próximo.
+
+!!! warning "Antes de começar"
+    Rode `make test` a cada algoritmo novo. Um bug de índice em Merge/Quick/Heap costuma aparecer como `Segmentation fault`. Se acontecer, compile com `-g -O0` e use `gdb` ou `valgrind ./test_basic`.
+
+### 4.1 Merge Sort
+
+**Contrato:** `void mergeSort(int v[], int n, Metricas *m);` em `src/avancados/merge.c`.
+
+**Requisitos obrigatórios:**
+
+- O vetor auxiliar é alocado **dentro** da função (`malloc`), com **verificação do retorno** e `free` antes de retornar.
+- Cada chamada da função pública cria o auxiliar **uma única vez**; a recursão usa uma função auxiliar `static`.
+
+**Estrutura sugerida:**
+
+```text
+mergeSort(v, n, m):            // função pública
+    aux = malloc(n * sizeof(int))
+    se aux == NULL → trate o erro e retorne
+    ordena(v, aux, 0, n-1, m)  // função static, recursiva
+    free(aux)
+
+ordena(v, aux, esq, dir, m):
+    se esq >= dir → retorna
+    meio = esq + (dir - esq) / 2
+    ordena(v, aux, esq, meio, m)
+    ordena(v, aux, meio+1, dir, m)
+    intercala(v, aux, esq, meio, dir, m)
+```
+
+??? tip "Dica 1 — intercalação"
+    Mantenha três índices: `i` na metade esquerda, `j` na direita e `k` no destino. Compare `v[i]` com `v[j]` (**isto é uma comparação**), copie o menor para `aux[k]` e avance. Depois, copie o resto da metade que sobrou.
+
+??? tip "Dica 2 — o que contar como movimentação"
+    Um critério simples e defensável: contar **cada elemento copiado de volta para `v`** (ou cada escrita em `aux`, mas **escolha um só** e documente). O importante é ser consistente.
+
+??? tip "Dica 3 — estabilidade"
+    Ao empatar (`v[i] == v[j]`), qual lado você copia primeiro? Escolher o da esquerda torna o Merge Sort **estável**. Isso é assunto do vídeo.
+
+### 4.2 Quick Sort
+
+**Contrato:** `void quickSort(int v[], int n, Metricas *m);` em `src/avancados/quick.c`.
+
+**Requisito obrigatório:** o pivô **não pode ser sempre o primeiro ou o último elemento**. Use o **elemento do meio** ou a **mediana de três**, e **comente a escolha no código**.
+
+!!! danger "Por que isso importa?"
+    Com pivô fixo (primeiro/último) em entrada **já ordenada**, cada partição separa apenas 1 elemento: o algoritmo degenera para O(n²) e a recursão fica com profundidade `n`, podendo **estourar a pilha** nos tamanhos do benchmark. Você vai observar a diferença entre as três entradas (aleatória, crescente, decrescente) na análise.
+
+**Estrutura sugerida:** função pública que chama uma `static void ordena(int v[], int baixo, int alto, Metricas *m)`.
+
+??? tip "Dica 1 — partição"
+    Duas abordagens clássicas: **Lomuto** (mais simples, um índice) e **Hoare** (dois índices que se aproximam, menos trocas). Escolha uma e domine-a; no vídeo você explicará por quê.
+
+??? tip "Dica 2 — pivô do meio com Lomuto"
+    Troque o elemento do meio com o último (`v[alto]`) **antes** de particionar, e então use o esquema normal. Lembre de contar essa troca em `m->trocas`.
+
+??? tip "Dica 3 — duplicatas"
+    Teste `{3,3,3,3,3}` e vetores com muitos valores repetidos. Se seu laço de partição usar `<=` ou `<` de forma inadequada, pode entrar em laço infinito ou degenerar.
+
+### 4.3 Heap Sort
+
+**Contrato:** `void heapSort(int v[], int n, Metricas *m);` em `src/avancados/heap.c`.
+
+**Ideia:** (1) transforme o vetor em um **max-heap**; (2) repetidamente troque a raiz (maior) com o último elemento do heap, reduza o tamanho do heap e **restaure** a propriedade com uma operação de descida (*sift-down* / *heapify*).
+
+**Índices (vetor começando em 0):**
+
+| Nó `i` | Índice |
+| --- | --- |
+| Filho esquerdo | `2*i + 1` |
+| Filho direito | `2*i + 2` |
+| Pai | `(i - 1) / 2` |
+| Último nó com filho | `n/2 - 1` |
+
+??? tip "Dica 1 — construção do heap"
+    Chame o *sift-down* para `i` de `n/2 - 1` até `0` (de trás para frente).
+
+??? tip "Dica 2 — sift-down"
+    Compare o nó com seus filhos, descubra o **maior** dos três e, se não for o próprio nó, troque e continue descendo. Cuidado para **não ler** `2*i+2` se ele for `>= tamanho do heap`.
+
+??? tip "Dica 3 — contagem"
+    Cada comparação entre dois valores do vetor conta (filho esquerdo vs. direito; maior filho vs. pai). Cada troca de dois elementos conta, tanto na descida quanto na extração da raiz.
+
+### 4.4 Testes que todo algoritmo deve passar
+
+Em `testaAlgoritmo` já existem os casos básicos. Acrescente estes, que costumam revelar bugs:
+
+| Caso | Por quê |
+| --- | --- |
+| Vetor com `n = 2` (ordenado e invertido) | Menor caso com recursão/partição de fato |
+| Todos iguais (`{7,7,7,7}`) | Pega laço infinito no Quick e instabilidade na partição |
+| Vetor grande aleatório (ex.: 1000 elementos com `srand(1)`) | Pega erros que só aparecem em recursão profunda |
+| Vetor grande **ordenado** e **invertido** (ex.: 10000) | Pega degeneração do Quick e estouro de pilha |
+
+### Checkpoint 4
+
+```bash
+make test
+```
+
+Todos os seis algoritmos aparecendo com `PASSOU` em todos os casos, e:
+
+```bash
+./sort_main 50000
+```
+
+deve terminar em cerca de 10 segundos, quase todos gastos pelo Bubble (~8 s com `n = 50000`). Os avançados levam poucos milissegundos. Compare os tempos: os três básicos devem ser **ordens de grandeza** mais lentos que os três avançados. Se o Quick ou o Merge estiver tão lento quanto o Bubble, há um problema (pivô fixo? alocação dentro da recursão?).
+
+!!! success "Commits sugeridos"
+    ```bash
+    git commit -m "feat: adiciona merge sort com vetor auxiliar alocado dinamicamente"
+    git commit -m "feat: adiciona quick sort com pivô do meio"
+    git commit -m "feat: adiciona heap sort"
+    git commit -m "test: adiciona casos de borda (n=0, n=1, duplicatas, grandes)"
+    ```
+
+---
+
+## Etapa 5 — Ferramentas de qualidade e medição
+
+**Objetivo:** usar `cppcheck`, `gcov` e `gprof`, e saber **interpretar** a saída de cada um. O alvo do Makefile faz o trabalho; sua tarefa é entender e documentar.
+
+### 5.1 `cppcheck` (análise estática)
+
+Instale e rode:
+
+```bash
+sudo apt install cppcheck      # uma vez
+make cppcheck
+cat docs/cppcheck_bruto.txt
+```
+
+Se o arquivo estiver **vazio**, o `cppcheck` não encontrou nada. Caso contrário, cada linha tem o formato `arquivo:linha:coluna: severidade: mensagem [id]`.
+
+Em `docs/cppcheck.md`, faça uma tabela com três colunas: **o que foi apontado**, **o que você corrigiu**, **o que manteve (e por quê)**.
+
+!!! warning
+    O repositório entregue **não pode ter** apontamentos de severidade `error`. Avisos de `style` podem ser mantidos **se justificados**.
+
+### 5.2 `gcov` (cobertura de linhas)
+
+O `gcov` responde: **quais linhas foram executadas pelos testes?**
+
+```bash
+make coverage
+cat docs/gcov/resumo.txt
+```
+
+Você verá algo como:
+
+```text
+File 'src/basicos/bubble.c'
+Lines executed:100.00% of 11
+Creating 'bubble.c.gcov'
+```
+
+(os números exatos dependem do seu código). Ao final de cada grupo (`basicos` e `avancados`) o `resumo.txt` também traz uma linha de **total do grupo**, sem nome de arquivo; ela não substitui o percentual de cada arquivo que você deve registrar. Abra um arquivo `.gcov` em `docs/gcov/`:
+
+```text
+        5:   10:            if (v[j] > v[j + 1]) {
+        3:   11:                int aux = v[j];
+    #####:   12:                ...
+```
+
+- Número à esquerda = quantas vezes a linha executou.
+- `-` = linha não executável (comentário, declaração).
+- `#####` = **executável, mas nunca executada**. É o que você procura.
+
+**Meta:** **≥ 70% de cobertura de linhas** nos seis arquivos de algoritmos (`src/basicos/*.c` e `src/avancados/*.c`). `main.c`, `bench.c` e os testes não entram na conta.
+
+!!! tip "Se a cobertura ficar baixa"
+    Procure as linhas `#####` e pergunte: **que entrada faria essa linha executar?** Geralmente é `n=0`, `n=1`, duplicatas, vetor invertido ou o caminho de erro do `malloc` (esse último pode ser aceitável de ficar sem cobertura; justifique em `docs/cobertura.md`).
+
+Registre o percentual **de cada arquivo** em `docs/cobertura.md` e comente as linhas `#####` que restarem.
+
+!!! info "Por que o Makefile compila em duas etapas?"
+    A partir do GCC 11, compilar e ligar em **um único comando** com `--coverage` nomeia os arquivos de dados de um jeito que o `gcov` não encontra. O alvo `make coverage` já cuida disso, compilando cada `.c` em `.o` primeiro e ligando depois.
+
+### 5.3 `gprof` (onde o tempo é gasto?)
+
+```bash
+make profile                          # n = 50000, todos os algoritmos
+make profile N=2000000 ALG=quick      # só o Quick Sort, com n grande
+head -30 docs/perfil_bruto.txt
+```
+
+No **flat profile**, a coluna `% time` mostra qual função consome mais tempo. Com todos os algoritmos executados sobre `n = 50000`, os três básicos devem aparecer no topo, e os avançados com tempo próximo de zero.
+
+```text
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total
+ time   seconds   seconds    calls  ms/call  ms/call  name
+ ...
+```
+
+!!! warning "Duas armadilhas clássicas"
+    1. **Não faça profiling com `-O2`.** O compilador reorganiza e embute funções, e o resultado distorce a realidade. O alvo `make profile` já usa `-O0`.
+    2. O `gprof` amostra a cada **10 ms**. Algoritmos rápidos com `n` pequeno saem com **zeros**. Aumente `N` e use `ALG=` para analisar os avançados individualmente.
+
+!!! info "Por que `calls = 1` na função recursiva?"
+    Em funções recursivas, como o `ordena` do Quick Sort, a coluna `calls` do `gprof` mostra só as chamadas **vindas de fora** da recursão (aqui, 1). Para ver as chamadas recursivas, olhe o **call graph**, que as lista à parte (`1+N`). Já funções chamadas dentro do laço, como `troca`, aparecem com milhões de chamadas.
+
+Em `docs/perfil.md`, responda: quais funções dominam o tempo? Isso bate com a teoria? Por que o `gprof` não "enxerga" bem o Quick Sort com `n = 50000`?
+
+!!! success "Commits sugeridos"
+    ```bash
+    git commit -m "docs: adiciona saída bruta do cppcheck e análise"
+    git commit -m "docs: adiciona relatório gcov e análise de cobertura"
+    git commit -m "docs: adiciona perfil gprof e interpretação"
+    ```
+
+---
+
+## Etapa 6 — Benchmark e análise experimental
+
+**Objetivo:** gerar um CSV padronizado e **explicar** o que ele mostra, comparando com a teoria.
+
+### 6.1 O que o `bench.c` precisa fazer
+
+Execute a matriz de experimentos abaixo e imprima **CSV** na saída padrão, com este cabeçalho:
+
+```text
+algoritmo,tipo,n,tempo_ms,comparacoes,trocas
+```
+
+| Parâmetro | Especificação |
+| --- | --- |
+| Tamanhos (`n`) | 1.000 · 5.000 · 10.000 · 50.000 (todos); os avançados também com 500.000 |
+| Tipos de entrada | aleatório · crescente · decrescente |
+| Repetições | 5 por combinação; registre a **média** dos tempos |
+| Semente | `srand(42)` fixa |
+| Cronômetro | `clock()` medindo **apenas a ordenação** |
+| Compilação | `-O2` |
+
+### 6.2 Esqueleto
+
+```c
+/* src/bench.c */
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+#include "algoritmos.h"
+
+typedef void (*SortFn)(int[], int, Metricas *);
+
+typedef struct {
+    const char *nome;
+    SortFn fn;
+    int avancado;            /* 1 se também roda com n = 500000 */
+} Algoritmo;
+
+static void geraEntrada(int v[], int n, const char *tipo) {
+    /* TODO: preencha v conforme o tipo: "aleatorio", "crescente" ou "decrescente" */
+    (void)v; (void)n; (void)tipo;
+}
+
+int main(void) {
+    const Algoritmo algs[] = {
+        {"bubble", bubbleSort, 0},
+        /* TODO: os demais cinco algoritmos */
+    };
+    const char *tipos[] = {"aleatorio", "crescente", "decrescente"};
+    const int tamanhos[] = {1000, 5000, 10000, 50000, 500000};
+    const int REPS = 5;
+
+    printf("algoritmo,tipo,n,tempo_ms,comparacoes,trocas\n");
+
+    /* TODO: para cada algoritmo, tipo e tamanho (pulando 500000 nos básicos):
+     *   1. gere a entrada original UMA vez;
+     *   2. repita REPS vezes: copie a entrada, zere as métricas, cronometre SÓ a ordenação;
+     *   3. some os tempos; no fim, imprima a MÉDIA e as métricas (de uma execução);
+     */
+    (void)algs; (void)tipos; (void)tamanhos; (void)REPS;
+    return 0;
+}
+```
+
+??? tip "Dica 1 — o que cronometrar"
+    O relógio (`clock()`) deve cercar **só** a chamada do algoritmo. A **cópia** do vetor original e a **geração** da entrada ficam **fora**.
+
+??? tip "Dica 2 — as métricas variam entre as 5 repetições?"
+    Para a mesma entrada, comparações e trocas são **determinísticas**, então basta registrar uma execução. Só o **tempo** varia, daí a média.
+
+??? tip "Dica 3 — crescente e decrescente"
+    São triviais de gerar com um laço (`v[i] = i` e `v[i] = n - i`). O aleatório usa `rand()` com a semente fixa, para ser reprodutível.
+
+### 6.3 Rodando
+
+```bash
+make bench          # grava docs/resultados.csv (cerca de 3 minutos, quase todos em Bubble e Selection com n = 50000)
+head docs/resultados.csv
+```
+
+### Checkpoint 6
+
+- O CSV tem o cabeçalho certo e **nenhuma linha** de Bubble/Selection/Insertion com `n=500000`.
+- Total de linhas: 3 tipos × (3 básicos × 4 tamanhos + 3 avançados × 5 tamanhos) = **81 linhas** de dados, mais o cabeçalho.
+- `wc -l docs/resultados.csv` deve dar **82**.
+
+### 6.4 Escrevendo `docs/analise.md`
+
+Estrutura obrigatória:
+
+1. **Tabela-resumo** (pode ser gerada do CSV) e, se quiserem, gráficos.
+2. **O critério que vocês adotaram para contar "trocas"** em cada algoritmo.
+3. **Comparação com a teoria.** Perguntas-guia:
+    - Por que Bubble/Selection/Insertion crescem como O(n²) e Merge/Quick/Heap como O(n log n)? Mostre isso nos números: quando `n` passa de 10.000 para 50.000 (5×), por quanto o tempo é multiplicado?
+    - O que acontece com o **Insertion Sort em entrada já ordenada**?
+    - O que muda no **Bubble Sort** e no **Quick Sort** entre os três tipos de entrada?
+    - O Selection Sort faz quantas trocas, comparado ao Bubble? E o tempo?
+
+    !!! tip "Uma surpresa a esperar"
+        Com pivô do meio, o Quick Sort em entrada **crescente ou decrescente** tende a ficar **mais rápido** que em entrada aleatória (por volta de 4 a 5 vezes mais rápido em `n = 50000`), e o Heap Sort também melhora um pouco. Não é um erro: o pivô do meio é ótimo nesses casos e o padrão previsível ajuda o processador. Explique isso em vez de esperar que "ordenado" seja sempre o pior caso.
+
+4. **Resultados que NÃO bateram com a teoria**, com uma hipótese. Exemplos de coisas a investigar: um algoritmo O(n log n) mais lento que outro com a mesma complexidade (constantes, cache, alocação); o Quick e o Heap com tempos tão diferentes apesar de ambos serem O(n log n) (compare as comparações e as trocas de cada um no CSV); o tempo do Quick em entrada ordenada (depende do pivô); o ponto em que o Insertion deixa de ser competitivo (nos tamanhos do benchmark ele já perde do Merge com `n = 1.000`: por que um algoritmo O(n²) ainda é usado como parte de ordenações reais?).
+
+!!! tip "Como calcular a razão entre tempos"
+    Para checar crescimento, divida o tempo de `n = 50000` pelo de `n = 10000`. Em O(n²) espere algo perto de 25; em O(n log n), algo entre 5 e 6 (os 5× de `n` vezes a razão dos logaritmos, cerca de 1,18). Desvios são justamente o que você deve explicar no item 4: por exemplo, em um teste deste roteiro o Bubble com entrada aleatória ficou perto de **33×**, bem acima dos 25× esperados. Por quê? Levante hipóteses (padrão de desvios do `if`, cache) e, se puder, teste uma delas.
+
+!!! success "Commits sugeridos"
+    ```bash
+    git commit -m "feat: adiciona benchmark que gera CSV"
+    git commit -m "docs: adiciona resultados.csv e análise experimental"
+    ```
+
+---
+
+## Etapa 7 — Documentação final, vídeo e entrega
+
+### 7.1 `docs/uso-ia.md`
+
+Preencha **ao longo do trabalho**, não só no fim. Registre prompts reais, o que a IA gerou e **o que vocês adaptaram ou descobriram estar errado**. Use o modelo da especificação. O uso de IA **não penaliza**; a falta de transparência e a incapacidade de explicar o código, sim.
+
+### 7.2 `README.md`
+
+Deve conter: nomes dos integrantes, como compilar (`make`), como testar (`make test`), como rodar (`./sort_main <n> [algoritmo]`) e links para a análise em `docs/`.
+
+### 7.3 Teste de ponta a ponta
+
+Antes do `push` final, num diretório limpo:
+
+```bash
+make clean && make all && make test && make coverage && make bench && make profile && make cppcheck
+```
+
+Tudo precisa terminar sem erro. Confira que **não há warnings** de `-Wall -Wextra` na compilação.
+
+### 7.4 Roteiro do vídeo (até 20 min)
+
+Antes de gravar, **ensaiem**: cada integrante precisa ser capaz de compilar, executar e explicar qualquer parte.
+
+| # | Seção | O que mostrar | Tempo |
+| --- | --- | --- | --- |
+| 1 | Apresentação | Integrantes, turma, objetivo | ~1 min |
+| 2 | Implementação | Estrutura de arquivos; um trecho relevante de cada algoritmo | ~3 min |
+| 3 | Execução ao vivo | `make`, `make test`, `./sort_main` | ~2 min |
+| 4 | Análise experimental | Tabela e comparação com a teoria | ~3 min |
+| 5 | Ferramentas | `gcov`, `gprof`, `cppcheck` | ~3 min |
+| 6 | Conclusões | Melhor algoritmo, o que bateu e não bateu com a teoria, dificuldades | ~1 min |
+
+!!! warning "Slides sozinhos não bastam"
+    É obrigatório alternar para o terminal e o editor, mostrando código e execução real.
+
+### 7.5 Conferir o histórico, criar a tag e entregar
+
+**Antes de criar a tag**, confira o que o professor vai ver:
+
+```bash
+git status                   # deve estar limpo (nada a commitar)
+git pull && git push         # local e GitHub sincronizados
+git shortlog -sn             # os dois nomes, com commits de código
+git log --oneline            # mensagens no padrão tipo: descrição
+```
+
+Abra também a página do repositório no GitHub (aba **Commits**) e confirme: os arquivos de `docs/` estão lá (relatórios **versionados**), **não há** `.o`/executáveis/`gmon.out`, e o professor tem acesso se o repositório for privado.
+
+Uma **tag** marca um commit como "a versão entregue". É a fotografia oficial da entrega, que não muda mesmo que alguém commite depois:
+
+```bash
+git tag -a v1.0 -m "Entrega final do trabalho de ordenação"
+git push origin main --tags          # envia os commits E a tag
+git tag                              # lista as tags locais (deve mostrar v1.0)
+```
+
+No GitHub, a tag aparece em **Releases/Tags** na página do repositório. Se precisar corrigir algo **depois** da tag, commite normalmente e, com autorização do professor, crie uma nova tag (`v1.1`), em vez de apagar a anterior.
+
+No SIGAA, em **um único comentário por dupla**: nomes completos, link do repositório e link do vídeo no YouTube.
+
+### Checklist final
+
+- [ ] Seis algoritmos, cada um em seu `.c`, com os nomes de função exigidos
+- [ ] Merge com `malloc` dentro da função, com verificação e `free`
+- [ ] Quick com pivô do meio ou mediana de três, **comentado no código**
+- [ ] `src/main.c` aceita `<n> [algoritmo]` e usa `srand(42)`
+- [ ] `make test` passa e retorna código ≠ 0 quando há falha
+- [ ] `gcov` ≥ 70% de linhas nos seis arquivos; `cppcheck` sem `error`
+- [ ] `docs/` com todos os arquivos obrigatórios, **versionados**
+- [ ] Commits regulares, com mensagens no padrão `tipo: descrição`
+- [ ] `docs/uso-ia.md` preenchido
+- [ ] Vídeo publicado e link enviado no SIGAA junto com o do repositório
+- [ ] Tag `v1.0` criada e enviada
+
+---
+
+## Trabalho Prático
+
+> Cole aqui, ou aponte para, a especificação completa do trabalho: organização da dupla, requisitos por algoritmo, política de IA, estrutura obrigatória do repositório, rubricas e composição da nota.
+
+## Apêndice: Makefile Base {#apendice-makefile-base}
+
+> Cole aqui o Makefile base fornecido na especificação do trabalho.
