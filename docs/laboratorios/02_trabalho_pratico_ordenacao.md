@@ -14,6 +14,9 @@ Este tutorial é o **caminho** para chegar ao Trabalho Prático de ordenação. 
 
     Este **não é um trabalho para fazer de uma vez** (nem em uma hora, nem em uma noite). Ele tem partes que levam tempo: implementar e testar seis algoritmos, rodar o benchmark, escrever a análise, ensaiar e gravar o vídeo. Combinem **quando** cada um consegue trabalhar, dividam as tarefas e **comecem cedo**, em sessões curtas, para não deixar tudo para o último dia.
 
+!!! info "O repositório é a sua vitrine"
+    O repositório deste trabalho é **público**, de propósito: ele serve como **vitrine** do que você sabe fazer. Professores, colegas e, no futuro, recrutadores e orientadores podem abri-lo e ver seu código, seu histórico de commits, sua documentação e sua análise. Por isso, capriche desde o começo: mensagens de commit claras, um `README` que explique o projeto e documentação bem escrita. Dicas na Etapa 0.5 e na Etapa 7.
+
 As etapas deste tutorial são:
 
 | Etapa | Foco |
@@ -50,12 +53,30 @@ Seu histórico no Git **faz parte da nota** (20 pontos da rubrica de código, ma
 
 O **remoto** só recebe o histórico quando você faz `git push`, e só traz o histórico dos outros quando você faz `git pull`.
 
-### 0.2 Instalar o Git
+### 0.2 Instalar as ferramentas
+
+Instale de uma vez o Git, o compilador e as ferramentas que o laboratório usa (`build-essential` traz `gcc`, `make`, `gcov` e `gprof`; o `cppcheck` é a análise estática da Etapa 5):
 
 ```bash
-sudo apt install git        # Ubuntu / WSL
-git --version               # deve imprimir algo como: git version 2.43.0
+sudo apt update
+sudo apt install git build-essential cppcheck
 ```
+
+Confira que tudo foi instalado: cada comando abaixo deve imprimir uma versão. Se algum disser `command not found`, repita a instalação.
+
+```bash
+git --version
+gcc --version
+make --version
+gprof --version
+gcov --version
+cppcheck --version
+```
+
+!!! tip "Windows: como ter um terminal Linux (WSL)"
+    No PowerShell (como administrador), rode `wsl --install` e reinicie o computador se for pedido. Depois abra o aplicativo **Ubuntu** e use os comandos acima.
+
+    **Clone o repositório dentro do Linux** (por exemplo, em `~/`), e não em pastas do Windows como `/mnt/c/...`: é mais rápido e evita problemas de permissão e de fim de linha. No VS Code, a extensão **WSL** permite abrir a pasta do Linux (rode `code .` dentro dela).
 
 ### 0.3 Conta no GitHub e autenticação
 
@@ -102,7 +123,7 @@ git config --global --list                 # confira o resultado
 ```
 
 !!! warning "E-mail errado = commits que \"não existem\""
-    Se o e-mail do `git config` não bater com o da conta, seus commits aparecem sem o seu perfil, e na contagem de participação você parece não ter contribuído. Se preferir não expor seu e-mail, o GitHub oferece um e-mail privado (`...@users.noreply.github.com`) em **Settings → Emails**; use esse no `git config`. **Configure antes do primeiro commit**: corrigir depois é trabalhoso.
+    Se o e-mail do `git config` não bater com o da conta, seus commits aparecem sem o seu perfil, e na contagem de participação você parece não ter contribuído. **Atenção:** como o repositório é público, o e-mail usado nos commits fica **visível para qualquer pessoa** que olhar o histórico. Se não quiser expor seu e-mail pessoal, use o e-mail privado que o GitHub oferece (`...@users.noreply.github.com`), em **Settings → Emails** (marque "Keep my email addresses private"); coloque esse e-mail no `git config`, e os commits continuam associados à sua conta. **Configure antes do primeiro commit**: corrigir depois é trabalhoso.
 
 Se mexer em dois computadores (casa e laboratório), repita 0.3 e 0.4 em cada um. No computador de laboratório compartilhado, use `git config` **sem** `--global` dentro da pasta do projeto, para não deixar sua identidade para o próximo usuário.
 
@@ -112,9 +133,9 @@ Se mexer em dois computadores (casa e laboratório), repita 0.3 e 0.4 em cada um
 
 1. No GitHub: botão **New repository** (ou o `+` no canto superior).
 2. Nome: `ordenacao-<dupla>` (por exemplo, `ordenacao-ana-beto`).
-3. Visibilidade: **Public**, ou **Private** (nesse caso, é obrigatório dar acesso ao professor, veja o passo 5).
+3. Visibilidade: **Public**. O repositório é público de propósito, pois é a **vitrine** do seu trabalho (veja o quadro abaixo).
 4. Marque **Add a README file**. Isso já cria o repositório com o primeiro commit e a branch `main`. Deixe `.gitignore` e licença em "None" (você usará o `.gitignore` da Etapa 1).
-5. Depois de criado: **Settings** → **Collaborators** → **Add people**. Adicione o colega **e**, se o repositório for privado, o usuário do professor (**[PREENCHER: usuário GitHub do professor]**).
+5. Depois de criado: **Settings** → **Collaborators** → **Add people**. Adicione o colega. Como o repositório é público, o professor e qualquer pessoa conseguem ver o código sem precisar de convite.
 6. O colega recebe um convite (por e-mail e em github.com/notifications) e precisa **aceitá-lo**. Sem isso, o `git push` dele será recusado.
 
 **Cada um** (inclusive quem criou) clona o repositório para o seu computador. Na página do repositório, o botão verde **Code** mostra a URL; use a aba **SSH** se escolheu a Opção A, ou **HTTPS** se escolheu a B:
@@ -125,6 +146,13 @@ git clone git@github.com:<usuario>/ordenacao-<dupla>.git     # SSH
 cd ordenacao-<dupla>
 git log --oneline          # mostra o commit inicial criado pelo GitHub
 ```
+
+!!! tip "Seu repositório é uma vitrine"
+    Por ser público, ele aparece no perfil de quem o criou e pode ser visto por qualquer pessoa. Alguns cuidados:
+
+    - **Capriche no que aparece:** commits com mensagens descritivas, `README` claro, `docs/` organizado. É o primeiro contato de quem abre o projeto.
+    - **Nunca commite dados pessoais ou segredos:** senhas, tokens de acesso, chaves privadas, documentos pessoais. Tudo o que entra no histórico do Git fica visível, mesmo que o arquivo seja apagado depois.
+    - **Mostre o projeto:** no seu perfil do GitHub, você pode **fixar** (*pin*) este repositório para que ele apareça no topo.
 
 !!! danger "Não crie o repositório duas vezes"
     Um erro comum é cada integrante criar o **seu** repositório e depois tentar juntá-los. Só um cria; o outro **clona**.
@@ -206,6 +234,15 @@ Os arquivos compartilhados (`tests/test_basic.c`, `Makefile`, `src/bench.c`) sã
 
 !!! warning "Divisão equilibrada importa"
     Se só um integrante concentrar os commits relevantes de código, o outro grava o vídeo inteiro sozinho. Combinem a divisão desde o início e cada um commite com **a própria identidade**, no próprio computador.
+
+!!! info "Arquivos que os dois vão editar neste laboratório"
+    Alguns arquivos mudam em várias etapas, e é neles que os conflitos acontecem:
+
+    | Arquivo | Quando muda | Como evitar conflito |
+    | --- | --- | --- |
+    | `Makefile` | Etapas 2, 5 e 6 | Um de vocês faz as alterações da etapa, comita e dá `push` na hora; o outro faz `git pull` antes de mexer no arquivo. |
+    | `tests/test_basic.c` | A cada algoritmo implementado | Cada um acrescenta as chamadas dos **seus** algoritmos usando os auxiliares que já existem (`testaAlgoritmo`, `testaMetricas`); **não criem funções novas com o mesmo nome**. Se der conflito no `main`, mantenha as duas versões, como no exemplo abaixo. |
+    | `src/bench.c` | Etapa 6 | Um escreve e o outro revisa e testa. |
 
 #### Situação 1: o `push` é recusado
 
@@ -368,15 +405,85 @@ Se algum desses comandos falhar, volte à Etapa 0 antes de seguir.
 ### 1.2 Estrutura de diretórios
 
 ```bash
-mkdir -p src/basicos src/avancados tests docs/gcov
+mkdir -p src/basicos src/avancados tests docs
 touch docs/.gitkeep
 ```
 
-O Git não versiona diretórios vazios; o `.gitkeep` garante que `docs/` exista para os alvos `make bench`, `make cppcheck` e `make profile`, que gravam arquivos lá dentro.
+O Git não versiona diretórios vazios; o `.gitkeep` garante que `docs/` exista para os alvos `make bench`, `make cppcheck` e `make profile`, que você vai criar nas Etapas 5 e 6 e que gravam arquivos lá dentro.
 
-### 1.3 Makefile e `.gitignore`
+### 1.3 Makefile inicial e `.gitignore`
 
-Copie o Makefile do [apêndice](#apendice-makefile-base) para a raiz (lembre: as linhas de comando começam com **TAB**). Copie também o `.gitignore` sugerido na especificação.
+O `make` compila o projeto com um único comando. Ele lê um arquivo chamado `Makefile`, que descreve **o que construir** e **como**. Você **não vai copiar um Makefile pronto**: vai construí-lo aos poucos, acrescentando cada alvo na etapa em que ele passa a ser necessário. Agora, só o essencial: **compilar o programa** e **limpar** o que foi gerado.
+
+Crie o arquivo `Makefile` (sem extensão) na raiz do repositório:
+
+```make
+CC = gcc
+WARN = -Wall -Wextra -std=c11
+CFLAGS = $(WARN) -O2
+DEPFLAGS = -MMD -MP
+
+ALG_SRCS = src/basicos/bubble.c src/basicos/selection.c src/basicos/insertion.c \
+           src/avancados/merge.c src/avancados/quick.c src/avancados/heap.c
+SRCS = src/main.c $(ALG_SRCS)
+
+OBJS = $(SRCS:.c=.o)
+ALL_OBJS = $(sort $(OBJS))
+
+TARGET = sort_main
+
+all: $(TARGET)
+
+$(TARGET): $(OBJS)
+	$(CC) $(CFLAGS) -o $@ $^
+
+%.o: %.c
+	$(CC) $(CFLAGS) $(DEPFLAGS) -c $< -o $@
+
+clean:
+	rm -f $(TARGET) $(ALL_OBJS) $(ALL_OBJS:.o=.d)
+
+.PHONY: all clean
+
+-include $(ALL_OBJS:.o=.d)
+```
+
+!!! warning "Makefile exige TAB"
+    As linhas de comando de cada regra (as que ficam logo abaixo de `alvo: dependências`) precisam começar com o caractere **TAB**, não com espaços. Se o `make` responder `missing separator`, é isso. No VS Code, confira no canto inferior direito se a indentação está em "Tab", e não em "Spaces".
+
+**O que cada parte faz** (você vai precisar explicar isto no vídeo):
+
+| Trecho | Significado |
+| --- | --- |
+| `CC`, `WARN`, `CFLAGS` | **Variáveis**: o compilador, os avisos (`-Wall -Wextra`, padrão C11) e a otimização `-O2`. Usa-se `$(CFLAGS)` para ler o valor. |
+| `ALG_SRCS`, `SRCS` | Listas de arquivos `.c`. A barra invertida `\` no fim da linha continua a lista na linha seguinte. |
+| `OBJS = $(SRCS:.c=.o)` | Troca `.c` por `.o` em cada item: a lista dos arquivos objeto (código já compilado, mas ainda não ligado). |
+| `ALL_OBJS` | Todos os objetos do projeto. Por enquanto são só os de `OBJS`; vai crescer nas próximas etapas. |
+| `all: $(TARGET)` | O alvo **padrão**: é o que acontece quando você digita só `make`. |
+| `$(TARGET): $(OBJS)` | Lê-se: "para construir `sort_main`, preciso de todos os `.o`; depois, rodo o comando de ligação". `$@` é o nome do alvo e `$^` é a lista de dependências. |
+| `%.o: %.c` | **Regra geral**: ensina o `make` a compilar *qualquer* `.c` em `.o`. `$<` é o `.c` de entrada, e `-c` significa "compile, mas não ligue". |
+| `DEPFLAGS = -MMD -MP` e `-include ...` | O compilador gera um arquivo `.d` por `.c`, listando os `.h` de que ele depende. Assim, se você alterar `metricas.h`, o `make` recompila o que for preciso. |
+| `clean` | Apaga os arquivos gerados (executável, `.o`, `.d`). |
+| `.PHONY` | Avisa que `all` e `clean` são **ações**, e não arquivos. |
+
+Agora o `.gitignore`, na raiz. Ele diz ao Git quais arquivos **não** versionar (binários e arquivos intermediários), para que não entrem nos seus commits:
+
+```text
+*.o
+*.d
+*.gcda
+*.gcno
+/*.gcov
+gmon.out
+/sort_main
+/sort_profile
+/test_basic
+/bench_sort
+```
+
+A barra no começo (`/sort_main`) restringe o padrão à raiz do projeto. Os relatórios em `docs/` **devem** ser versionados, então não estão na lista.
+
+Você ainda não consegue rodar `make`, porque os fontes ainda não existem. Isso acontece nas próximas seções, e o primeiro teste do Makefile é o Checkpoint 1.
 
 ### 1.4 `src/metricas.h`
 
@@ -392,6 +499,18 @@ typedef struct {
 
 #endif
 ```
+
+O `#ifndef`/`#define`/`#endif` (*header guard*) impede que o arquivo seja incluído duas vezes na mesma compilação. Como a struct é usada pelos algoritmos:
+
+```c
+Metricas m = {0, 0};      /* quem chama: zera os dois contadores */
+bubbleSort(v, n, &m);     /* passa o ENDEREÇO de m (o & é essencial) */
+
+/* dentro de bubbleSort, m é um PONTEIRO: */
+m->comparacoes++;         /* a seta acessa um campo através do ponteiro */
+```
+
+Passar o endereço permite que a função **altere** a struct de quem a chamou; é assim que os contadores voltam para o `main`, os testes e o benchmark.
 
 ### 1.5 `src/algoritmos.h` (protótipos)
 
@@ -517,6 +636,18 @@ int main(int argc, char *argv[]) {
 }
 ```
 
+**O que observar no `main.c`** (você vai explicar isto no vídeo):
+
+- **`ALGS[]`** é um vetor de structs com o nome e um **ponteiro para função** (`void (*fn)(int[], int, Metricas *)`). Como os seis algoritmos têm a mesma assinatura, o mesmo laço chama qualquer um deles com `ALGS[k].fn(v, n, &m)`.
+- **`srand(42)`** com `rand() % 1000000` gera um vetor aleatório **reproduzível**.
+- **`orig` e `v`:** o original é guardado e cada algoritmo ordena uma **cópia** (`memcpy`), para todos receberem exatamente os mesmos dados.
+- **`clock()`** é chamado antes e depois **só da ordenação**; `CLOCKS_PER_SEC` converte para milissegundos. Mede tempo de CPU, com resolução limitada: tempos muito pequenos aparecem como `0.000`.
+- **`argc` e `argv`** trazem os argumentos de linha de comando (`atoi` converte `<n>`; `strcmp` filtra o algoritmo).
+- **`malloc` seguido de verificação e `free`:** todo `malloc` é checado, e tudo o que foi alocado é liberado.
+
+!!! note "Os números podem diferir em outros sistemas"
+    O `rand()` depende da biblioteca do sistema. Nos exemplos deste tutorial (Linux), as contagens com `n` grande podem diferir um pouco no macOS ou em outro sistema; a ordem de grandeza e as conclusões são as mesmas. Já as métricas dos vetores pequenos e fixos (como `{5,1,4,2,8}`) não dependem do sistema.
+
 ### Checkpoint 1
 
 ```bash
@@ -536,6 +667,9 @@ heap       n=10  tempo=0.000 ms  comparações=0  trocas=0
 ```
 
 Verifique também: `./sort_main 10 quick` imprime só uma linha, e `./sort_main 10 xyz` informa algoritmo desconhecido.
+
+!!! tip "Apareceu um erro?"
+    O [Apêndice B](#apendice-b-erros-comuns-e-depuracao) lista as mensagens mais comuns do `make` e do `gcc`, com a causa e a solução de cada uma.
 
 !!! success "Commit sugerido"
     ```bash
@@ -644,23 +778,33 @@ static void testaAlgoritmo(const char *nome, SortFn fn) {
     verifica(nome, "n=0",        fn, vazio,      0);
 }
 
-/* Confere as métricas do Bubble no vetor {5,1,4,2,8}: 9 comparações e 4 trocas */
-static void testaMetricasBubble(void) {
-    int v[] = {5, 1, 4, 2, 8};
+/* Confere as comparações e trocas/movimentações esperadas para um vetor conhecido */
+static void testaMetricas(const char *alg, const char *caso, SortFn fn,
+                          const int orig[], int n, unsigned long comp, unsigned long mov) {
+    int *v = malloc((size_t)n * sizeof(int));
+    if (v == NULL) { fprintf(stderr, "falta de memória\n"); exit(2); }
+    for (int i = 0; i < n; i++) v[i] = orig[i];
+
     Metricas m = {0, 0};
-    bubbleSort(v, 5, &m);
-    int ok = (m.comparacoes == 9 && m.trocas == 4);
-    printf("%-7s  %-10s métricas {5,1,4,2,8}\n", ok ? "PASSOU" : "FALHOU", "bubble");
+    fn(v, n, &m);
+
+    int ok = (m.comparacoes == comp && m.trocas == mov);
+    printf("%-7s  %-10s métricas %s\n", ok ? "PASSOU" : "FALHOU", alg, caso);
     if (!ok) {
-        printf("         esperado comp=9 trocas=4, obtido comp=%lu trocas=%lu\n",
-               m.comparacoes, m.trocas);
+        printf("         esperado comp=%lu mov=%lu, obtido comp=%lu mov=%lu\n",
+               comp, mov, m.comparacoes, m.trocas);
         falhas++;
     }
+    free(v);
 }
 
 int main(void) {
+    int base[]     = {5, 1, 4, 2, 8};
+    int ordenado[] = {1, 2, 3, 4, 5};
+
     testaAlgoritmo("bubble", bubbleSort);
-    testaMetricasBubble();
+    testaMetricas("bubble", "{5,1,4,2,8}", bubbleSort, base, 5, 9, 4);
+    testaMetricas("bubble", "ordenado", bubbleSort, ordenado, 5, 4, 0);
     /* TODO: adicione aqui as chamadas dos demais algoritmos, à medida que os implementar */
 
     if (falhas > 0) {
@@ -672,10 +816,107 @@ int main(void) {
 }
 ```
 
+!!! tip "Para que serve o `testaMetricas`?"
+    As métricas fazem parte do enunciado, então vale testá-las. A função confere as comparações e trocas para um vetor **conhecido**: com `{5,1,4,2,8}` o Bubble faz 9 comparações e 4 trocas (simulação na seção 2.5) e, com o vetor **já ordenado** `{1,2,3,4,5}`, faz só 4 comparações e **nenhuma troca**, pois a primeira passada não troca nada e o algoritmo para. Nas Etapas 3 e 4 você reutiliza a mesma função para os outros algoritmos.
+
 !!! tip "Por que conferir a soma?"
     Um algoritmo com bug pode devolver um vetor "ordenado" que **perdeu ou duplicou elementos** (por exemplo, `{1,1,1,1,1}`). A soma é um teste barato que pega esse tipo de erro. Um teste forte confere ordem **e** preservação dos elementos.
 
-### 2.4 Entendendo as métricas à mão
+### 2.4 Acrescentar o alvo `test` ao Makefile
+
+!!! info "O Makefile é um arquivo compartilhado"
+    Um de vocês faz estas alterações, comita e dá `push`; o outro faz `git pull` antes de mexer no Makefile (veja a Etapa 0.8).
+
+Para o `make test` funcionar, o Makefile precisa saber compilar o `tests/test_basic.c` junto com os algoritmos. Faça estas alterações (cada bloco diz onde entra):
+
+**Logo abaixo da linha `SRCS = ...`**:
+
+```make
+TEST_SRCS = tests/test_basic.c $(ALG_SRCS)
+```
+
+**Logo abaixo de `OBJS = ...`** (e **troque** a linha `ALL_OBJS` pela nova versão):
+
+```make
+TEST_OBJS = $(TEST_SRCS:.c=.o)
+ALL_OBJS = $(sort $(OBJS) $(TEST_OBJS))
+```
+
+**Logo abaixo de `TARGET = sort_main`**:
+
+```make
+TEST_TARGET = test_basic
+```
+
+**Logo abaixo da regra `$(TARGET): $(OBJS)`**, a regra que liga o executável de testes:
+
+```make
+$(TEST_TARGET): $(TEST_OBJS)
+	$(CC) $(CFLAGS) -o $@ $^
+```
+
+**Antes do alvo `clean`**, o novo alvo `test`:
+
+```make
+test: $(TEST_TARGET)
+	./$(TEST_TARGET)
+```
+
+**Substitua** o `clean` e a linha `.PHONY` (mantenha a linha `-include` no final):
+
+```make
+clean:
+	rm -f $(TARGET) $(TEST_TARGET) $(ALL_OBJS) $(ALL_OBJS:.o=.d)
+
+.PHONY: all test clean
+```
+
+O alvo `test` depende de `$(TEST_TARGET)`: o `make` primeiro constrói o executável de testes e só depois roda `./test_basic`. Se algum teste falhar, o programa devolve código ≠ 0 e o próprio `make` acusa erro.
+
+Note que o `sort_main` e o `test_basic` **compartilham os mesmos `.o`** dos algoritmos. Por isso, depois de alterar um algoritmo, o `make test` recompila o `.o`, mas **não religa o `sort_main`**: é preciso rodar `make` também (veja o aviso no Checkpoint 2).
+
+??? note "Makefile completo ao fim da Etapa 2 (para comparar com o seu)"
+    ```make
+    CC = gcc
+    WARN = -Wall -Wextra -std=c11
+    CFLAGS = $(WARN) -O2
+    DEPFLAGS = -MMD -MP
+
+    ALG_SRCS = src/basicos/bubble.c src/basicos/selection.c src/basicos/insertion.c \
+               src/avancados/merge.c src/avancados/quick.c src/avancados/heap.c
+    SRCS = src/main.c $(ALG_SRCS)
+    TEST_SRCS = tests/test_basic.c $(ALG_SRCS)
+
+    OBJS = $(SRCS:.c=.o)
+    TEST_OBJS = $(TEST_SRCS:.c=.o)
+    ALL_OBJS = $(sort $(OBJS) $(TEST_OBJS))
+
+    TARGET = sort_main
+    TEST_TARGET = test_basic
+
+    all: $(TARGET)
+
+    $(TARGET): $(OBJS)
+    	$(CC) $(CFLAGS) -o $@ $^
+
+    $(TEST_TARGET): $(TEST_OBJS)
+    	$(CC) $(CFLAGS) -o $@ $^
+
+    %.o: %.c
+    	$(CC) $(CFLAGS) $(DEPFLAGS) -c $< -o $@
+
+    test: $(TEST_TARGET)
+    	./$(TEST_TARGET)
+
+    clean:
+    	rm -f $(TARGET) $(TEST_TARGET) $(ALL_OBJS) $(ALL_OBJS:.o=.d)
+
+    .PHONY: all test clean
+
+    -include $(ALL_OBJS:.o=.d)
+    ```
+
+### 2.5 Entendendo as métricas à mão
 
 Vamos simular `{5, 1, 4, 2, 8}`:
 
@@ -695,14 +936,15 @@ make test
 ```
 
 ```text
-PASSOU   bubble      aleatório
-PASSOU   bubble      ordenado
-PASSOU   bubble      invertido
-PASSOU   bubble      duplicatas
-PASSOU   bubble      negativos
-PASSOU   bubble      n=1
-PASSOU   bubble      n=0
-PASSOU   bubble      métricas {5,1,4,2,8}
+PASSOU   bubble     aleatório
+PASSOU   bubble     ordenado
+PASSOU   bubble     invertido
+PASSOU   bubble     duplicatas
+PASSOU   bubble     negativos
+PASSOU   bubble     n=1
+PASSOU   bubble     n=0
+PASSOU   bubble     métricas {5,1,4,2,8}
+PASSOU   bubble     métricas ordenado
 
 Todos os testes passaram
 ```
@@ -722,7 +964,7 @@ Você deve ver milhões de comparações (na ordem de n²/2 ≈ 12,5 milhões). 
 
 !!! success "Commit sugerido"
     ```bash
-    git add src/basicos/bubble.c tests/test_basic.c
+    git add Makefile src/basicos/bubble.c tests/test_basic.c
     git commit -m "feat: implementa bubble sort com contagem de métricas e testes"
     git push
     ```
@@ -750,10 +992,10 @@ Você deve ver milhões de comparações (na ordem de n²/2 ≈ 12,5 milhões). 
 ??? tip "Dica 2 — o que esperar das métricas"
     O número de comparações **não depende da entrada**: é sempre `n(n-1)/2`. Já o número de trocas é **no máximo `n-1`**. Isso torna o Selection atraente quando trocar é caro.
 
-**Testes:** acrescente `testaAlgoritmo("selection", selectionSort);` ao `main` de teste, e um teste de métricas.
+**Testes:** no `main` do `test_basic.c`, acrescente `testaAlgoritmo("selection", selectionSort);` e a verificação das métricas com o auxiliar que você já tem, por exemplo `testaMetricas("selection", "{5,1,4,2,8}", selectionSort, base, 5, 10, 2);` (os vetores `base` e `ordenado` já estão declarados no `main`).
 
 !!! success "Checkpoint 3a — métricas para conferir"
-    Para `{5, 1, 4, 2, 8}`, com a regra "troca só se `menor != i`", o resultado esperado é **10 comparações e 2 trocas**. Adapte `testaMetricasBubble` para um teste análogo do Selection.
+    Para `{5, 1, 4, 2, 8}`, com a regra "troca só se `menor != i`", o resultado esperado é **10 comparações e 2 trocas**. Para o vetor já ordenado `{1,2,3,4,5}`: **10 comparações e 0 trocas** (o número de comparações não depende da entrada).
 
 ### 3.2 Insertion Sort
 
@@ -773,10 +1015,25 @@ Você deve ver milhões de comparações (na ordem de n²/2 ≈ 12,5 milhões). 
     Contando só deslocamentos, o número de movimentações é igual ao número de **inversões** do vetor, o mesmo valor que as trocas do Bubble. Use isso para validar seu código.
 
 !!! success "Checkpoint 3b — métricas para conferir"
-    Para `{5, 1, 4, 2, 8}`, contando apenas deslocamentos: **7 comparações e 4 movimentações**. Se você contar também a cópia final da chave, o número de movimentações muda: **documente o critério** que usou.
+    Para `{5, 1, 4, 2, 8}`, contando apenas deslocamentos: **7 comparações e 4 movimentações**. Para o vetor já ordenado `{1,2,3,4,5}`: **4 comparações e 0 movimentações**. Se você contar também a cópia final da chave, o número de movimentações muda: **documente o critério** que usou.
 
 !!! question "Pergunta para a análise"
-    Quantas comparações o Insertion Sort faz em um vetor **já ordenado** de tamanho `n`? E o Bubble com a otimização de parada antecipada? Confira com `./sort_main` (você precisará adaptar a entrada) ou no `bench`.
+    Quantas comparações o Insertion Sort faz em um vetor **já ordenado** de tamanho `n`? E o Bubble com a otimização de parada antecipada? Os testes com `{1,2,3,4,5}` (`n = 5`) já mostram o resultado; generalize para `n` e guarde a resposta para o `analise.md`. Para tamanhos grandes, o benchmark da Etapa 6 confirma.
+
+### Checkpoint 3
+
+```bash
+make test
+```
+
+Todas as linhas dos dois algoritmos com `PASSOU`, incluindo estas:
+
+```text
+PASSOU   selection  métricas {5,1,4,2,8}
+PASSOU   selection  métricas ordenado
+PASSOU   insertion  métricas {5,1,4,2,8}
+PASSOU   insertion  métricas ordenado
+```
 
 !!! success "Commit sugerido (um por algoritmo)"
     ```bash
@@ -791,7 +1048,7 @@ Você deve ver milhões de comparações (na ordem de n²/2 ≈ 12,5 milhões). 
 **Objetivo:** os três algoritmos O(n log n). São os mais fáceis de errar nos índices; por isso **teste cada um assim que escrevê-lo**, antes de passar ao próximo.
 
 !!! warning "Antes de começar"
-    Rode `make test` a cada algoritmo novo. Um bug de índice em Merge/Quick/Heap costuma aparecer como `Segmentation fault`. Se acontecer, compile com `-g -O0` e use `gdb` ou `valgrind ./test_basic`.
+    Rode `make test` a cada algoritmo novo. Um bug de índice em Merge/Quick/Heap costuma aparecer como `Segmentation fault`. Se acontecer, **não adivinhe**: o [Apêndice B](#apendice-b-erros-comuns-e-depuracao) mostra como o AddressSanitizer aponta a linha exata do erro, sem instalar nada.
 
 ### 4.1 Merge Sort
 
@@ -801,11 +1058,13 @@ Você deve ver milhões de comparações (na ordem de n²/2 ≈ 12,5 milhões). 
 
 - O vetor auxiliar é alocado **dentro** da função (`malloc`), com **verificação do retorno** e `free` antes de retornar.
 - Cada chamada da função pública cria o auxiliar **uma única vez**; a recursão usa uma função auxiliar `static`.
+- Trate `n < 2` **antes** de alocar (não há nada a ordenar): `malloc(0)` pode devolver `NULL` em algumas plataformas, e isso não significa falta de memória.
 
 **Estrutura sugerida:**
 
 ```text
 mergeSort(v, n, m):            // função pública
+    se n < 2 → retorna         // nada a ordenar (e evita malloc(0))
     aux = malloc(n * sizeof(int))
     se aux == NULL → trate o erro e retorne
     ordena(v, aux, 0, n-1, m)  // função static, recursiva
@@ -880,8 +1139,43 @@ Em `testaAlgoritmo` já existem os casos básicos. Acrescente estes, que costuma
 | --- | --- |
 | Vetor com `n = 2` (ordenado e invertido) | Menor caso com recursão/partição de fato |
 | Todos iguais (`{7,7,7,7}`) | Pega laço infinito no Quick e instabilidade na partição |
-| Vetor grande aleatório (ex.: 1000 elementos com `srand(1)`) | Pega erros que só aparecem em recursão profunda |
-| Vetor grande **ordenado** e **invertido** (ex.: 10000) | Pega degeneração do Quick e estouro de pilha |
+| Vetores grandes (10.000 elementos): aleatório com duplicatas, ordenado e invertido | Pegam erros que só aparecem com muitos elementos ou recursão profunda, e a degeneração do Quick em entrada ordenada |
+
+**1.** Dentro de `testaAlgoritmo`, depois do caso `n=0`, acrescente os casos pequenos e a chamada dos grandes:
+
+```c
+    int dois_ord[] = {1, 2}, dois_inv[] = {2, 1}, iguais[] = {7, 7, 7, 7};
+    verifica(nome, "n=2 ord",    fn, dois_ord,   2);
+    verifica(nome, "n=2 inv",    fn, dois_inv,   2);
+    verifica(nome, "iguais",     fn, iguais,     4);
+
+    testaGrandes(nome, fn);
+```
+
+**2.** Crie a função `testaGrandes` **antes** de `testaAlgoritmo` (ela usa o `verifica`):
+
+```c
+/* Vetores grandes: pegam erros que só aparecem com muitos elementos ou recursão profunda */
+static void testaGrandes(const char *nome, SortFn fn) {
+    int n = 10000;
+    int *g = malloc((size_t)n * sizeof(int));
+    if (g == NULL) { fprintf(stderr, "falta de memória\n"); exit(2); }
+
+    srand(1);
+    for (int i = 0; i < n; i++) g[i] = rand() % 5000;      /* com duplicatas */
+    verifica(nome, "grande aleat", fn, g, n);
+
+    for (int i = 0; i < n; i++) g[i] = i;
+    verifica(nome, "grande ord",   fn, g, n);
+
+    for (int i = 0; i < n; i++) g[i] = n - i;
+    verifica(nome, "grande inv",   fn, g, n);
+
+    free(g);
+}
+```
+
+**3.** No `main`, acrescente `testaAlgoritmo("merge", mergeSort);` (e o mesmo para `quick` e `heap`) à medida que implementar cada um. Com os seis algoritmos, o `make test` leva cerca de 1 segundo.
 
 ### Checkpoint 4
 
@@ -909,14 +1203,152 @@ deve terminar em cerca de 10 segundos, quase todos gastos pelo Bubble (~8 s com 
 
 ## Etapa 5 — Ferramentas de qualidade e medição
 
-**Objetivo:** usar `cppcheck`, `gcov` e `gprof`, e saber **interpretar** a saída de cada um. O alvo do Makefile faz o trabalho; sua tarefa é entender e documentar.
+**Objetivo:** usar `cppcheck`, `gcov` e `gprof`, e saber interpretar a saída de cada um. Primeiro você estende o Makefile com **três alvos novos** (`cppcheck`, `coverage` e `profile`); depois usa cada um. A tarefa final é entender e documentar os resultados.
+
+### 5.0 Acrescentar os alvos ao Makefile
+
+!!! info "O Makefile é um arquivo compartilhado"
+    Um de vocês faz estas alterações, comita e dá `push`; o outro faz `git pull` antes de mexer no Makefile (veja a Etapa 0.8).
+
+**Logo abaixo da linha `DEPFLAGS = ...`**, os parâmetros de compilação das duas ferramentas. Ambos desligam a otimização (`-O0`), porque o otimizador reorganiza o código e distorce as medições:
+
+```make
+GCOV_FLAGS = --coverage -g -O0
+PROFILE_FLAGS = -pg -g -O0
+```
+
+**Depois dessas linhas**, os parâmetros do profiling. O `?=` significa "use este valor **a menos que** ele tenha sido passado na linha de comando", o que permite `make profile N=200000 ALG=merge`:
+
+```make
+# Parâmetros do profiling: make profile N=50000 ALG=bubble
+N ?= 50000
+ALG ?=
+```
+
+**Antes do alvo `clean`**, os três alvos novos:
+
+```make
+# Cobertura: recompila tudo sem otimização e com instrumentação (CFLAGS substituído).
+# Ao final, remove os objetos instrumentados para não contaminar o próximo 'make'.
+coverage: CFLAGS = $(WARN) $(GCOV_FLAGS)
+coverage: clean test
+	@mkdir -p docs/gcov
+	( gcov -o src/basicos src/basicos/*.c; gcov -o src/avancados src/avancados/*.c ) | tee docs/gcov/resumo.txt
+	mv *.gcov docs/gcov/
+	rm -f $(ALL_OBJS) $(ALL_OBJS:.o=.d) $(TEST_TARGET)
+	find . \( -name '*.gcda' -o -name '*.gcno' \) -delete
+	@echo "Relatórios .gcov e resumo em docs/gcov/"
+
+# Profiling: compila direto das fontes, só com -O0 (sem o -O2 de CFLAGS)
+profile:
+	$(CC) $(WARN) $(PROFILE_FLAGS) -o sort_profile $(SRCS)
+	./sort_profile $(N) $(ALG)
+	gprof sort_profile gmon.out > docs/perfil_bruto.txt
+	@echo "Profiling gerado em docs/perfil_bruto.txt (veja a seção 'Flat profile')"
+
+# Análise estática
+cppcheck:
+	cppcheck --enable=warning,style,performance,portability --std=c11 \
+	    --inline-suppr --suppress=missingIncludeSystem src tests 2> docs/cppcheck_bruto.txt
+	@echo "Resultado em docs/cppcheck_bruto.txt"
+```
+
+O que cada um faz:
+
+- **`coverage`**: a linha `coverage: CFLAGS = ...` troca o valor de `CFLAGS` **só para este alvo** (sem `-O2`, com instrumentação). Ele depende de `clean` e de `test`: primeiro apaga tudo para recompilar **tudo instrumentado**, depois roda os testes, depois o `gcov` lê os dados e gera os relatórios, e por fim os objetos instrumentados são apagados para não contaminar o próximo `make`.
+- **`profile`**: compila **direto das fontes** com `-pg -O0`, roda o programa com `N` e `ALG` e gera o relatório do `gprof`.
+- **`cppcheck`**: roda a análise estática sobre `src` e `tests` e grava a saída (os avisos vão para a saída de erro, por isso o `2>`).
+
+**Substitua** o `clean` e a linha `.PHONY` (mantenha o `-include` no final):
+
+```make
+clean:
+	rm -f $(TARGET) $(TEST_TARGET) sort_profile $(ALL_OBJS) $(ALL_OBJS:.o=.d) *.gcov gmon.out
+	find . \( -name '*.gcda' -o -name '*.gcno' \) -delete
+
+.PHONY: all test coverage profile cppcheck clean
+```
+
+!!! warning "O `make coverage` apaga os objetos"
+    Como ele executa `clean` antes e remove os objetos no final, **depois dele o `sort_main` não existe mais**. Rode `make` de novo se quiser usá-lo.
+
+??? note "Makefile completo ao fim da Etapa 5 (para comparar com o seu)"
+    ```make
+    CC = gcc
+    WARN = -Wall -Wextra -std=c11
+    CFLAGS = $(WARN) -O2
+    DEPFLAGS = -MMD -MP
+    GCOV_FLAGS = --coverage -g -O0
+    PROFILE_FLAGS = -pg -g -O0
+
+    # Parâmetros do profiling: make profile N=50000 ALG=bubble
+    N ?= 50000
+    ALG ?=
+
+    ALG_SRCS = src/basicos/bubble.c src/basicos/selection.c src/basicos/insertion.c \
+               src/avancados/merge.c src/avancados/quick.c src/avancados/heap.c
+    SRCS = src/main.c $(ALG_SRCS)
+    TEST_SRCS = tests/test_basic.c $(ALG_SRCS)
+
+    OBJS = $(SRCS:.c=.o)
+    TEST_OBJS = $(TEST_SRCS:.c=.o)
+    ALL_OBJS = $(sort $(OBJS) $(TEST_OBJS))
+
+    TARGET = sort_main
+    TEST_TARGET = test_basic
+
+    all: $(TARGET)
+
+    $(TARGET): $(OBJS)
+    	$(CC) $(CFLAGS) -o $@ $^
+
+    $(TEST_TARGET): $(TEST_OBJS)
+    	$(CC) $(CFLAGS) -o $@ $^
+
+    %.o: %.c
+    	$(CC) $(CFLAGS) $(DEPFLAGS) -c $< -o $@
+
+    test: $(TEST_TARGET)
+    	./$(TEST_TARGET)
+
+    # Cobertura: recompila tudo sem otimização e com instrumentação (CFLAGS substituído).
+    # Ao final, remove os objetos instrumentados para não contaminar o próximo 'make'.
+    coverage: CFLAGS = $(WARN) $(GCOV_FLAGS)
+    coverage: clean test
+    	@mkdir -p docs/gcov
+    	( gcov -o src/basicos src/basicos/*.c; gcov -o src/avancados src/avancados/*.c ) | tee docs/gcov/resumo.txt
+    	mv *.gcov docs/gcov/
+    	rm -f $(ALL_OBJS) $(ALL_OBJS:.o=.d) $(TEST_TARGET)
+    	find . \( -name '*.gcda' -o -name '*.gcno' \) -delete
+    	@echo "Relatórios .gcov e resumo em docs/gcov/"
+
+    # Profiling: compila direto das fontes, só com -O0 (sem o -O2 de CFLAGS)
+    profile:
+    	$(CC) $(WARN) $(PROFILE_FLAGS) -o sort_profile $(SRCS)
+    	./sort_profile $(N) $(ALG)
+    	gprof sort_profile gmon.out > docs/perfil_bruto.txt
+    	@echo "Profiling gerado em docs/perfil_bruto.txt (veja a seção 'Flat profile')"
+
+    # Análise estática
+    cppcheck:
+    	cppcheck --enable=warning,style,performance,portability --std=c11 \
+    	    --inline-suppr --suppress=missingIncludeSystem src tests 2> docs/cppcheck_bruto.txt
+    	@echo "Resultado em docs/cppcheck_bruto.txt"
+
+    clean:
+    	rm -f $(TARGET) $(TEST_TARGET) sort_profile $(ALL_OBJS) $(ALL_OBJS:.o=.d) *.gcov gmon.out
+    	find . \( -name '*.gcda' -o -name '*.gcno' \) -delete
+
+    .PHONY: all test coverage profile cppcheck clean
+
+    -include $(ALL_OBJS:.o=.d)
+    ```
 
 ### 5.1 `cppcheck` (análise estática)
 
-Instale e rode:
+O `cppcheck` foi instalado na Etapa 0.2. Rode:
 
 ```bash
-sudo apt install cppcheck      # uma vez
 make cppcheck
 cat docs/cppcheck_bruto.txt
 ```
@@ -957,12 +1389,24 @@ Creating 'bubble.c.gcov'
 - `-` = linha não executável (comentário, declaração).
 - `#####` = **executável, mas nunca executada**. É o que você procura.
 
-**Meta:** **≥ 70% de cobertura de linhas** nos seis arquivos de algoritmos (`src/basicos/*.c` e `src/avancados/*.c`). `main.c`, `bench.c` e os testes não entram na conta.
+**Meta:** **≥ 70% de cobertura de linhas no conjunto** dos seis arquivos de algoritmos (`src/basicos/*.c` e `src/avancados/*.c`): o total de linhas executadas dividido pelo total de linhas executáveis, somando os seis arquivos. `main.c`, `bench.c` e os testes não entram na conta.
+
+O `resumo.txt` mostra o percentual **de cada arquivo**. Para obter o **total** dos seis, rode:
+
+```bash
+awk '/^File/{f=$2} /^Lines executed/ && f!=""{p=$2; sub(/.*:/,"",p); sub("%","",p); n=$4; ex+=p*n/100; tot+=n; f=""} END{printf "TOTAL: %.2f%% (%d de %d linhas)\n", 100*ex/tot, ex+0.5, tot}' docs/gcov/resumo.txt
+```
+
+```text
+TOTAL: 100.00% (95 de 95 linhas)
+```
+
+(Os números dependem do seu código. Se os testes cobrirem pouco, o total cai: por exemplo, sem testar o Quick e o Heap, o mesmo comando dá cerca de 63%, abaixo da meta.)
 
 !!! tip "Se a cobertura ficar baixa"
     Procure as linhas `#####` e pergunte: **que entrada faria essa linha executar?** Geralmente é `n=0`, `n=1`, duplicatas, vetor invertido ou o caminho de erro do `malloc` (esse último pode ser aceitável de ficar sem cobertura; justifique em `docs/cobertura.md`).
 
-Registre o percentual **de cada arquivo** em `docs/cobertura.md` e comente as linhas `#####` que restarem.
+Registre em `docs/cobertura.md` o percentual **de cada arquivo** e o **total**, e comente as linhas `#####` que restarem.
 
 !!! info "Por que o Makefile compila em duas etapas?"
     A partir do GCC 11, compilar e ligar em **um único comando** com `--coverage` nomeia os arquivos de dados de um jeito que o `gcov` não encontra. O alvo `make coverage` já cuida disso, compilando cada `.c` em `.o` primeiro e ligando depois.
@@ -995,8 +1439,23 @@ Each sample counts as 0.01 seconds.
 
 Em `docs/perfil.md`, responda: quais funções dominam o tempo? Isso bate com a teoria? Por que o `gprof` não "enxerga" bem o Quick Sort com `n = 50000`?
 
+### Checkpoint 5
+
+```bash
+make cppcheck && wc -c docs/cppcheck_bruto.txt   # 0 bytes = nenhum apontamento
+make coverage && ls docs/gcov                    # seis arquivos .gcov e o resumo.txt
+make profile && head -1 docs/perfil_bruto.txt    # deve imprimir: Flat profile:
+```
+
+```text
+bubble.c.gcov  heap.c.gcov  insertion.c.gcov  merge.c.gcov  quick.c.gcov  resumo.txt  selection.c.gcov
+```
+
+Rode também o comando `awk` da seção 5.2: o **TOTAL** precisa ser **≥ 70%**. Lembre que o `make coverage` apaga o `sort_main`: rode `make` de novo antes de usá-lo.
+
 !!! success "Commits sugeridos"
     ```bash
+    git commit -m "chore: adiciona alvos cppcheck, coverage e profile ao Makefile"
     git commit -m "docs: adiciona saída bruta do cppcheck e análise"
     git commit -m "docs: adiciona relatório gcov e análise de cobertura"
     git commit -m "docs: adiciona perfil gprof e interpretação"
@@ -1078,7 +1537,61 @@ int main(void) {
 ??? tip "Dica 3 — crescente e decrescente"
     São triviais de gerar com um laço (`v[i] = i` e `v[i] = n - i`). O aleatório usa `rand()` com a semente fixa, para ser reprodutível.
 
-### 6.3 Rodando
+### 6.3 Acrescentar o alvo `bench` ao Makefile
+
+!!! info "O Makefile é um arquivo compartilhado"
+    Um de vocês faz estas alterações, comita e dá `push`; o outro faz `git pull` antes de mexer no Makefile (veja a Etapa 0.8).
+
+Este é o último trecho do Makefile. Faça as alterações:
+
+**Logo abaixo de `TEST_SRCS = ...`**:
+
+```make
+BENCH_SRCS = src/bench.c $(ALG_SRCS)
+```
+
+**Logo abaixo de `TEST_OBJS = ...`** (e **troque** a linha `ALL_OBJS`):
+
+```make
+BENCH_OBJS = $(BENCH_SRCS:.c=.o)
+ALL_OBJS = $(sort $(OBJS) $(TEST_OBJS) $(BENCH_OBJS))
+```
+
+**Logo abaixo de `TEST_TARGET = test_basic`**:
+
+```make
+BENCH_TARGET = bench_sort
+```
+
+**Logo abaixo da regra `$(TEST_TARGET): ...`**:
+
+```make
+$(BENCH_TARGET): $(BENCH_OBJS)
+	$(CC) $(CFLAGS) -o $@ $^
+```
+
+**Logo abaixo do alvo `test`**, o alvo `bench`. Ele redireciona (`>`) a saída do programa, que é o CSV, para `docs/resultados.csv`:
+
+```make
+# Benchmark: gera a tabela de tempos, comparações e trocas em CSV
+bench: $(BENCH_TARGET)
+	./$(BENCH_TARGET) > docs/resultados.csv
+	@echo "Resultados gravados em docs/resultados.csv"
+```
+
+**Substitua** o `clean` e a linha `.PHONY` (mantenha o `-include` no final):
+
+```make
+clean:
+	rm -f $(TARGET) $(TEST_TARGET) $(BENCH_TARGET) sort_profile $(ALL_OBJS) $(ALL_OBJS:.o=.d) *.gcov gmon.out
+	find . \( -name '*.gcda' -o -name '*.gcno' \) -delete
+
+.PHONY: all test bench coverage profile cppcheck clean
+```
+
+Pronto: seu Makefile agora é **igual ao do [apêndice](#apendice-makefile-base)**. Se algo não funcionar, compare o seu com o do apêndice, linha a linha.
+
+### 6.4 Rodando
 
 ```bash
 make bench          # grava docs/resultados.csv (cerca de 3 minutos, quase todos em Bubble e Selection com n = 50000)
@@ -1091,7 +1604,7 @@ head docs/resultados.csv
 - Total de linhas: 3 tipos × (3 básicos × 4 tamanhos + 3 avançados × 5 tamanhos) = **81 linhas** de dados, mais o cabeçalho.
 - `wc -l docs/resultados.csv` deve dar **82**.
 
-### 6.4 Escrevendo `docs/analise.md`
+### 6.5 Escrevendo `docs/analise.md`
 
 Estrutura obrigatória:
 
@@ -1113,7 +1626,7 @@ Estrutura obrigatória:
 
 !!! success "Commits sugeridos"
     ```bash
-    git commit -m "feat: adiciona benchmark que gera CSV"
+    git commit -m "feat: adiciona benchmark que gera CSV e alvo bench no Makefile"
     git commit -m "docs: adiciona resultados.csv e análise experimental"
     ```
 
@@ -1123,21 +1636,68 @@ Estrutura obrigatória:
 
 ### 7.1 `docs/uso-ia.md`
 
-Preencha **ao longo do trabalho**, não só no fim. Registre prompts reais, o que a IA gerou e **o que vocês adaptaram ou descobriram estar errado**. Use o modelo da especificação. O uso de IA **não penaliza**; a falta de transparência e a incapacidade de explicar o código, sim.
+Preencha **ao longo do trabalho**, não só no fim. Registre prompts reais, o que a IA gerou e **o que vocês adaptaram ou descobriram estar errado**. Use o [modelo da especificação](#politica-de-uso-de-ia-e-transparencia). O uso de IA **não penaliza**; a falta de transparência e a incapacidade de explicar o código, sim.
 
-### 7.2 `README.md`
+### 7.2 `README.md` e modelos dos relatórios
 
-Deve conter: nomes dos integrantes, como compilar (`make`), como testar (`make test`), como rodar (`./sort_main <n> [algoritmo]`) e links para a análise em `docs/`.
+O `README.md` é a **primeira coisa** que um visitante vê no repositório: ele funciona como a capa da vitrine. Deve conter uma breve descrição do projeto, os nomes dos integrantes, como compilar (`make`), como testar (`make test`), como rodar (`./sort_main <n> [algoritmo]`) e links para a análise em `docs/`. Um esqueleto:
 
-### 7.3 Teste de ponta a ponta
+```markdown
+# Ordenação em C — <nome da dupla>
 
-Antes do `push` final, num diretório limpo:
+**Integrantes:** Nome Completo 1, Nome Completo 2 · **Turma:** ...
+
+## Sobre o projeto
+Implementação e análise experimental de seis algoritmos de ordenação (Bubble, Selection, Insertion, Merge, Quick e Heap) em C, com testes automatizados, cobertura de código, análise estática e profiling.
+
+## Como compilar e executar
+    make                      # compila ./sort_main
+    ./sort_main 50000         # os 6 algoritmos com n = 50000
+    ./sort_main 50000 quick   # só o Quick Sort
+
+## Testes e ferramentas
+`make test` · `make coverage` · `make bench` · `make profile` · `make cppcheck`
+
+## Documentação
+- [Análise experimental](docs/analise.md) · [Cobertura](docs/cobertura.md)
+- [Profiling](docs/perfil.md) · [cppcheck](docs/cppcheck.md) · [Uso de IA](docs/uso-ia.md)
+- Vídeo: <link do YouTube>
+
+## Warnings
+(Se algum warning de -Wall -Wextra não pôde ser corrigido, justifique aqui.)
+```
+
+??? note "Esqueletos dos relatórios `cobertura.md`, `perfil.md` e `cppcheck.md`"
+    **`docs/cobertura.md`**
+
+    | Arquivo | Cobertura de linhas | Linhas `#####` (não executadas) e motivo |
+    | --- | --- | --- |
+    | `src/basicos/bubble.c` | 100% | nenhuma |
+    | ... | ... | ... |
+    | **Total (6 arquivos)** | **xx%** (meta ≥ 70%) | |
+
+    **`docs/perfil.md`**: comando usado (valores de `N` e `ALG`); as funções que mais consomem tempo (copie o *flat profile*); interpretação: isso bate com a teoria? por que os avançados quase não aparecem com `n = 50000`?
+
+    **`docs/cppcheck.md`**
+
+    | O que foi apontado | O que corrigimos | O que mantivemos (e por quê) |
+    | --- | --- | --- |
+    | (ou: "nada foi apontado") | | |
+
+### 7.3 Teste de ponta a ponta (num clone novo)
+
+Antes do `push` final, **teste num clone novo** do repositório. Isso garante que nada depende de arquivos que só existem no seu computador (e que `docs/` e o `.gitignore` estão corretos):
 
 ```bash
+cd /tmp
+git clone <url-do-seu-repositório> teste-final
+cd teste-final
 make clean && make all && make test && make coverage && make bench && make profile && make cppcheck
 ```
 
-Tudo precisa terminar sem erro. Confira que **não há warnings** de `-Wall -Wextra` na compilação.
+O `make bench` leva cerca de 3 minutos. Tudo precisa terminar **sem erro e sem warnings** de `-Wall -Wextra`. No clone, o `git status` vai mostrar os relatórios de `docs/` como modificados, porque foram regerados: é normal. **Não commite a partir desse clone**; apague-o depois (`rm -rf /tmp/teste-final`).
+
+Se algo falhar só no clone, é sinal de arquivo que não foi versionado: rode `git status` no seu repositório original e procure arquivos novos (*untracked*).
 
 ### 7.4 Roteiro do vídeo (até 20 min)
 
@@ -1155,6 +1715,11 @@ Antes de gravar, **ensaiem**: cada integrante precisa ser capaz de compilar, exe
 !!! warning "Slides sozinhos não bastam"
     É obrigatório alternar para o terminal e o editor, mostrando código e execução real.
 
+!!! tip "Como gravar e publicar o vídeo"
+    - **Gravação:** use qualquer ferramenta que grave a tela e o microfone, como o OBS Studio, ou a gravação de uma reunião (Meet, Teams, Zoom) aberta só por vocês, compartilhando a tela.
+    - **Antes de gravar:** aumente a fonte do terminal e do editor (o texto pequeno é ilegível em vídeo), feche abas e notificações, e faça um teste de 30 segundos para conferir o áudio.
+    - **Publicação:** no YouTube, **Criar → Enviar vídeo**, e em visibilidade escolha **Não listado** (ou Público). Abra o link numa janela anônima para confirmar que ele abre sem login, e confira que a duração é de **até 20 minutos**.
+
 ### 7.5 Conferir o histórico, criar a tag e entregar
 
 **Antes de criar a tag**, confira o que o professor vai ver:
@@ -1166,7 +1731,7 @@ git shortlog -sn             # os dois nomes, com commits de código
 git log --oneline            # mensagens no padrão tipo: descrição
 ```
 
-Abra também a página do repositório no GitHub (aba **Commits**) e confirme: os arquivos de `docs/` estão lá (relatórios **versionados**), **não há** `.o`/executáveis/`gmon.out`, e o professor tem acesso se o repositório for privado.
+Abra também a página do repositório no GitHub, de preferência numa **janela anônima** (sem login), que é como qualquer visitante o verá, e confirme que o repositório abre. Na aba **Commits**, confirme: os arquivos de `docs/` estão lá (relatórios **versionados**), **não há** `.o`/executáveis/`gmon.out`.
 
 Uma **tag** marca um commit como "a versão entregue". É a fotografia oficial da entrega, que não muda mesmo que alguém commite depois:
 
@@ -1187,10 +1752,11 @@ No SIGAA, em **um único comentário por dupla**: nomes completos, link do repos
 - [ ] Quick com pivô do meio ou mediana de três, **comentado no código**
 - [ ] `src/main.c` aceita `<n> [algoritmo]` e usa `srand(42)`
 - [ ] `make test` passa e retorna código ≠ 0 quando há falha
-- [ ] `gcov` ≥ 70% de linhas nos seis arquivos; `cppcheck` sem `error`
+- [ ] `gcov` ≥ 70% de linhas no **total** dos seis arquivos; `cppcheck` sem `error`
 - [ ] `docs/` com todos os arquivos obrigatórios, **versionados**
 - [ ] Commits regulares, com mensagens no padrão `tipo: descrição`
 - [ ] `docs/uso-ia.md` preenchido
+- [ ] Repositório **público**, com `README` claro (é a sua vitrine) e sem dados pessoais ou segredos
 - [ ] Vídeo publicado e link enviado no SIGAA junto com o do repositório
 - [ ] Tag `v1.0` criada e enviada
 
@@ -1202,7 +1768,7 @@ Esta seção reúne **o que será exigido e avaliado**. O "como fazer" de cada i
 
 **Formato:** em dupla · **Linguagem:** C11 (`-std=c11`) · **Prazo sugerido:** 2 semanas, tempo para a dupla se organizar, e não 2 semanas de trabalho diário. O trabalho não é feito em uma única sessão; comece cedo.
 
-O trabalho é a avaliação prática da disciplina e tem **duas entregas indissociáveis**: o **código** (repositório GitHub) e um **vídeo de defesa obrigatório**, no qual a dupla demonstra e explica o que implementou. O vídeo substitui a avaliação escrita da Terceira Unidade.
+O trabalho é a avaliação prática da disciplina e tem **duas entregas indissociáveis**: o **código** (repositório GitHub **público**) e um **vídeo de defesa obrigatório**, no qual a dupla demonstra e explica o que implementou. O vídeo substitui a avaliação escrita da Terceira Unidade.
 
 ### Objetivos de aprendizagem
 
@@ -1212,6 +1778,7 @@ O trabalho é a avaliação prática da disciplina e tem **duas entregas indisso
 4. Produzir **documentação técnica** e **análise empírica**, confrontando as medições com a teoria de complexidade.
 5. Praticar **transparência acadêmica** no uso de IA, validando e explicando todo o código entregue.
 6. Defender oralmente as escolhas de implementação e os resultados.
+7. Construir um projeto **público** que sirva de **vitrine** do seu trabalho (portfólio), com histórico e documentação que outras pessoas possam ler.
 
 ### Organização da dupla
 
@@ -1243,7 +1810,7 @@ Existem **duas formas aceitas** de organizar o desenvolvimento e a entrega:
 | Item | Exigência |
 | --- | --- |
 | **Testes** | `tests/test_basic.c` com **no mínimo 2 casos por algoritmo** (ex.: aleatório, ordenado, invertido). Cada teste imprime `PASSOU` ou `FALHOU`, e o programa **termina com código ≠ 0** se algum falhar. Comando: `make test`. |
-| **Cobertura** | **≥ 70% de linhas** nos **seis arquivos de algoritmos** (`src/basicos/*.c` e `src/avancados/*.c`), medida com `make coverage`. `main.c`, `bench.c` e os testes não entram na conta. Percentual de cada arquivo em `docs/cobertura.md`. |
+| **Cobertura** | **≥ 70% de linhas no conjunto** dos **seis arquivos de algoritmos** (`src/basicos/*.c` e `src/avancados/*.c`), ou seja, linhas executadas ÷ linhas executáveis somando os seis, medida com `make coverage`. `main.c`, `bench.c` e os testes não entram na conta. Percentual de cada arquivo em `docs/cobertura.md`. |
 | **Análise estática** | `make cppcheck` grava `docs/cppcheck_bruto.txt`. Em `docs/cppcheck.md`: o que foi apontado, corrigido e mantido (com justificativa). **Sem apontamentos `error`.** |
 | **Profiling** | `make profile` grava `docs/perfil_bruto.txt` (compilado com `-O0`). Interpretação em `docs/perfil.md`. |
 | **Benchmark** | `make bench` grava `docs/resultados.csv` (formato e parâmetros na Etapa 6). Análise em `docs/analise.md`. |
@@ -1300,7 +1867,7 @@ Crie `docs/uso-ia.md` neste modelo:
 ```text
 ordenacao-<dupla>/
 ├── README.md                  # Instruções de build, membros, links
-├── Makefile                   # Modelo no apêndice
+├── Makefile                   # Construído ao longo das etapas (versão final no apêndice)
 ├── .gitignore
 ├── src/
 │   ├── basicos/               # bubble.c, selection.c, insertion.c
@@ -1353,7 +1920,7 @@ gmon.out
 | --- | --- | --- |
 | **Funcionalidade** | 6 algoritmos compilam, executam e ordenam corretamente, com contagem de comparações e trocas | 25 |
 | **Histórico Git** | Commits regulares, mensagens claras, evolução visível (e definição do formato de defesa da dupla) | 20 |
-| **Qualidade e testes** | Testes passam, `gcov` ≥ 70% de linhas nos 6 arquivos, `cppcheck` sem erros | 20 |
+| **Qualidade e testes** | Testes passam, `gcov` ≥ 70% de linhas no total dos 6 arquivos, `cppcheck` sem erros | 20 |
 | **Documentação e análise** | `analise.md`, `cobertura.md`, `perfil.md`, `cppcheck.md`, `resultados.csv` e `README` funcional | 20 |
 | **Colaboração e IA** | Divisão equilibrada (ou compensação na apresentação), `docs/uso-ia.md` preenchido, código explicável | 15 |
 
@@ -1377,16 +1944,16 @@ gmon.out
 
 ### Entrega do projeto
 
-1. **Repositório GitHub** atualizado (público, ou privado com acesso liberado ao professor: usuário **[PREENCHER: usuário GitHub do professor]**).
+1. **Repositório GitHub** atualizado e **público**. Ele é a vitrine do seu trabalho: capriche no `README` e na documentação.
 2. **Tag `v1.0`** na versão final (comandos na Etapa 7.5).
 3. **Envio via SIGAA**, em **um único comentário por dupla**, com: nomes completos dos integrantes, link do repositório e link do vídeo no YouTube.
 
 !!! tip "Teste final antes do `push`"
     `make clean && make all && make test && make coverage && make bench && make profile && make cppcheck` (o `make bench` leva cerca de 3 minutos).
 
-## Apêndice: Makefile Base {#apendice-makefile-base}
+## Apêndice A: Makefile Base {#apendice-makefile-base}
 
-Copie o arquivo abaixo para a **raiz** do repositório, com o nome `Makefile`. Ele inclui os alvos de compilação, testes, benchmark, `gcov`, `gprof` e `cppcheck`.
+Este é o Makefile **final**: o mesmo que você terá ao concluir a Etapa 6, depois de construí-lo aos poucos nas Etapas 1, 2, 5 e 6. Serve de **referência**: se algo der errado no seu, compare com ele. Ele inclui os alvos de compilação, testes, benchmark, `gcov`, `gprof` e `cppcheck`.
 
 !!! warning "Makefile exige TAB"
     As linhas de comando das regras precisam começar com o caractere **TAB**, não com espaços. Se ao copiar o arquivo aparecer `missing separator`, é isso. Em editores como VS Code, confira se a indentação das linhas de comando não foi convertida em espaços (canto inferior direito: "Tab Size" / "Spaces").
@@ -1502,3 +2069,89 @@ make profile N=200000 ALG=merge       # só o Merge Sort, com n maior
 
 !!! tip "`make: Nothing to be done` ou `make: 'sort_main' is up to date`?"
     O `make` só recompila o que mudou. Se você acabou de editar um arquivo e ele diz que nada há a fazer, confira se **salvou** o arquivo e se o `Makefile` lista esse `.c` em `ALG_SRCS`.
+
+## Apêndice B: Erros comuns e depuração {#apendice-b-erros-comuns-e-depuracao}
+
+### Mensagens frequentes
+
+| Mensagem | Causa provável | O que fazer |
+| --- | --- | --- |
+| `Makefile:30: *** missing separator.  Stop.` | Uma linha de comando começa com espaços em vez de **TAB** | Troque a indentação por TAB (o número é a linha com problema) |
+| `undefined reference to 'heapSort'` seguido de `ld returned 1 exit status` | O nome da função difere do protótipo (atenção às maiúsculas: `heapsort` ≠ `heapSort`), o arquivo não está em `ALG_SRCS`, ou o esqueleto não tem a função | Confira o nome **exato** em `algoritmos.h` e no `.c`, e a lista `ALG_SRCS` |
+| `error: unknown type name 'Metricas'` | Falta `#include "../algoritmos.h"` no `.c` (ou o caminho está errado) | Inclua o cabeçalho na primeira linha do arquivo |
+| `No rule to make target 'src/bench.o', needed by 'bench_sort'` | O arquivo `src/bench.c` não existe (ainda) ou tem outro nome | Crie o arquivo, no caminho e com o nome corretos |
+| `warning: unused variable 'x' [-Wunused-variable]` | Variável declarada e nunca usada | Remova ou use a variável: os warnings devem ser corrigidos |
+| `make: 'sort_main' is up to date.` | Nada mudou desde a última compilação | Confira se **salvou** o arquivo |
+| `./sort_main: No such file or directory` | Ainda não compilou, ou o `make coverage` apagou o executável | Rode `make` |
+| `comparações=0 trocas=0` no `sort_main` depois de implementar | O `make test` não religa o `sort_main` | Rode `make` antes de `./sort_main` |
+| `make: *** [Makefile:..: test] Error 1` | Algum teste falhou | Procure a primeira linha `FALHOU` acima da mensagem |
+| `Segmentation fault (core dumped)` | Acesso inválido à memória: índice fora do vetor, recursão sem fim, ponteiro nulo | Veja a seção seguinte |
+
+### Descobrindo a linha de um erro de memória
+
+Compilando com o **AddressSanitizer**, o GCC insere verificações que apontam a linha exata de um acesso inválido. Não precisa instalar nada além do `gcc`:
+
+```bash
+gcc -std=c11 -g -O0 -fsanitize=address,undefined -o test_asan \
+    tests/test_basic.c src/basicos/*.c src/avancados/*.c
+./test_asan
+```
+
+Em um exemplo real, trocar `j < n - 1 - i` por `j <= n - 1 - i` no Bubble Sort (lê uma posição **depois** do fim do vetor) produz algo assim (resumido):
+
+```text
+==218==ERROR: AddressSanitizer: heap-buffer-overflow on address 0x503000000054 ...
+READ of size 4 at 0x503000000054 thread T0
+    #0 0x... in bubbleSort src/basicos/bubble.c:10
+    #1 0x... in verifica tests/test_basic.c:30
+    #2 0x... in testaAlgoritmo tests/test_basic.c:47
+```
+
+Como ler: `heap-buffer-overflow` diz **o tipo** do erro (acesso além do fim de uma área alocada); `READ` diz que foi uma **leitura**; a linha `#0` mostra **onde** (`bubble.c:10`); as linhas seguintes mostram **quem chamou**. Vá até a linha indicada e examine os índices.
+
+Depois de usar, apague o executável (`rm test_asan`, e `rm test_dbg` se usar o `gdb`/`valgrind`) para não o commitar.
+
+O AddressSanitizer detecta também o **estouro de pilha** causado por recursão sem fim (`ERROR: AddressSanitizer: stack-overflow`), apontando a função e a linha.
+
+### `gdb` e `valgrind` (opcionais)
+
+O AddressSanitizer costuma bastar. As duas ferramentas abaixo são alternativas; instale-as, se quiser, com `sudo apt install gdb valgrind`. Compile **sem `-O2`** e com `-g`, para que apareçam nomes de funções e números de linha:
+
+```bash
+gcc -std=c11 -g -O0 -o test_dbg tests/test_basic.c src/basicos/*.c src/avancados/*.c
+```
+
+| Ferramenta | Quando usar | Limitação |
+| --- | --- | --- |
+| **`gdb`** | O programa **trava** (`Segmentation fault`) e você quer ver **onde** e **quem chamou** | Se o programa não travar, não há o que mostrar |
+| **`valgrind`** | Acessos inválidos à memória, **mesmo que o programa não trave** | É mais lento; sem `-g`, mostra funções mas **não as linhas** |
+
+**`gdb`: `run` e `bt`.** Rode `gdb ./test_dbg`; no prompt `(gdb)`, digite `run`. Quando o programa travar, `bt` (*backtrace*) mostra a pilha de chamadas. Para não inundar a tela, use `bt 3` (as 3 primeiras chamadas) ou `bt -3` (as 3 últimas); `quit` sai. Num Quick Sort com a recursão errada (a segunda chamada recursiva sem reduzir o intervalo), o resultado é:
+
+```text
+Program received signal SIGSEGV, Segmentation fault.
+#0  0x... in troca (v=<error reading variable: Cannot access memory at address ...>, ...)
+#1  0x... in ordena (v=0x..., baixo=0, alto=1, m=0x...) at src/avancados/quick.c:12
+#2  0x... in ordena (v=0x..., baixo=0, alto=1, m=0x...) at src/avancados/quick.c:21
+```
+
+Como ler: a mesma função `ordena`, com os **mesmos argumentos** (`baixo=0, alto=1`), chamada pela linha 21 várias vezes seguidas, é a assinatura de uma **recursão que nunca termina**. Nesse exemplo, `bt -3` mostrou mais de 130 mil chamadas empilhadas.
+
+**`valgrind`.** Rode `valgrind ./test_dbg`. No exemplo do Bubble Sort com `j <= n - 1 - i`, o programa **não trava** (só falha nos testes), e mesmo assim o `valgrind` acusa o erro:
+
+```text
+==545== Invalid read of size 4
+==545==    at 0x...: bubbleSort (bubble.c:10)
+==545==    by 0x...: verifica (test_basic.c:30)
+==545==    by 0x...: testaAlgoritmo (test_basic.c:47)
+==545==  Address 0x... is 0 bytes after a block of size 20 alloc'd
+```
+
+A última linha diz que o acesso foi **logo depois do fim** de um bloco de 20 bytes (um vetor de 5 `int`), ou seja, um índice uma posição além do último.
+
+### Método para achar um bug
+
+1. Leia a **primeira** mensagem de erro (as seguintes costumam ser consequência dela).
+2. Descubra **qual caso** falhou (`FALHOU` na lista) e reduza para o menor vetor que reproduz o problema.
+3. Simule o algoritmo **no papel** para esse vetor e compare com o que o programa faz.
+4. Só então altere o código, e rode `make test` de novo.
