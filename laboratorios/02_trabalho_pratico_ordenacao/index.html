@@ -2528,17 +2528,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#cronograma-sugerido" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Cronograma sugerido
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#defesa-em-video-obrigatoria" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3403,17 +3392,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#cronograma-sugerido" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Cronograma sugerido
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#defesa-em-video-obrigatoria" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3497,7 +3475,7 @@
 
 
 <h1 id="laboratorio-algoritmos-de-ordenacao-em-c-passo-a-passo">Laboratório: Algoritmos de Ordenação em C — Passo a Passo<a class="headerlink" href="#laboratorio-algoritmos-de-ordenacao-em-c-passo-a-passo" title="Permanent link">&para;</a></h1>
-<p>Este tutorial é o <strong>caminho</strong> para chegar ao Trabalho Prático de ordenação. A especificação (o que entregar, rubrica, prazos) está no final do capítulo, em <a href="#trabalho-pratico">Trabalho Prático</a>. Aqui você aprende <strong>como construir</strong> cada peça, em etapas pequenas, cada uma com um <strong>checkpoint</strong> (um comando e o resultado esperado) e um <strong>commit sugerido</strong>.</p>
+<p>Este tutorial é o <strong>caminho</strong> para chegar ao Trabalho Prático de ordenação. A especificação (o que entregar, rubrica e forma de envio) está no final do capítulo, em <a href="#trabalho-pratico">Trabalho Prático</a>. Aqui você aprende <strong>como construir</strong> cada peça, em etapas pequenas, cada uma com um <strong>checkpoint</strong> (um comando e o resultado esperado) e um <strong>commit sugerido</strong>.</p>
 <div class="admonition info">
 <p class="admonition-title">Como usar este tutorial</p>
 <ul>
@@ -3508,54 +3486,51 @@
 <li>Blocos recolhidos (<code>???</code>) contêm dicas. Tente primeiro sem abri-los.</li>
 </ul>
 </div>
+<div class="admonition info">
+<p class="admonition-title">Sobre o prazo de 2 semanas</p>
+<p>O prazo sugerido é de <strong>2 semanas</strong>, mas isso <strong>não quer dizer 2 semanas de trabalho todos os dias</strong>. Ninguém tem tempo livre diariamente, e tudo bem. O prazo existe para a dupla <strong>se organizar</strong>.</p>
+<p>Este <strong>não é um trabalho para fazer de uma vez</strong> (nem em uma hora, nem em uma noite). Ele tem partes que levam tempo: implementar e testar seis algoritmos, rodar o benchmark, escrever a análise, ensaiar e gravar o vídeo. Combinem <strong>quando</strong> cada um consegue trabalhar, dividam as tarefas e <strong>comecem cedo</strong>, em sessões curtas, para não deixar tudo para o último dia.</p>
+</div>
+<p>As etapas deste tutorial são:</p>
 <table>
 <thead>
 <tr>
 <th>Etapa</th>
 <th>Foco</th>
-<th>Semana sugerida</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>0</td>
 <td>Git e GitHub: conta, repositório, commits, trabalho em dupla</td>
-<td>antes da semana 1</td>
 </tr>
 <tr>
 <td>1</td>
 <td>Setup do projeto: Makefile, <code>metricas.h</code>, esqueletos</td>
-<td>1</td>
 </tr>
 <tr>
 <td>2</td>
 <td>Bubble Sort completo (código + teste + métricas)</td>
-<td>1</td>
 </tr>
 <tr>
 <td>3</td>
 <td>Selection e Insertion Sort</td>
-<td>1–2</td>
 </tr>
 <tr>
 <td>4</td>
 <td>Merge, Quick e Heap Sort</td>
-<td>2–3</td>
 </tr>
 <tr>
 <td>5</td>
 <td>Ferramentas: <code>cppcheck</code>, <code>gcov</code>, <code>gprof</code></td>
-<td>3</td>
 </tr>
 <tr>
 <td>6</td>
 <td>Benchmark e análise experimental</td>
-<td>3–4</td>
 </tr>
 <tr>
 <td>7</td>
 <td>Documentação, vídeo e entrega</td>
-<td>4</td>
 </tr>
 </tbody>
 </table>
@@ -4820,7 +4795,7 @@
 <hr />
 <h2 id="trabalho-pratico">Trabalho Prático<a class="headerlink" href="#trabalho-pratico" title="Permanent link">&para;</a></h2>
 <p>Esta seção reúne <strong>o que será exigido e avaliado</strong>. O "como fazer" de cada item está nas Etapas 0 a 7 acima; aqui ficam os requisitos, a estrutura obrigatória, a rubrica e a entrega.</p>
-<p><strong>Formato:</strong> em dupla · <strong>Linguagem:</strong> C11 (<code>-std=c11</code>) · <strong>Duração sugerida:</strong> 4 semanas (veja o cronograma abaixo).</p>
+<p><strong>Formato:</strong> em dupla · <strong>Linguagem:</strong> C11 (<code>-std=c11</code>) · <strong>Prazo sugerido:</strong> 2 semanas, tempo para a dupla se organizar, e não 2 semanas de trabalho diário. O trabalho não é feito em uma única sessão; comece cedo.</p>
 <p>O trabalho é a avaliação prática da disciplina e tem <strong>duas entregas indissociáveis</strong>: o <strong>código</strong> (repositório GitHub) e um <strong>vídeo de defesa obrigatório</strong>, no qual a dupla demonstra e explica o que implementou. O vídeo substitui a avaliação escrita da Terceira Unidade.</p>
 <h3 id="objetivos-de-aprendizagem">Objetivos de aprendizagem<a class="headerlink" href="#objetivos-de-aprendizagem" title="Permanent link">&para;</a></h3>
 <ol>
@@ -4978,38 +4953,6 @@
 <a id="__codelineno-55-9" name="__codelineno-55-9" href="#__codelineno-55-9"></a>/test_basic
 <a id="__codelineno-55-10" name="__codelineno-55-10" href="#__codelineno-55-10"></a>/bench_sort
 </code></pre></div>
-<h3 id="cronograma-sugerido">Cronograma sugerido<a class="headerlink" href="#cronograma-sugerido" title="Permanent link">&para;</a></h3>
-<table>
-<thead>
-<tr>
-<th>Semana</th>
-<th>Foco</th>
-<th>Meta Git</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>1</strong></td>
-<td>Setup, <code>Makefile</code>, <code>metricas.h</code>, 2 básicos, 1 teste cada</td>
-<td>Commits iniciais + estrutura</td>
-</tr>
-<tr>
-<td><strong>2</strong></td>
-<td>3º básico, 2 avançados, testes rodando, esqueleto do <code>bench.c</code></td>
-<td>Histórico crescente (≥ 5 commits)</td>
-</tr>
-<tr>
-<td><strong>3</strong></td>
-<td>Completar avançados; <code>make coverage</code>, <code>make cppcheck</code>, <code>make profile</code>; <code>make bench</code> completo</td>
-<td>Commits de refino + relatórios brutos em <code>docs/</code></td>
-</tr>
-<tr>
-<td><strong>4</strong></td>
-<td>Escrever <code>analise.md</code>, <code>cobertura.md</code>, <code>perfil.md</code>, <code>cppcheck.md</code>; gravar o vídeo; tag <code>v1.0</code></td>
-<td>Entrega + link no SIGAA</td>
-</tr>
-</tbody>
-</table>
 <h3 id="defesa-em-video-obrigatoria">Defesa em vídeo (obrigatória)<a class="headerlink" href="#defesa-em-video-obrigatoria" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>Formato:</strong> gravação de <strong>até 20 minutos</strong>, publicada no YouTube (público ou não listado). O link vai no SIGAA junto com a entrega do repositório.</li>
