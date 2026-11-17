@@ -1,6 +1,6 @@
 # Laboratório: Algoritmos de Ordenação em C — Passo a Passo
 
-Este tutorial é o **caminho** para chegar ao Trabalho Prático de ordenação. A especificação (o que entregar, rubrica, prazos) está no final do capítulo, em [Trabalho Prático](#trabalho-pratico). Aqui você aprende **como construir** cada peça, em etapas pequenas, cada uma com um **checkpoint** (um comando e o resultado esperado) e um **commit sugerido**.
+Este tutorial é o **caminho** para chegar ao Trabalho Prático de ordenação. A especificação (o que entregar, rubrica e forma de envio) está no final do capítulo, em [Trabalho Prático](#trabalho-pratico). Aqui você aprende **como construir** cada peça, em etapas pequenas, cada uma com um **checkpoint** (um comando e o resultado esperado) e um **commit sugerido**.
 
 !!! info "Como usar este tutorial"
     - Nunca usou Git ou GitHub? Comece pela **Etapa 0**: ela explica conta, criação do repositório, commits e trabalho em dupla.
@@ -9,16 +9,23 @@ Este tutorial é o **caminho** para chegar ao Trabalho Prático de ordenação. 
     - A etapa 2 (Bubble Sort) é um exemplo **completo** do ciclo: código, teste, métricas. As demais etapas dão o contrato, dicas e os casos de teste; **o código é seu**.
     - Blocos recolhidos (`???`) contêm dicas. Tente primeiro sem abri-los.
 
-| Etapa | Foco | Semana sugerida |
-| --- | --- | --- |
-| 0 | Git e GitHub: conta, repositório, commits, trabalho em dupla | antes da semana 1 |
-| 1 | Setup do projeto: Makefile, `metricas.h`, esqueletos | 1 |
-| 2 | Bubble Sort completo (código + teste + métricas) | 1 |
-| 3 | Selection e Insertion Sort | 1–2 |
-| 4 | Merge, Quick e Heap Sort | 2–3 |
-| 5 | Ferramentas: `cppcheck`, `gcov`, `gprof` | 3 |
-| 6 | Benchmark e análise experimental | 3–4 |
-| 7 | Documentação, vídeo e entrega | 4 |
+!!! info "Sobre o prazo de 2 semanas"
+    O prazo sugerido é de **2 semanas**, mas isso **não quer dizer 2 semanas de trabalho todos os dias**. Ninguém tem tempo livre diariamente, e tudo bem. O prazo existe para a dupla **se organizar**.
+
+    Este **não é um trabalho para fazer de uma vez** (nem em uma hora, nem em uma noite). Ele tem partes que levam tempo: implementar e testar seis algoritmos, rodar o benchmark, escrever a análise, ensaiar e gravar o vídeo. Combinem **quando** cada um consegue trabalhar, dividam as tarefas e **comecem cedo**, em sessões curtas, para não deixar tudo para o último dia.
+
+As etapas deste tutorial são:
+
+| Etapa | Foco |
+| --- | --- |
+| 0 | Git e GitHub: conta, repositório, commits, trabalho em dupla |
+| 1 | Setup do projeto: Makefile, `metricas.h`, esqueletos |
+| 2 | Bubble Sort completo (código + teste + métricas) |
+| 3 | Selection e Insertion Sort |
+| 4 | Merge, Quick e Heap Sort |
+| 5 | Ferramentas: `cppcheck`, `gcov`, `gprof` |
+| 6 | Benchmark e análise experimental |
+| 7 | Documentação, vídeo e entrega |
 
 ---
 
@@ -1193,7 +1200,7 @@ No SIGAA, em **um único comentário por dupla**: nomes completos, link do repos
 
 Esta seção reúne **o que será exigido e avaliado**. O "como fazer" de cada item está nas Etapas 0 a 7 acima; aqui ficam os requisitos, a estrutura obrigatória, a rubrica e a entrega.
 
-**Formato:** em dupla · **Linguagem:** C11 (`-std=c11`) · **Duração sugerida:** 4 semanas (veja o cronograma abaixo).
+**Formato:** em dupla · **Linguagem:** C11 (`-std=c11`) · **Prazo sugerido:** 2 semanas, tempo para a dupla se organizar, e não 2 semanas de trabalho diário. O trabalho não é feito em uma única sessão; comece cedo.
 
 O trabalho é a avaliação prática da disciplina e tem **duas entregas indissociáveis**: o **código** (repositório GitHub) e um **vídeo de defesa obrigatório**, no qual a dupla demonstra e explica o que implementou. O vídeo substitui a avaliação escrita da Terceira Unidade.
 
@@ -1330,15 +1337,6 @@ gmon.out
 /test_basic
 /bench_sort
 ```
-
-### Cronograma sugerido
-
-| Semana | Foco | Meta Git |
-| --- | --- | --- |
-| **1** | Setup, `Makefile`, `metricas.h`, 2 básicos, 1 teste cada | Commits iniciais + estrutura |
-| **2** | 3º básico, 2 avançados, testes rodando, esqueleto do `bench.c` | Histórico crescente (≥ 5 commits) |
-| **3** | Completar avançados; `make coverage`, `make cppcheck`, `make profile`; `make bench` completo | Commits de refino + relatórios brutos em `docs/` |
-| **4** | Escrever `analise.md`, `cobertura.md`, `perfil.md`, `cppcheck.md`; gravar o vídeo; tag `v1.0` | Entrega + link no SIGAA |
 
 ### Defesa em vídeo (obrigatória)
 
