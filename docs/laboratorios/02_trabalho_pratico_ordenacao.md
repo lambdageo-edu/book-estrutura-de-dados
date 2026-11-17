@@ -1,4 +1,3 @@
-
 # Laboratório: Algoritmos de Ordenação em C — Passo a Passo
 
 Este tutorial é o **caminho** para chegar ao Trabalho Prático de ordenação. A especificação (o que entregar, rubrica, prazos) está no final do capítulo, em [Trabalho Prático](#trabalho-pratico). Aqui você aprende **como construir** cada peça, em etapas pequenas, cada uma com um **checkpoint** (um comando e o resultado esperado) e um **commit sugerido**.
@@ -1192,8 +1191,316 @@ No SIGAA, em **um único comentário por dupla**: nomes completos, link do repos
 
 ## Trabalho Prático
 
-> Cole aqui, ou aponte para, a especificação completa do trabalho: organização da dupla, requisitos por algoritmo, política de IA, estrutura obrigatória do repositório, rubricas e composição da nota.
+Esta seção reúne **o que será exigido e avaliado**. O "como fazer" de cada item está nas Etapas 0 a 7 acima; aqui ficam os requisitos, a estrutura obrigatória, a rubrica e a entrega.
+
+**Formato:** em dupla · **Linguagem:** C11 (`-std=c11`) · **Duração sugerida:** 4 semanas (veja o cronograma abaixo).
+
+O trabalho é a avaliação prática da disciplina e tem **duas entregas indissociáveis**: o **código** (repositório GitHub) e um **vídeo de defesa obrigatório**, no qual a dupla demonstra e explica o que implementou. O vídeo substitui a avaliação escrita da Terceira Unidade.
+
+### Objetivos de aprendizagem
+
+1. Implementar **3 algoritmos básicos** e **3 avançados** de ordenação em C.
+2. Praticar **controle de versão** com Git em equipe, com histórico incremental.
+3. Aplicar **qualidade e medição**: testes, cobertura (`gcov`), análise estática (`cppcheck`) e profiling (`gprof`).
+4. Produzir **documentação técnica** e **análise empírica**, confrontando as medições com a teoria de complexidade.
+5. Praticar **transparência acadêmica** no uso de IA, validando e explicando todo o código entregue.
+6. Defender oralmente as escolhas de implementação e os resultados.
+
+### Organização da dupla
+
+Existem **duas formas aceitas** de organizar o desenvolvimento e a entrega:
+
+1. **Formato ideal (equilibrado):** ambos contribuem com commits frequentes e relevantes de código, e **ambos** participam do vídeo, dividindo a explicação.
+2. **Formato assimétrico:** se um integrante tiver participação mínima nos commits (por exemplo, apenas um ou dois commits triviais, como editar o `README.md`), **esse integrante assume integralmente a apresentação do vídeo**, explicando sozinho todo o código, as ferramentas e os resultados.
+
+**Regra única:** em qualquer formato, **ambos** devem conseguir compilar, executar e explicar qualquer parte do código. O vídeo verifica o domínio real sobre o que foi entregue.
+
+### Requisitos de implementação
+
+| Categoria | Algoritmos | Assinatura |
+| --- | --- | --- |
+| **Básicos** | Bubble Sort, Selection Sort, Insertion Sort | `void algoritmoSort(int v[], int n, Metricas *m);` |
+| **Avançados** | Merge Sort, Quick Sort, Heap Sort | `void algoritmoSort(int v[], int n, Metricas *m);` |
+
+- Cada algoritmo em **arquivo `.c` separado**, com as funções `bubbleSort`, `selectionSort`, `insertionSort`, `mergeSort`, `quickSort` e `heapSort`.
+- A estrutura `Metricas` fica em `src/metricas.h` (veja a Etapa 1.4). O ponteiro `m` **nunca é `NULL`**: quem chama sempre passa uma estrutura zerada.
+- **Comparação:** conta apenas comparações entre valores do vetor (não conte o `i < n` dos laços).
+- **Trocas:** Bubble, Selection, Quick e Heap contam trocas de dois elementos; Insertion e Merge contam **movimentações** (deslocamentos e cópias). O critério adotado deve ser registrado em `docs/analise.md`.
+- **Merge Sort:** vetor auxiliar alocado **dentro** da função (`malloc`), com verificação do retorno e `free` antes de retornar.
+- **Quick Sort:** o pivô **não pode ser sempre o primeiro ou o último elemento**. Use o elemento do meio ou a mediana de três, e **comente a escolha no código**.
+- **`src/main.c`:** aceita `./sort_main <n> [bubble|selection|insertion|merge|quick|heap]`, gera vetor aleatório com `srand(42)`, e imprime tempo (`clock()`), comparações e trocas. Sem o 2º argumento, executa os seis algoritmos, cada um sobre uma **cópia** do mesmo vetor.
+- **Compilação:** via `make`, com `-std=c11`. Zero erros; warnings de `-Wall -Wextra` devem ser corrigidos (ou justificados no `README`).
+
+### Requisitos de teste, qualidade e medição
+
+| Item | Exigência |
+| --- | --- |
+| **Testes** | `tests/test_basic.c` com **no mínimo 2 casos por algoritmo** (ex.: aleatório, ordenado, invertido). Cada teste imprime `PASSOU` ou `FALHOU`, e o programa **termina com código ≠ 0** se algum falhar. Comando: `make test`. |
+| **Cobertura** | **≥ 70% de linhas** nos **seis arquivos de algoritmos** (`src/basicos/*.c` e `src/avancados/*.c`), medida com `make coverage`. `main.c`, `bench.c` e os testes não entram na conta. Percentual de cada arquivo em `docs/cobertura.md`. |
+| **Análise estática** | `make cppcheck` grava `docs/cppcheck_bruto.txt`. Em `docs/cppcheck.md`: o que foi apontado, corrigido e mantido (com justificativa). **Sem apontamentos `error`.** |
+| **Profiling** | `make profile` grava `docs/perfil_bruto.txt` (compilado com `-O0`). Interpretação em `docs/perfil.md`. |
+| **Benchmark** | `make bench` grava `docs/resultados.csv` (formato e parâmetros na Etapa 6). Análise em `docs/analise.md`. |
+
+**Parâmetros do benchmark:** tamanhos 1.000 · 5.000 · 10.000 · 50.000 (todos); os avançados também com 500.000 (**não** rode os básicos com 500.000) · entradas aleatória, crescente e decrescente · 5 repetições por combinação, registrando a **média** dos tempos · `srand(42)` · `clock()` medindo **só a ordenação** · compilação com `-O2`.
+
+### Fluxo Git/GitHub
+
+Não há exigência de *branch protection*, revisão obrigatória ou bloqueio de `push` direto na `main`. O foco é o **hábito de versionar incrementalmente** (veja a Etapa 0):
+
+- **Commits frequentes:** mínimo 1 a cada 2-3 dias de trabalho.
+- **Mensagens descritivas** no padrão `tipo: descrição`. Evite `update`, `fix`, `salva tudo`.
+- **Participação visível:** o `git log` define o formato de defesa da dupla. Cada integrante deve configurar `user.name` e `user.email` na própria máquina.
+- **Branches e PRs:** opcionais.
+
+### Política de uso de IA e transparência
+
+**Permitido e incentivado:** gerar trechos para estudo, pedir explicação de erros, revisar formatação, sugerir nomes de variáveis, usar como tutor.
+
+**Não permitido:** entregar código completo sem entender, testar ou adaptar; ocultar prompts ou ferramentas utilizadas.
+
+Crie `docs/uso-ia.md` neste modelo:
+
+```markdown
+# Uso de Ferramentas de IA no Projeto
+
+## Ferramentas Utilizadas
+- [ ] ChatGPT
+- [ ] GitHub Copilot
+- [ ] Claude
+- [ ] Gemini
+- [ ] Outra: _______________
+
+## Como Usamos (exemplos reais)
+| Prompt / Solicitação | O que a IA gerou | O que adaptamos/validamos |
+|----------------------|------------------|---------------------------|
+| "Explique como o heapify restaura o max-heap" | Texto + pseudocódigo | Reescrevemos em C, ajustamos índices 2i+1 e adicionamos testes |
+| "Corrija warning unused variable em merge.c" | Sugeriu remover var | Mantivemos, renomeamos e usamos no laço |
+
+## Validação & Domínio
+- [ ] Compilamos e rodamos todo código gerado ou sugerido
+- [ ] Todos conseguem explicar o funcionamento de cada algoritmo em 2 minutos
+- [ ] Não submetemos blocos inteiros sem revisão linha a linha
+
+## Reflexão Final (3-5 linhas)
+(Descreva onde a IA ajudou, onde atrapalhou, e o que a dupla aprendeu ao questionar as respostas.)
+```
+
+!!! note "Avaliação"
+    O uso de IA **não penaliza**. Falta de transparência, código não testado ou dupla incapaz de explicar a entrega **penaliza**.
+
+### Estrutura obrigatória do repositório
+
+```text
+ordenacao-<dupla>/
+├── README.md                  # Instruções de build, membros, links
+├── Makefile                   # Modelo no apêndice
+├── .gitignore
+├── src/
+│   ├── basicos/               # bubble.c, selection.c, insertion.c
+│   ├── avancados/             # merge.c, quick.c, heap.c
+│   ├── metricas.h             # struct Metricas
+│   ├── algoritmos.h           # protótipos (complemento sugerido neste tutorial)
+│   ├── main.c                 # Ponto de entrada (aceita n e algoritmo)
+│   └── bench.c                # Benchmark que gera o CSV
+├── tests/
+│   └── test_basic.c           # Testes automatizados
+└── docs/
+    ├── resultados.csv         # Saída do make bench
+    ├── analise.md             # Análise experimental x teoria
+    ├── cobertura.md           # Relatório gcov + análise
+    ├── gcov/                  # Saída do make coverage (resumo.txt e .gcov)
+    ├── perfil_bruto.txt       # Saída do gprof (make profile)
+    ├── perfil.md              # Interpretação do profiling
+    ├── cppcheck_bruto.txt     # Saída do make cppcheck
+    ├── cppcheck.md            # O que foi apontado, corrigido e mantido
+    └── uso-ia.md              # Transparência de prompts e validação
+```
+
+`.gitignore` sugerido (binários e intermediários ficam de fora; os relatórios em `docs/` **devem** ser versionados):
+
+```text
+*.o
+*.d
+*.gcda
+*.gcno
+/*.gcov
+gmon.out
+/sort_main
+/sort_profile
+/test_basic
+/bench_sort
+```
+
+### Cronograma sugerido
+
+| Semana | Foco | Meta Git |
+| --- | --- | --- |
+| **1** | Setup, `Makefile`, `metricas.h`, 2 básicos, 1 teste cada | Commits iniciais + estrutura |
+| **2** | 3º básico, 2 avançados, testes rodando, esqueleto do `bench.c` | Histórico crescente (≥ 5 commits) |
+| **3** | Completar avançados; `make coverage`, `make cppcheck`, `make profile`; `make bench` completo | Commits de refino + relatórios brutos em `docs/` |
+| **4** | Escrever `analise.md`, `cobertura.md`, `perfil.md`, `cppcheck.md`; gravar o vídeo; tag `v1.0` | Entrega + link no SIGAA |
+
+### Defesa em vídeo (obrigatória)
+
+- **Formato:** gravação de **até 20 minutos**, publicada no YouTube (público ou não listado). O link vai no SIGAA junto com a entrega do repositório.
+- **Não são aceitas apresentações só com slides:** é obrigatório alternar para o terminal e o editor, mostrando código e execução real.
+- **Apresentadores:** se o histórico de commits for equilibrado, **os dois** apresentam; se um integrante tiver participação mínima ou superficial, **ele apresenta o vídeo completo sozinho**, demonstrando domínio de todo o código do colega.
+- **Estrutura e tempos:** veja a tabela da Etapa 7.4.
+
+### Avaliação
+
+**Rubrica do código (100 pts):**
+
+| Critério | O que será observado | Peso |
+| --- | --- | --- |
+| **Funcionalidade** | 6 algoritmos compilam, executam e ordenam corretamente, com contagem de comparações e trocas | 25 |
+| **Histórico Git** | Commits regulares, mensagens claras, evolução visível (e definição do formato de defesa da dupla) | 20 |
+| **Qualidade e testes** | Testes passam, `gcov` ≥ 70% de linhas nos 6 arquivos, `cppcheck` sem erros | 20 |
+| **Documentação e análise** | `analise.md`, `cobertura.md`, `perfil.md`, `cppcheck.md`, `resultados.csv` e `README` funcional | 20 |
+| **Colaboração e IA** | Divisão equilibrada (ou compensação na apresentação), `docs/uso-ia.md` preenchido, código explicável | 15 |
+
+!!! warning
+    Repositórios com 1-2 commits no dia da entrega, mensagens vazias ou código que a dupla não consegue modificar serão penalizados em Git/Colaboração.
+
+**Rubrica do vídeo (4,0 pts, substitui a avaliação escrita da Unidade 3):**
+
+| Critério | O que será observado | Pontos |
+| --- | --- | --- |
+| **Organização e clareza** | Apresentação didática, áudio nítido, divisão do tempo e boa estrutura | 1,0 |
+| **Demonstração do código** | Explicação concisa da implementação e compilação/execução correta | 1,0 |
+| **Análise de resultados** | Discussão fundamentada nas medições, comparando os algoritmos | 1,0 |
+| **Domínio e participação** | Apresentação conforme o histórico Git, demonstrando domínio total do código | 1,0 |
+
+!!! note "Composição da nota final"
+    - **Vídeo:** 4,0 pontos, na Terceira Unidade.
+    - **Código:** a pontuação de 0 a 100 é convertida para **[PREENCHER: escala/peso conforme o plano de ensino]**.
+    - **Individualização:** a nota é da dupla, mas pode ser **ajustada individualmente** quando o histórico Git, a participação no vídeo ou a arguição indicarem contribuição desigual.
+    - **Atraso:** **[PREENCHER: política, ex.: −10% da nota por dia de atraso]**.
+
+### Entrega do projeto
+
+1. **Repositório GitHub** atualizado (público, ou privado com acesso liberado ao professor: usuário **[PREENCHER: usuário GitHub do professor]**).
+2. **Tag `v1.0`** na versão final (comandos na Etapa 7.5).
+3. **Envio via SIGAA**, em **um único comentário por dupla**, com: nomes completos dos integrantes, link do repositório e link do vídeo no YouTube.
+
+!!! tip "Teste final antes do `push`"
+    `make clean && make all && make test && make coverage && make bench && make profile && make cppcheck` (o `make bench` leva cerca de 3 minutos).
 
 ## Apêndice: Makefile Base {#apendice-makefile-base}
 
-> Cole aqui o Makefile base fornecido na especificação do trabalho.
+Copie o arquivo abaixo para a **raiz** do repositório, com o nome `Makefile`. Ele inclui os alvos de compilação, testes, benchmark, `gcov`, `gprof` e `cppcheck`.
+
+!!! warning "Makefile exige TAB"
+    As linhas de comando das regras precisam começar com o caractere **TAB**, não com espaços. Se ao copiar o arquivo aparecer `missing separator`, é isso. Em editores como VS Code, confira se a indentação das linhas de comando não foi convertida em espaços (canto inferior direito: "Tab Size" / "Spaces").
+
+```makefile
+CC = gcc
+WARN = -Wall -Wextra -std=c11
+CFLAGS = $(WARN) -O2
+DEPFLAGS = -MMD -MP
+GCOV_FLAGS = --coverage -g -O0
+PROFILE_FLAGS = -pg -g -O0
+
+# Parâmetros do profiling: make profile N=50000 ALG=bubble
+N ?= 50000
+ALG ?=
+
+ALG_SRCS = src/basicos/bubble.c src/basicos/selection.c src/basicos/insertion.c \
+           src/avancados/merge.c src/avancados/quick.c src/avancados/heap.c
+SRCS = src/main.c $(ALG_SRCS)
+TEST_SRCS = tests/test_basic.c $(ALG_SRCS)
+BENCH_SRCS = src/bench.c $(ALG_SRCS)
+
+OBJS = $(SRCS:.c=.o)
+TEST_OBJS = $(TEST_SRCS:.c=.o)
+BENCH_OBJS = $(BENCH_SRCS:.c=.o)
+ALL_OBJS = $(sort $(OBJS) $(TEST_OBJS) $(BENCH_OBJS))
+
+TARGET = sort_main
+TEST_TARGET = test_basic
+BENCH_TARGET = bench_sort
+
+all: $(TARGET)
+
+$(TARGET): $(OBJS)
+	$(CC) $(CFLAGS) -o $@ $^
+
+$(TEST_TARGET): $(TEST_OBJS)
+	$(CC) $(CFLAGS) -o $@ $^
+
+$(BENCH_TARGET): $(BENCH_OBJS)
+	$(CC) $(CFLAGS) -o $@ $^
+
+%.o: %.c
+	$(CC) $(CFLAGS) $(DEPFLAGS) -c $< -o $@
+
+test: $(TEST_TARGET)
+	./$(TEST_TARGET)
+
+# Benchmark: gera a tabela de tempos, comparações e trocas em CSV
+bench: $(BENCH_TARGET)
+	./$(BENCH_TARGET) > docs/resultados.csv
+	@echo "Resultados gravados em docs/resultados.csv"
+
+# Cobertura: recompila tudo sem otimização e com instrumentação (CFLAGS substituído).
+# Ao final, remove os objetos instrumentados para não contaminar o próximo 'make'.
+coverage: CFLAGS = $(WARN) $(GCOV_FLAGS)
+coverage: clean test
+	@mkdir -p docs/gcov
+	( gcov -o src/basicos src/basicos/*.c; gcov -o src/avancados src/avancados/*.c ) | tee docs/gcov/resumo.txt
+	mv *.gcov docs/gcov/
+	rm -f $(ALL_OBJS) $(ALL_OBJS:.o=.d) $(TEST_TARGET)
+	find . \( -name '*.gcda' -o -name '*.gcno' \) -delete
+	@echo "Relatórios .gcov e resumo em docs/gcov/"
+
+# Profiling: compila direto das fontes, só com -O0 (sem o -O2 de CFLAGS)
+profile:
+	$(CC) $(WARN) $(PROFILE_FLAGS) -o sort_profile $(SRCS)
+	./sort_profile $(N) $(ALG)
+	gprof sort_profile gmon.out > docs/perfil_bruto.txt
+	@echo "Profiling gerado em docs/perfil_bruto.txt (veja a seção 'Flat profile')"
+
+# Análise estática
+cppcheck:
+	cppcheck --enable=warning,style,performance,portability --std=c11 \
+	    --inline-suppr --suppress=missingIncludeSystem src tests 2> docs/cppcheck_bruto.txt
+	@echo "Resultado em docs/cppcheck_bruto.txt"
+
+clean:
+	rm -f $(TARGET) $(TEST_TARGET) $(BENCH_TARGET) sort_profile $(ALL_OBJS) $(ALL_OBJS:.o=.d) *.gcov gmon.out
+	find . \( -name '*.gcda' -o -name '*.gcno' \) -delete
+
+.PHONY: all test bench coverage profile cppcheck clean
+
+-include $(ALL_OBJS:.o=.d)
+```
+
+### O que cada alvo faz
+
+| Comando | O que faz | Gera / altera | Observações |
+| --- | --- | --- | --- |
+| `make` ou `make all` | Compila o programa principal | `sort_main` | Use **depois de alterar um algoritmo** e antes de rodar `./sort_main` |
+| `make test` | Compila e roda os testes | `test_basic` | Retorna código ≠ 0 se algum teste falhar. **Não** atualiza o `sort_main` |
+| `make bench` | Compila e roda o benchmark | `docs/resultados.csv` | Leva cerca de 3 minutos; usa `-O2` |
+| `make coverage` | Recompila com `--coverage -O0`, roda os testes e gera os relatórios do `gcov` | `docs/gcov/` (`resumo.txt` e `.gcov`) | **Executa `clean` antes** e remove os objetos no final; rode `make` de novo depois |
+| `make profile` | Compila com `-pg -O0`, roda e gera o perfil do `gprof` | `docs/perfil_bruto.txt` | Aceita `N=` e `ALG=`; veja abaixo |
+| `make cppcheck` | Roda a análise estática | `docs/cppcheck_bruto.txt` | Arquivo **vazio** = nenhum apontamento |
+| `make clean` | Apaga binários, objetos e arquivos do `gcov`/`gprof` | (remove) | Use quando algo estranho acontecer após mudar um `.h` |
+
+**Parâmetros do `make profile`:**
+
+```bash
+make profile                          # n = 50000, todos os algoritmos
+make profile N=200000 ALG=merge       # só o Merge Sort, com n maior
+```
+
+**Como o Makefile funciona (para explicar no vídeo):**
+
+- `CFLAGS = -Wall -Wextra -std=c11 -O2` vale para tudo, **exceto** `coverage` (que o substitui por `--coverage -g -O0`) e `profile` (que usa `-pg -g -O0`). Por isso o `gprof` e o `gcov` não usam `-O2`.
+- `DEPFLAGS = -MMD -MP` faz o compilador gerar arquivos `.d` com as dependências de cada `.o` nos `.h`. Assim, se você alterar `metricas.h`, o `make` recompila o que for preciso. A linha `-include $(ALL_OBJS:.o=.d)` no final lê esses arquivos.
+- A regra `%.o: %.c` ensina o `make` a compilar **qualquer** `.c` em `.o` (`$<` é o arquivo de entrada, `$@` é o de saída).
+- `main.c`, `test_basic.c` e `bench.c` compartilham os **mesmos seis arquivos de algoritmos** (`ALG_SRCS`) e cada um gera o seu executável.
+- `.PHONY` declara alvos que são **ações**, não arquivos (`test`, `clean`...), para que o `make` os execute sempre.
+
+!!! tip "`make: Nothing to be done` ou `make: 'sort_main' is up to date`?"
+    O `make` só recompila o que mudou. Se você acabou de editar um arquivo e ele diz que nada há a fazer, confira se **salvou** o arquivo e se o `Makefile` lista esse `.c` em `ALG_SRCS`.
