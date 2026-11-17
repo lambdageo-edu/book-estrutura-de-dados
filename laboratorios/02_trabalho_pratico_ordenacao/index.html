@@ -3708,6 +3708,17 @@
 
 <h1 id="laboratorio-algoritmos-de-ordenacao-em-c-passo-a-passo">Laboratório: Algoritmos de Ordenação em C — Passo a Passo<a class="headerlink" href="#laboratorio-algoritmos-de-ordenacao-em-c-passo-a-passo" title="Permanent link">&para;</a></h1>
 <p>Este tutorial é o <strong>caminho</strong> para chegar ao Trabalho Prático de ordenação. A especificação (o que entregar, rubrica e forma de envio) está no final do capítulo, em <a href="#trabalho-pratico">Trabalho Prático</a>. Aqui você aprende <strong>como construir</strong> cada peça, em etapas pequenas, cada uma com um <strong>checkpoint</strong> (um comando e o resultado esperado) e um <strong>commit sugerido</strong>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Ambiente obrigatório: Linux (nativo, WSL ou VirtualBox)</p>
+<p>Este tutorial e todo o fluxo de compilação, testes e análise foram elaborados para rodar em <strong>Linux</strong>. </p>
+<p>Tentar executar este laboratório diretamente no <strong>Windows</strong> exigirá diversas adaptações manuais nos comandos e no <code>Makefile</code>, além de <strong>algumas ferramentas simplesmente não funcionarem</strong> (como o <code>gprof</code>, o <code>AddressSanitizer</code> e scripts de terminal), obrigando você a buscar substitutos por conta própria — ou impedindo que realize parte dos experimentos exigidos.</p>
+<p><strong>Não tem Linux instalado?</strong> Você tem duas alternativas gratuitas e práticas:</p>
+<ul>
+<li><strong>WSL (Windows Subsystem for Linux) — Recomendado:</strong> mais leve, rápido e integrado ao Windows e ao VS Code (veja o passo a passo de instalação na <strong>Etapa 0.2</strong>).</li>
+<li><strong>Máquina Virtual (VirtualBox):</strong> instale uma distribuição como <strong>Ubuntu</strong> ou <strong>Linux Mint</strong> para ter um ambiente completo e isolado.</li>
+</ul>
+<p><strong>Por que aprender isso agora?</strong> A grande maioria dos servidores, aplicações em nuvem e sistemas web roda sobre <strong>Linux</strong>. Dominar o terminal e as ferramentas desse ecossistema não é apenas um requisito desta disciplina, mas um investimento essencial para a sua formação e carreira na computação.</p>
+</div>
 <div class="admonition info">
 <p class="admonition-title">Como usar este tutorial</p>
 <ul>
@@ -3773,6 +3784,10 @@
 <hr />
 <h2 id="etapa-0-git-e-github-o-essencial">Etapa 0 — Git e GitHub: o essencial<a class="headerlink" href="#etapa-0-git-e-github-o-essencial" title="Permanent link">&para;</a></h2>
 <p>Seu histórico no Git <strong>faz parte da nota</strong> (20 pontos da rubrica de código, mais a definição de quem apresenta o vídeo). Por isso esta etapa vem antes de qualquer código. Se você já usa Git no dia a dia, leia só as seções 0.6 a 0.8 e faça o <strong>Checkpoint 0</strong>.</p>
+<div class="admonition info">
+<p class="admonition-title">Terminal e ferramentas</p>
+<p>Todos os comandos deste tutorial assumem um terminal Linux (nativo, via <strong>WSL</strong> no Windows ou via máquina virtual). No macOS, o <code>gcc</code> do Xcode/Homebrew funciona para compilar, mas ferramentas como o <code>gprof</code> podem se comportar de forma diferente.</p>
+</div>
 <div class="admonition info">
 <p class="admonition-title">Sistema operacional</p>
 <p>O laboratório usa <code>gcc</code>, <code>make</code>, <code>gcov</code> e <code>gprof</code>, que funcionam nativamente em Linux. No Windows, use o <strong>WSL</strong> (Ubuntu); no macOS, o <code>gcc</code> do Xcode/Homebrew serve, mas o <code>gprof</code> pode se comportar diferente. Todos os comandos deste tutorial assumem um terminal Linux.</p>
