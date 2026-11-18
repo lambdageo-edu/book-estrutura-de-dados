@@ -555,7 +555,7 @@ void heapSort(int v[], int n, Metricas *m);
 
 ### 1.6 Esqueletos (*stubs*) dos seis algoritmos
 
-O Makefile compila os seis arquivos de uma vez. Para que `make` funcione desde já, crie **esqueletos vazios** com este script (rode uma vez, na raiz do repositório):
+O Makefile compila os seis arquivos de uma vez. Para que `make` funcione desde já, crie **esqueletos vazios** com este script (no terminal rode uma vez, na raiz do repositório):
 
 ```bash
 for par in basicos/bubble:bubbleSort basicos/selection:selectionSort \
@@ -671,6 +671,9 @@ int main(int argc, char *argv[]) {
 make
 ./sort_main 10
 ```
+
+!!! warning "missing separator"
+    As linhas de comando das regras precisam começar com o caractere **TAB**, não com espaços. Se ao copiar o arquivo aparecer `missing separator`, é isso. Uma opção, apague o espaço e substituiu por tab.
 
 Saída esperada (os tempos podem variar; as métricas são zero porque os algoritmos ainda estão vazios):
 
