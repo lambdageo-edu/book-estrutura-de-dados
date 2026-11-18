@@ -4397,7 +4397,7 @@
 <p>Este arquivo é um complemento à estrutura obrigatória. Pode ser incluído sem problema.</p>
 </div>
 <h3 id="16-esqueletos-stubs-dos-seis-algoritmos">1.6 Esqueletos (<em>stubs</em>) dos seis algoritmos<a class="headerlink" href="#16-esqueletos-stubs-dos-seis-algoritmos" title="Permanent link">&para;</a></h3>
-<p>O Makefile compila os seis arquivos de uma vez. Para que <code>make</code> funcione desde já, crie <strong>esqueletos vazios</strong> com este script (rode uma vez, na raiz do repositório):</p>
+<p>O Makefile compila os seis arquivos de uma vez. Para que <code>make</code> funcione desde já, crie <strong>esqueletos vazios</strong> com este script (no terminal rode uma vez, na raiz do repositório):</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="k">for</span><span class="w"> </span>par<span class="w"> </span><span class="k">in</span><span class="w"> </span>basicos/bubble:bubbleSort<span class="w"> </span>basicos/selection:selectionSort<span class="w"> </span><span class="se">\</span>
 <a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="w">           </span>basicos/insertion:insertionSort<span class="w"> </span>avancados/merge:mergeSort<span class="w"> </span><span class="se">\</span>
 <a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a><span class="w">           </span>avancados/quick:quickSort<span class="w"> </span>avancados/heap:heapSort<span class="p">;</span><span class="w"> </span><span class="k">do</span>
@@ -4504,6 +4504,10 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>make
 <a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>./sort_main<span class="w"> </span><span class="m">10</span>
 </code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">missing separator</p>
+<p>As linhas de comando das regras precisam começar com o caractere <strong>TAB</strong>, não com espaços. Se ao copiar o arquivo aparecer <code>missing separator</code>, é isso. Uma opção, apague o espaço e substituiu por tab.</p>
+</div>
 <p>Saída esperada (os tempos podem variar; as métricas são zero porque os algoritmos ainda estão vazios):</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>bubble     n=10  tempo=0.001 ms  comparações=0  trocas=0
 <a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>selection  n=10  tempo=0.000 ms  comparações=0  trocas=0
